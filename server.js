@@ -37,17 +37,19 @@ app.use('/api', userRoutes);
 app.use('/api', likeRoutes);
 app.use('/api', playlistRoutes);
 
-app.use(notFound);
-app.use(errorHandler);
 
 // Serve Static Frontend in Production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
-  app.get('*', (req, res) => {
+  // For any non-API routes, serve the React app
+  app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
   });
 }
+
+app.use(notFound);
+app.use(errorHandler);
 
 // Sync database and start server
 sequelize.sync()
