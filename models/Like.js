@@ -11,7 +11,7 @@ const Like = sequelize.define('Like', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Users',
+      model: 'users',
       key: 'id'
     }
   },
@@ -19,7 +19,7 @@ const Like = sequelize.define('Like', {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'Categories',
+      model: 'categories',
       key: 'id'
     }
   },
@@ -27,13 +27,13 @@ const Like = sequelize.define('Like', {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'Songs',
+      model: 'songs',
       key: 'id'
     }
   }
 }, {
   timestamps: true,
-  tableName: 'Likes',
+  tableName: 'likes',
   indexes: [
     {
       unique: true,

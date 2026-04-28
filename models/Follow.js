@@ -11,7 +11,7 @@ const Follow = sequelize.define('Follow', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Users',
+      model: 'users',
       key: 'id'
     }
   },
@@ -25,7 +25,7 @@ const Follow = sequelize.define('Follow', {
   }
 }, {
   timestamps: true,
-  tableName: 'Follows',
+  tableName: 'follows',
   indexes: [
     {
       unique: true,

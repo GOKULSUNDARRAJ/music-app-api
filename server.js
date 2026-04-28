@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const { sequelize } = require('./models');
 const homeRoutes = require('./routes/homeRoutes');
@@ -38,6 +39,15 @@ app.use('/api', playlistRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
+
+// Serve Static Frontend in Production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'frontend/dist')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
+  });
+}
 
 // Sync database and start server
 sequelize.sync()

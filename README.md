@@ -182,3 +182,28 @@ Returns nested sections -> categories -> songs JSON for app home screen.
   - Category cannot be created for a non-existing section.
   - Song cannot be created for a non-existing category.
 - Centralized Express error handling is enabled.
+- For production, ensure `NODE_ENV=production` is set to serve the frontend.
+
+## Deployment
+
+### 1. Database
+Host a MySQL database on a service like **Aiven**, **Railway**, or **Render**. Get your connection details.
+
+### 2. Deployment Platforms
+This project is configured for **Render** or **Railway**.
+
+**Render Setup:**
+- **Service Type:** Web Service
+- **Build Command:** `npm install && npm run build`
+- **Start Command:** `npm start`
+- **Environment Variables:**
+    - `NODE_ENV`: `production`
+    - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_PORT`
+    - `JWT_SECRET`: (Generate a random string)
+    - `ADMIN_USER`, `ADMIN_PASS`: (For your admin login)
+
+### 3. File Persistence
+Most PaaS services have ephemeral storage. If you upload files to `uploads/`, they will be deleted on every redeploy. For permanent storage, consider:
+- **Render:** Use a [Persistent Disk](https://render.com/docs/disks).
+- **Railway:** Use [Volumes](https://docs.railway.app/reference/volumes).
+- **Better Solution:** Modify the code to use **Cloudinary** or **AWS S3**.
