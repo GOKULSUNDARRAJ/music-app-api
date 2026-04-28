@@ -39,7 +39,8 @@ router.post('/login', adminController.login);
 router.get('/dashboard', requireAdminAuth, adminController.getDashboardCounts);
 router.post('/upload', requireAdminAuth, upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-  const url = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
+  const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+  const url = `${baseUrl}/uploads/${req.file.filename}`;
   res.json({ url });
 });
 
