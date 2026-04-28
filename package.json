@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "seed": "node seed.js",
-    "build": "npm install && cd frontend && npm install && npm run build && echo '--- ROOT CONTENT ---' && ls -F .. && echo '--- FRONTEND CONTENT ---' && ls -F"
+    "build": "npm install && cd frontend && npm install && npm run build && echo '--- ROOT CONTENT ---' && ls -F .. && echo '--- FRONTEND CONTENT ---' && ls -F",
+    "postinstall": "cd frontend && npm install && npm run build"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
