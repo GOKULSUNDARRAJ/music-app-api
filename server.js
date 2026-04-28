@@ -44,7 +44,8 @@ if (process.env.NODE_ENV === 'production') {
 
   // For any non-API routes, serve the React app
   app.get(/^(?!\/api).*/, (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
+    const indexPath = path.resolve(__dirname, 'frontend', 'dist', 'index.html');
+    res.sendFile(indexPath);
   });
 }
 
