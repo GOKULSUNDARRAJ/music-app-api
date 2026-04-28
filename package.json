@@ -1,0 +1,20 @@
+{
+  "name": "music-app-api",
+  "version": "1.0.0",
+  "description": "Music App API with Express, Sequelize, and MySQL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "mysql2": "^3.9.7",
+    "sequelize": "^6.37.3"
+  }
+}

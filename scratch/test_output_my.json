@@ -1,0 +1,15 @@
+﻿{
+  "status": true,
+  "success": true,
+  "result": "true",
+  "sections": [
+    {
+      "sectionId": "sec_playlist_items",
+      "sectionTitle": "My Favorites",
+      "layoutType": 2,
+      "spanCount": 2,
+      "url": "http://localhost:3000/api/playlist/my",
+      "categories": []
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+﻿Syncing database...
+Playlist ensured.
+Added category to playlist.
+Calling getPlaylistCategories...
+
+--- API RESPONSE ---
+{
+  "status": true,
+  "success": true,
+  "result": "true",
+  "sections": [
+    {
+      "sectionId": "sec_user_categories",
+      "sectionTitle": "User Categories",
+      "layoutType": 4,
+      "spanCount": 4,
+      "categories": [
+        {
+          "categoryId": "cat_playlist_33",
+          "categoryName": "My Favorites",
+          "categoryImage": "https://via.placeholder.com/150",
+          "url": "http://localhost:3000/api/playlist/my",
+          "adapterType": 6,
+          "isPlaylist": true,
+          "songs": [],
+          "songs_count": 0
+        },
+        {
+          "categoryId": "cat_playlist_32",
+          "categoryName": "Test Playlist",
+          "categoryImage": "https://via.placeholder.com/150",
+          "url": "http://localhost:3000/api/playlist/items/32",
+          "adapterType": 6,
+          "isPlaylist": true,
+          "songs": [
+            {
+              "songId": "song_061",
+              "audioName": "Avalum-Naanum",
+              "audioUrl": "http://192.168.0.188:3000/uploads/1776764211267-834918718.mp3",
+              "category": "Achcham Yenbadhu Madamaiyada songs",
+              "imageUrl": "http://192.168.0.188:3000/uploads/1776764211282-784326097.jfif",
+              "categoryId": "cat_018",
+              "isLiked": false
+            },
+            {
+              "songId": "song_062",
+              "audioName": "Idhu-Naal",
+              "audioUrl": "http://192.168.0.188:3000/uploads/1776764211297-388298570.mp3",
+              "category": "Achcham Yenbadhu Madamaiyada songs",
+              "imageUrl": "http://192.168.0.188:3000/uploads/1776764211309-760841419.jfif",
+              "categoryId": "cat_018",
+              "isLiked": false
+            },
+            {
+              "songId": "song_063",
+              "audioName": "Rasaali",
+              "audioUrl": "http://192.168.0.188:3000/uploads/1776764211319-42638501.mp3",
+              "category": "Achcham Yenbadhu Madamaiyada songs",
+              "imageUrl": "http://192.168.0.188:3000/uploads/1776764211335-692002710.jfif",
+              "categoryId": "cat_018",
+              "isLiked": false
+            },
+            {
+              "songId": "song_064",
+              "audioName": "Showkali",
+              "audioUrl": "http://192.168.0.188:3000/uploads/1776764211344-338806382.mp3",
+              "category": "Achcham Yenbadhu Madamaiyada songs",
+              "imageUrl": "http://192.168.0.188:3000/uploads/1776764211360-829771066.jfif",
+              "categoryId": "cat_018",
+              "isLiked": false
+            },
+            {
+              "songId": "song_065",
+              "audioName": "Thalli-Pogathey",
+              "audioUrl": "http://192.168.0.188:3000/uploads/1776764211370-115431979.mp3",
+              "category": "Achcham Yenbadhu Madamaiyada songs",
+              "imageUrl": "http://192.168.0.188:3000/uploads/1776764211383-219117516.jfif",
+              "categoryId": "cat_018",
+              "isLiked": false
+            }
+          ],
+          "songs_count": 5
+        }
+      ]
+    }
+  ]
+}
+--------------------
+
+Done.
