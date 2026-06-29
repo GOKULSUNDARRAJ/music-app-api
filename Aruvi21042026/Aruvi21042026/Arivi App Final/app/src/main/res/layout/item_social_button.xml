@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="8dp">
+
+    <!-- Country Label -->
+    <TextView
+        android:id="@+id/tvSocialLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="UNITED KINGDOM"
+        android:fontFamily="@font/circularstdmedium"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/country_text_size"
+        android:textStyle="bold" />
+
+    <!-- CardView Container -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSocial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="#1E1E1E"
+        app:cardCornerRadius="12dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/phoneLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/phone_item_height"
+                android:background="@android:color/transparent"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <!-- Content -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/phone_content_padding">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/ivSocialIcon"
+                            android:layout_width="@dimen/phone_icon_size"
+                            android:layout_height="@dimen/phone_icon_size"
+                            android:layout_marginEnd="10dp"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:src="@drawable/call"
+                            android:tint="@color/white"
+                            app:layout_constraintEnd_toStartOf="@+id/tvPhoneNumber" />
+
+                        <TextView
+                            android:id="@+id/tvPhoneNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:fontFamily="@font/circularstdmedium"
+                            android:text="0203 137 3917"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/phone_text_size"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+            </FrameLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

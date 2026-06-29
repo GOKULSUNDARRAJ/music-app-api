@@ -1,0 +1,67 @@
+{
+  "sections": [
+    {
+      "sectionId": "sec_001",
+      "sectionTitle": "Recently Played",
+      "layoutType": 1,
+      "spanCount": 1,
+      "categories": [
+        {
+          "categoryId": "cat_001",
+          "categoryName": "Pop Hits",
+          "categoryImage": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69b8fb0c6e5048.11035543.png",
+          "adapterType": 1,
+          "songs": [
+            {
+              "songId": "song_001",
+              "audioName": "Shape of You",
+              "audioUrl": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69b8fb0c6e5048.11035543.png",
+              "category": "Pop Hits",
+              "imageUrl": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69b8fb0c6e5048.11035543.png",
+              "categoryId": "cat_001"
+            },
+            {
+              "songId": "song_002",
+              "audioName": "Blinding Lights",
+              "audioUrl": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69b8fb0c6e5048.11035543.png",
+              "category": "Pop Hits",
+              "imageUrl": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69b8fb0c6e5048.11035543.png",
+              "categoryId": "cat_001"
+            }
+          ]
+        },
+        {
+          "categoryId": "cat_002",
+          "categoryName": "Rock Classics",
+          "categoryImage": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69b8fb0c6e5048.11035543.png",
+          "adapterType": 1,
+          "songs": [
+            {
+              "songId": "song_003",
+              "audioName": "Bohemian Rhapsody",
+              "audioUrl": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69b8fb0c6e5048.11035543.png",
+              "category": "Rock Classics",
+              "imageUrl": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69b8fb0c6e5048.11035543.png",
+              "categoryId": "cat_002"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "sec_002",
+      "sectionTitle": "Recommended for You",
+      "layoutType": 2,
+      "spanCount": 2,
+      "categories": [
+        {
+          "categoryId": "cat_003",
+          "categoryName": "Empty Category",
+          "categoryImage": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69b8fb0c6e5048.11035543.png",
+          "adapterType": 1,
+          "songs": []
+        }
+      ]
+    }
+  ]
+}

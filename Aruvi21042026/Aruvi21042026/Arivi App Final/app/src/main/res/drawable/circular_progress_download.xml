@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background circle -->
+    <item>
+        <shape
+            android:shape="ring"
+            android:innerRadius="20dp"
+            android:thickness="3dp"
+            android:useLevel="false">
+            <solid android:color="@android:color/darker_gray" />
+        </shape>
+    </item>
+
+    <!-- Progress ring -->
+    <item>
+        <shape
+            android:shape="ring"
+            android:innerRadius="20dp"
+            android:thickness="3dp"
+            android:useLevel="true">
+            <solid android:color="@color/colorPrimary" />
+        </shape>
+    </item>
+
+    <!-- Download icon -->
+    <item
+        android:drawable="@drawable/baseline_download_24"
+        android:gravity="center" />
+</layer-list>

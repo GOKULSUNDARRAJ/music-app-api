@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/artistCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="2dp"
+    android:background="@color/lightGray"
+    android:layout_marginRight="@dimen/dp_7"
+    android:layout_marginTop="@dimen/dp_10"
+    app:cardBackgroundColor="@color/lightGray">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGray"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Album Art -->
+        <FrameLayout
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginEnd="@dimen/dp_10">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="@dimen/dp_8"
+                app:cardElevation="2dp">
+
+                <ImageView
+                    android:id="@+id/artistImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/video_placholder" />
+
+                <!-- Playing Indicator (Wave Animation) -->
+                <LinearLayout
+                    android:id="@+id/waveContainer"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <View
+                        android:id="@+id/bar1"
+                        android:layout_width="3dp"
+                        android:layout_height="10dp"
+                        android:layout_margin="1dp"
+                        android:background="@color/green"/>
+
+                    <View
+                        android:id="@+id/bar2"
+                        android:layout_width="3dp"
+                        android:layout_height="14dp"
+                        android:layout_margin="1dp"
+                        android:background="@color/green"/>
+
+                    <View
+                        android:id="@+id/bar3"
+                        android:layout_width="3dp"
+                        android:layout_height="18dp"
+                        android:layout_margin="1dp"
+                        android:background="@color/green"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+
+        <!-- Artist Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/artistName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Artist Name"
+                android:textColor="@color/white"
+                android:fontFamily="@font/circularstdmedium"
+                android:textSize="@dimen/dp_13"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/songCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 songs"
+                android:fontFamily="@font/circularstdbook"
+                android:textSize="@dimen/sp_10"
+                android:textColor="@color/placeholder" />
+        </LinearLayout>
+
+        <!-- Menu Icon -->
+        <ImageView
+            android:id="@+id/menuIcon"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:padding="@dimen/dp_10"
+            android:src="@drawable/dots"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

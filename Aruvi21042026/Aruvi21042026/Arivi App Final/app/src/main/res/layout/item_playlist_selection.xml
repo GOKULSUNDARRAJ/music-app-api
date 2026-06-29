@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/dp_45"
+        android:layout_height="@dimen/dp_45"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp">
+
+        <ImageView
+            android:id="@+id/playlistImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/video_placholder" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/playlistName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Playlist Name"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/plusIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="@dimen/dp_1"
+        android:layout_gravity="center"
+        android:contentDescription="Add to playlist"
+        android:src="@drawable/plusenew"
+        android:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/tickIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:padding="@dimen/dp_1"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:src="@drawable/correct_converted_from_png"
+        android:visibility="gone" />
+
+</LinearLayout>

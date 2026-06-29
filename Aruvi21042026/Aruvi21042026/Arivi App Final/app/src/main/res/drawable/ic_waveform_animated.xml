@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+
+    <aapt:attr name="android:drawable">
+        <vector
+            android:width="200dp"
+            android:height="60dp"
+            android:viewportWidth="200"
+            android:viewportHeight="60">
+
+            <path
+                android:name="waveform"
+                android:fillColor="@color/white"
+                android:pathData="M10,30 l0,-10 l4,0 l0,20 l-4,0z
+                                 M20,30 l0,-15 l4,0 l0,30 l-4,0z
+                                 M30,30 l0,-8 l4,0 l0,16 l-4,0z
+                                 M40,30 l0,-20 l4,0 l0,40 l-4,0z
+                                 M50,30 l0,-12 l4,0 l0,24 l-4,0z
+                                 M60,30 l0,-18 l4,0 l0,36 l-4,0z
+                                 M70,30 l0,-5 l4,0 l0,10 l-4,0z
+                                 M80,30 l0,-25 l4,0 l0,50 l-4,0z
+                                 M90,30 l0,-15 l4,0 l0,30 l-4,0z
+                                 M100,30 l0,-8 l4,0 l0,16 l-4,0z
+                                 M110,30 l0,-22 l4,0 l0,44 l-4,0z
+                                 M120,30 l0,-10 l4,0 l0,20 l-4,0z
+                                 M130,30 l0,-28 l4,0 l0,56 l-4,0z
+                                 M140,30 l0,-14 l4,0 l0,28 l-4,0z
+                                 M150,30 l0,-6 l4,0 l0,12 l-4,0z
+                                 M160,30 l0,-19 l4,0 l0,38 l-4,0z
+                                 M170,30 l0,-12 l4,0 l0,24 l-4,0z
+                                 M180,30 l0,-7 l4,0 l0,14 l-4,0z
+                                 M190,30 l0,-24 l4,0 l0,48 l-4,0z" />
+        </vector>
+    </aapt:attr>
+
+</animated-vector>

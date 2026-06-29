@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/notification_root_expanded"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/transparent"
+    android:padding="16dp">
+
+    <!-- Album Art and Basic Info -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/notification_image_expanded"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/video_placholder"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="16dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/notification_title_expanded"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Song Title"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="marquee" />
+
+            <TextView
+                android:id="@+id/notification_artist_expanded"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Artist Name"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="marquee" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/notification_close_expanded"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/baseline_close_24"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Close" />
+
+    </LinearLayout>
+
+    <!-- Seek Bar Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp">
+
+        <SeekBar
+            android:id="@+id/notification_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="0"
+            android:max="100"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/notification_current_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0:00"
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/notification_total_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:00"
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Control Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
+
+        <ImageButton
+            android:id="@+id/notification_previous_expanded"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/baseline_skip_previous_24"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Previous" />
+
+        <ImageButton
+            android:id="@+id/notification_play_pause_expanded"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/baseline_play_circle_filled_24"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:contentDescription="Play/Pause" />
+
+        <ImageButton
+            android:id="@+id/notification_next_expanded"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/baseline_skip_next_24"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Next" />
+
+    </LinearLayout>
+
+</LinearLayout>

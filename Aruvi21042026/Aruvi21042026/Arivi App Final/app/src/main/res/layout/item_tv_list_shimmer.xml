@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/shimmer_layout"
+    android:layout_height="110dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp"
+    android:clipToPadding="false"
+    android:padding="0dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="6dp"
+        android:clickable="false"
+        android:focusable="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/placeholdercolor"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <!-- Placeholder for movie thumbnail -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/placeholdercolor"
+                android:layout_marginBottom="4dp"
+                android:radius="5dp" />
+
+            <!-- Placeholder for movie title -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/placeholdercolor"
+                android:radius="3dp" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</com.facebook.shimmer.ShimmerFrameLayout>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bgblack"
+    tools:context=".Fragments.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bgblack"
+        android:paddingLeft="@dimen/top_layout_padding_horizontal"
+        android:paddingTop="@dimen/top_layout_padding_vertical"
+        android:paddingRight="@dimen/top_layout_padding_horizontal"
+    >
+
+        <ImageView
+            android:id="@+id/iv_user_info"
+            android:layout_width="@dimen/dp_35"
+            android:layout_height="@dimen/dp_35"
+            android:layout_gravity="center"
+            android:src="@drawable/aruviroundlogo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/applogo"
+            android:layout_width="@dimen/app_logo_size"
+            android:layout_height="@dimen/app_logo_size"
+            android:layout_marginStart="@dimen/app_logo_margin_start"
+            android:layout_marginTop="@dimen/app_logo_margin_vertical"
+            android:layout_marginBottom="@dimen/app_logo_margin_vertical"
+            android:src="@drawable/saalai_logo"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_user_info"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/channel_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Channel Name"
+            android:textSize="@dimen/channel_name_text_size"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/searchicon"
+            android:layout_width="@dimen/action_icon_width"
+            android:layout_height="@dimen/action_icon_height"
+            android:layout_marginTop="@dimen/action_icon_margin_vertical"
+            android:layout_marginBottom="@dimen/action_icon_margin_vertical"
+            android:padding="@dimen/dp_3"
+            android:src="@drawable/profilemusic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/boardicon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/boardicon"
+            android:layout_width="@dimen/boardcast_icon_size"
+            android:layout_height="@dimen/boardcast_icon_size"
+            android:layout_marginTop="@dimen/boardcast_icon_margin_vertical"
+            android:layout_marginBottom="@dimen/boardcast_icon_margin_vertical"
+            android:padding="@dimen/boardcast_icon_padding"
+            android:src="@drawable/boardcast"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Top menu from SaalaiFragment (REPLACEMENT FOR HorizontalScrollView) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/top_tabs_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dp_10"
+        android:paddingEnd="@dimen/dp_10" />
+
+    <!-- Fragment Container -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

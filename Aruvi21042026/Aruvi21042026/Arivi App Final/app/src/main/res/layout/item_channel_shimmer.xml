@@ -1,0 +1,38 @@
+<!-- res/layout/item_channel_shimmer.xml -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="6dp"
+    app:cardUseCompatPadding="true">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <!-- Placeholder for channel image -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/placeholdercolor" />
+
+            <!-- Placeholder for channel name -->
+            <View
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="8dp"
+                android:background="@color/placeholdercolor" />
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/darkGray">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bgblack"
+        android:paddingLeft="@dimen/top_layout_padding_horizontal"
+        android:paddingTop="@dimen/top_layout_padding_vertical"
+        android:paddingRight="@dimen/top_layout_padding_horizontal"
+        >
+
+        <ImageView
+            android:id="@+id/backbtn"
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            android:layout_gravity="center"
+            android:src="@drawable/backarrow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/applogo"
+            android:layout_width="@dimen/app_logo_size"
+            android:layout_height="@dimen/app_logo_size"
+            android:layout_marginStart="@dimen/app_logo_margin_start"
+            android:layout_marginTop="@dimen/app_logo_margin_vertical"
+            android:layout_marginBottom="@dimen/app_logo_margin_vertical"
+            android:src="@drawable/saalai_logo"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/backbtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/channel_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Downloaded"
+            android:fontFamily="@font/circularstdmedium"
+            android:textSize="@dimen/sp_19"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/searchicon"
+            android:layout_width="@dimen/action_icon_width"
+            android:layout_height="@dimen/action_icon_height"
+            android:layout_marginTop="@dimen/action_icon_margin_vertical"
+            android:layout_marginBottom="@dimen/action_icon_margin_vertical"
+            android:padding="@dimen/dp_3"
+            android:src="@drawable/profilemusic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/boardicon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/boardicon"
+            android:layout_width="@dimen/boardcast_icon_size"
+            android:layout_height="@dimen/boardcast_icon_size"
+            android:layout_marginTop="@dimen/boardcast_icon_margin_vertical"
+            android:layout_marginBottom="@dimen/boardcast_icon_margin_vertical"
+            android:padding="@dimen/boardcast_icon_padding"
+            android:src="@drawable/boardcast"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Empty State -->
+    <TextView
+        android:id="@+id/noContentText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="No downloads or playlists yet"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <!-- Combined RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCombined"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        android:clipToPadding="false"
+        android:visibility="visible" />
+
+</LinearLayout>

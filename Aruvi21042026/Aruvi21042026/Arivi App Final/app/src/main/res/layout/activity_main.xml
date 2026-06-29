@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:background="@color/darkGray"
+    android:layout_height="match_parent"
+    tools:context=".Activity.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/root_view"
+        android:background="@color/darkGray"
+        android:orientation="vertical">
+
+        <!-- Fragment Container -->
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/cardMiniPlayer"
+            android:layout_marginBottom="-3dp" />
+
+        <!-- Dynamic Bottom Navigation RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bottom_nav_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/darkGray"
+            android:paddingVertical="8dp"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:visibility="visible" />
+
+        <!-- Old bottom navigation - HIDDEN -->
+        <LinearLayout
+            android:id="@+id/custom_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/darkGray"
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp"
+            android:visibility="gone"
+            android:clipToPadding="false">
+            <!-- Old navigation items remain here but are hidden -->
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardoffiline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/cardMiniPlayer"
+            android:elevation="@dimen/dp_8"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/dp_2"
+            android:layout_marginRight="@dimen/dp_1"
+            android:layout_marginLeft="@dimen/dp_1"
+            app:cardCornerRadius="2dp"
+           >
+
+            <LinearLayout
+                android:id="@+id/offline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:background="@color/lightGray"
+                android:padding="4dp">
+
+                <TextView
+                    android:id="@+id/tvOfflineMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Aruvi is set to Offline"
+                    android:textColor="@color/bgred"
+                    android:textSize="@dimen/sp_13"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardMiniPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/bottom_nav_recycler_view"
+            android:elevation="@dimen/dp_8"
+            app:cardCornerRadius="10dp"
+          >
+
+            <LinearLayout
+                android:id="@+id/miniaudioplayer"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_54"
+                android:orientation="vertical"
+                android:background="@color/gray"
+               >
+                <!-- Horizontal layout: Album + Info + Play/Pause -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                  >
+
+                    <!-- Album Art -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView2"
+                        android:layout_width="@dimen/dp_42"
+                        android:layout_height="@dimen/dp_42"
+                        android:layout_gravity="center"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        app:cardCornerRadius="@dimen/dp_4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/imgMiniAlbumArt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/video_placholder" />
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Song Info -->
+                    <LinearLayout
+                        android:id="@+id/linearLayout10"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+                        app:layout_constraintStart_toEndOf="@+id/cardView2"
+                        app:layout_constraintTop_toTopOf="@+id/cardView2">
+
+                        <TextView
+                            android:id="@+id/tvMiniSongName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/circularstdmedium"
+                            android:singleLine="true"
+                            android:text="Song Name"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/sp_16" />
+
+                        <TextView
+                            android:id="@+id/tvMiniSongArtist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/circularstdbook"
+                            android:singleLine="true"
+                            android:text="Artist"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Inside your miniplayer layout (cardMiniPlayer or miniaudioplayer) -->
+                    <TextView
+                        android:id="@+id/tvOfflineIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/offline_badge_background"
+                        android:paddingHorizontal="6dp"
+                        android:paddingVertical="2dp"
+                        android:text="OFFLINE"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@id/miniProgressBar"
+                        app:layout_constraintEnd_toStartOf="@id/btnMiniPlayPause"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="4dp"/>
+
+                    <!-- Play/Pause Button -->
+                    <ImageView
+                        android:id="@+id/btnMiniPlayPause"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Play/Pause"
+                        android:padding="5dp"
+                        android:src="@drawable/play_player"
+                        android:layout_marginRight="@dimen/dp_10"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imgbluetooth"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Play/Pause"
+                        android:padding="5dp"
+                        android:tint="@color/bgred"
+                        android:visibility="gone"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:src="@drawable/headphones1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btnMiniPlayPause"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ProgressBar
+                        android:id="@+id/miniProgressBar"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="407dp"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:indeterminate="false"
+                        android:max="100"
+                        android:progress="0"
+                        android:progressTint="@color/yellow"
+                        android:secondaryProgressTint="@color/gray"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Horizontal Progress Bar -->
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/custom_drawer_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_marginEnd="-65dp"
+        android:orientation="vertical"
+        android:background="@color/bgblack"
+        android:fitsSystemWindows="true">
+
+        <include layout="@layout/custom_drawer_body" />
+    </LinearLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

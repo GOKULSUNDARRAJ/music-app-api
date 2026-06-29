@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_page_padding">
+
+        <!-- Slider Section -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Fixed Height Movie Slider -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/sliderViewPager"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="H,16:9"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Watch Now and Share Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/spacing_dots_top"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- Watch Now Button -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/watchnowll"
+                android:layout_width="@dimen/btn_watch_now_width"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_btn_watch"
+                android:clickable="true"
+                android:focusable="true"
+                android:backgroundTint="@null">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_watch_now_height"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="@dimen/ic_play_size"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/ic_play_padding"
+                        android:tint="@color/white"
+                        android:src="@drawable/play_button_boarder"
+                        android:scaleType="fitCenter" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/circularstdmedium"
+                        android:gravity="center"
+                        android:text="Watch Now"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_btn_primary"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Share Button -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="@dimen/btn_share_width"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/btn_spacing_horizontal"
+                android:background="@drawable/bg_btn_share"
+                android:clickable="true"
+                android:focusable="true"
+                android:backgroundTint="@null"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="@dimen/ic_share_size"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/ic_share_padding"
+                        android:src="@drawable/share"
+                        android:scaleType="fitCenter" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <!-- Dots Indicator -->
+        <LinearLayout
+            android:id="@+id/dotsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/spacing_dots_top"
+            android:gravity="center"
+            android:orientation="horizontal" />
+
+        <!-- Main Content RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/parentRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_dots_top"
+            android:paddingBottom="@dimen/spacing_recycler_bottom" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

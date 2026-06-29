@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:keepScreenOn="true">
+
+    <!-- AspectRatioFrameLayout for proper video scaling -->
+    <androidx.media3.ui.AspectRatioFrameLayout
+        android:id="@+id/playerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        android:layout_weight="0.5"
+        app:resize_mode="fit">
+
+
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:use_controller="true"
+            app:controller_layout_id="@layout/custom_player_controls"
+            app:resize_mode="fit"
+            app:show_timeout="3000">
+
+            <!-- Loading spinner inside PlayerView -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/GradientCircularProgressBar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </androidx.media3.ui.PlayerView>
+    </androidx.media3.ui.AspectRatioFrameLayout>
+
+
+
+    <TextView
+        android:id="@+id/more_channels_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:fontFamily="@font/circularstdbold"
+        android:text="More Channels"
+        android:textColor="@android:color/white"
+        android:padding="8dp"/>
+
+    <!-- RecyclerView for channel list -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recyclerviewlayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/channelRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/shimmerRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/paginationProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+      />
+
+
+</LinearLayout>
+

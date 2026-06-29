@@ -1,0 +1,17 @@
+<!-- res/drawable/item_background_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected state -->
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/btn_disabeled" /> <!-- Background color for selected item -->
+            <stroke android:width="2dp" android:color="@color/seleteditem" /> <!-- Border for selected item -->
+        </shape>
+    </item>
+
+    <!-- Default state -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" /> <!-- Transparent background for unselected items -->
+        </shape>
+    </item>
+</selector>

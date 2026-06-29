@@ -26,6 +26,14 @@ app.use('/uploads', express.static('uploads'));
 
 
 // Routes
+app.get('/api', (req, res) => {
+  res.status(200).json({ 
+    status: 'success', 
+    message: 'Music App API is running',
+    timestamp: new Date().toISOString()
+  });
+});
+
 app.use('/api/admin', adminRoutes);
 app.use('/api/artist', artistRoutes);
 app.use('/api/search', searchRoutes);
@@ -52,14 +60,17 @@ if (process.env.NODE_ENV === 'production') {
 app.use(notFound);
 app.use(errorHandler);
 
-// Sync database and start server
-sequelize.sync()
-  .then(() => {
-    console.log('Database connected and synced');
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+// Start server first, then sync database
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+  
+  // Sync database in the background
+  sequelize.sync()
+    .then(() => {
+      console.log('Database connected and synced');
+    })
+    .catch((err) => {
+      console.error('Failed to sync database:', err);
+      console.log('API is still running, but database-dependent routes will fail.');
     });
-  })
-  .catch((err) => {
-    console.error('Failed to sync database:', err);
-  });
+});

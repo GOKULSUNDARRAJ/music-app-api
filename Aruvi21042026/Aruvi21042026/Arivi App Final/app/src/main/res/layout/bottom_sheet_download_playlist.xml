@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <!-- Main container with rounded corners -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/artistCard"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="-15dp"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <!-- Circular Image View for Artist -->
+                <ImageView
+                    android:id="@+id/ivClose"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/close_white"
+                    android:scaleType="centerCrop" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_sheet_background"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+
+            <!-- Header with close button -->
+
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                />
+
+            <!-- Content -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp">
+
+                <!-- Song count -->
+                <TextView
+                    android:id="@+id/tvSongCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0 songs"
+                    android:visibility="gone"
+                    android:textSize="16sp"
+                    android:textColor="@color/primary_color"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- Subtitle -->
+                <TextView
+                    android:id="@+id/tvSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Give your playlist name"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="24dp"/>
+
+                <!-- Playlist Name Input -->
+                <EditText
+                    android:id="@+id/etPlaylistName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="My Playlist #1"
+                    android:inputType="textCapWords"
+                    android:maxLines="1"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:gravity="center"
+                    android:layout_marginBottom="32dp"/>
+
+                <!-- Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="end">
+
+                    <TextView
+                        android:id="@+id/tvCancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CANCEL"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray"
+                        android:padding="12dp"
+                        android:paddingStart="24dp"
+                        android:visibility="gone"
+                        android:paddingEnd="24dp"
+                        android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
+
+                    <TextView
+                        android:id="@+id/tvDownload"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Save"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/white"
+                        android:padding="12dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:background="@drawable/bottombtn"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    android:gravity="end">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CANCEL"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray"
+                        android:padding="12dp"
+                        android:paddingStart="24dp"
+                        android:visibility="gone"
+                        android:paddingEnd="24dp"
+                        android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Save"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/white"
+                        android:padding="12dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:background="@drawable/bottombtn"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    android:gravity="end">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CANCEL"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray"
+                        android:padding="12dp"
+                        android:paddingStart="24dp"
+                        android:visibility="gone"
+                        android:paddingEnd="24dp"
+                        android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Save"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/white"
+                        android:padding="12dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:background="@drawable/bottombtn"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

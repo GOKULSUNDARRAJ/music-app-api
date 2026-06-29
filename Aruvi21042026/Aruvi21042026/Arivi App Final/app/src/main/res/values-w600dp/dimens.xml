@@ -1,0 +1,818 @@
+<resources>
+ <dimen name="activity_horizontal_margin">48dp</dimen>
+
+ <dimen name="section_title_text_size">22sp</dimen>
+ <dimen name="section_seeall_text_size">16sp</dimen>
+ <dimen name="section_padding">12dp</dimen>
+ <dimen name="recycler_view_margin_top">12dp</dimen>
+
+ <dimen name="tab_icon_size">32dp</dimen>
+ <dimen name="tab_text_size">14sp</dimen>
+ <dimen name="tab_text_margin_top">6dp</dimen>
+ <dimen name="tab_indicator_height">3dp</dimen>
+ <dimen name="tab_indicator_margin_top">8dp</dimen>
+ <dimen name="tab_indicator_margin_horizontal">8dp</dimen>
+ <dimen name="tab_padding_vertical">12dp</dimen>
+ <dimen name="tab_padding_horizontal">10dp</dimen>
+
+ <dimen name="nav_icon_size">28dp</dimen>
+ <dimen name="nav_text_size">14sp</dimen>
+ <dimen name="nav_padding">12dp</dimen>
+ <dimen name="nav_min_width">90dp</dimen>
+
+
+ <dimen name="slider_height">350dp</dimen>
+ <dimen name="dots_margin_top">12dp</dimen>
+ <dimen name="recycler_padding_bottom">16dp</dimen>
+ <dimen name="content_padding">20dp</dimen>
+ <dimen name="dots_size">12dp</dimen>
+ <dimen name="dots_margin_horizontal">6dp</dimen>
+
+
+ <!-- MOVIE SLIDER - Taller for tablets -->
+ <dimen name="movie_slider_height">350dp</dimen>
+
+ <!-- ACTION BUTTONS - Larger touch targets -->
+ <dimen name="btn_watch_now_width">250dp</dimen>
+ <dimen name="btn_watch_now_height">48dp</dimen>
+ <dimen name="btn_share_width">60dp</dimen>
+ <dimen name="btn_spacing_horizontal">8dp</dimen>
+
+ <!-- ICON SIZES - Larger for tablets -->
+ <dimen name="ic_play_size">34dp</dimen>
+ <dimen name="ic_play_padding">7dp</dimen>
+ <dimen name="ic_share_size">44dp</dimen>
+ <dimen name="ic_share_padding">12dp</dimen>
+
+ <!-- TYPOGRAPHY - Larger readable text -->
+ <dimen name="text_btn_primary">18sp</dimen>
+
+ <!-- LAYOUT SPACING - More spacing for larger screens -->
+ <dimen name="spacing_page_padding">20dp</dimen>
+ <dimen name="spacing_dots_top">12dp</dimen>
+ <dimen name="spacing_recycler_bottom">16dp</dimen>
+
+ <!-- TV SHOW BANNER - Taller for tablets -->
+ <dimen name="tv_show_banner_height">300dp</dimen>
+
+ <!-- TV SHOW ACTION BUTTONS - Larger touch targets -->
+ <dimen name="tv_show_watch_button_width">250dp</dimen>
+ <dimen name="tv_show_button_height">48dp</dimen>
+ <dimen name="tv_show_share_button_width">60dp</dimen>
+ <dimen name="tv_show_button_spacing">12dp</dimen>
+
+ <!-- TV SHOW ICONS - Larger for tablets -->
+ <dimen name="tv_show_play_icon_size">36dp</dimen>
+ <dimen name="tv_show_icon_padding">8dp</dimen>
+ <dimen name="tv_show_share_icon_size">46dp</dimen>
+ <dimen name="tv_show_share_icon_padding">13dp</dimen>
+
+ <!-- TV SHOW TYPOGRAPHY - Larger readable text -->
+ <dimen name="tv_show_button_text_size">18sp</dimen>
+ <dimen name="tv_show_season_text_size">16sp</dimen>
+
+ <!-- TV SHOW LAYOUT SPACING - More spacing for larger screens -->
+ <dimen name="tv_show_page_padding">20dp</dimen>
+ <dimen name="tv_show_buttons_margin_top">16dp</dimen>
+ <dimen name="tv_show_season_margin_top">20dp</dimen>
+ <dimen name="tv_show_season_padding_horizontal">24dp</dimen>
+ <dimen name="tv_show_season_item_padding">12dp</dimen>
+ <dimen name="tv_show_dots_margin_top">12dp</dimen>
+ <dimen name="tv_show_content_margin_top">18dp</dimen>
+ <dimen name="tv_show_content_padding_bottom">28dp</dimen>
+
+
+ <dimen name="card_item_width">210dp</dimen>
+ <dimen name="card_item_margin_end">12dp</dimen>
+ <dimen name="card_corner_radius">8dp</dimen>
+ <dimen name="card_elevation">8dp</dimen>
+ <dimen name="card_text_size">16sp</dimen>
+ <dimen name="card_text_padding_top">6dp</dimen>
+
+
+ <dimen name="card_item_width_small">140dp</dimen>
+ <dimen name="card_item_height_small">210dp</dimen>
+ <dimen name="card_item_margin_end_small">12dp</dimen>
+ <dimen name="card_corner_radius_small">8dp</dimen>
+ <dimen name="card_elevation_small">8dp</dimen>
+ <dimen name="card_text_size_small">16sp</dimen>
+ <dimen name="card_text_padding_top_small">6dp</dimen>
+
+
+ <dimen name="channel_card_corner_radius">10dp</dimen>
+ <dimen name="channel_text_size">22sp</dimen>
+ <dimen name="channel_text_padding_top">8dp</dimen>
+
+ <!-- Player Screen Dimensions - Tablets -->
+ <dimen name="player_container_weight">0.55</dimen>
+ <dimen name="recycler_container_weight">0.45</dimen>
+
+ <dimen name="player_loading_size">64dp</dimen>
+
+ <!-- Channel Text -->
+ <dimen name="channel_title_text_size">24sp</dimen>
+ <dimen name="channel_title_padding">12dp</dimen>
+ <dimen name="channel_subtitle_text_size">20sp</dimen>
+ <dimen name="channel_subtitle_padding">12dp</dimen>
+ <dimen name="channel_subtitle_margin_top">24dp</dimen>
+
+ <dimen name="pagination_progress_margin">20dp</dimen>
+
+
+ <!-- Main Layout Dimensions - Tablets -->
+ <dimen name="top_layout_padding_horizontal">16dp</dimen>
+ <dimen name="top_layout_padding_vertical">12dp</dimen>
+
+ <!-- Icon Sizes - Larger for tablets -->
+ <dimen name="user_icon_size">42dp</dimen>
+ <dimen name="user_icon_size1">90dp</dimen>
+ <dimen name="app_logo_size">46dp</dimen>
+ <dimen name="boardcast_icon_size">46dp</dimen>
+ <dimen name="action_icon_width">46dp</dimen>
+ <dimen name="action_icon_height">40dp</dimen>
+
+ <!-- Margins - More spacing -->
+ <dimen name="app_logo_margin_start">16dp</dimen>
+ <dimen name="app_logo_margin_vertical">6dp</dimen>
+ <dimen name="action_icon_margin_horizontal">16dp</dimen>
+ <dimen name="action_icon_margin_vertical">6dp</dimen>
+ <dimen name="boardcast_icon_margin_vertical">6dp</dimen>
+
+ <!-- Padding - More touch area -->
+ <dimen name="action_icon_padding">9dp</dimen>
+ <dimen name="boardcast_icon_padding">9dp</dimen>
+
+ <!-- Text - Larger for readability -->
+ <dimen name="channel_name_text_size">20sp</dimen>
+
+ <!-- Tabs Recycler -->
+ <dimen name="tabs_recycler_padding">12dp</dimen>
+
+ <dimen name="viewpager_weight">1</dimen>
+
+
+
+
+
+ <!-- Radio Player Screen - Tablet -->
+ <dimen name="radio_player_screen_padding">12dp</dimen>
+
+ <!-- Header -->
+ <dimen name="radio_player_header_height">72dp</dimen>
+ <dimen name="radio_player_header_margin_bottom">12dp</dimen>
+ <dimen name="radio_player_back_button">44dp</dimen>
+ <dimen name="radio_player_broadcast_button">48dp</dimen>
+ <dimen name="radio_player_broadcast_padding">8dp</dimen>
+
+ <!-- Radio Card/Album Art -->
+ <dimen name="radio_card_margin_left">80dp</dimen>
+ <dimen name="radio_card_margin_right">80dp</dimen>
+ <dimen name="radio_card_margin_bottom">120dp</dimen>
+ <dimen name="radio_card_corner_radius">12dp</dimen>
+ <dimen name="radio_card_elevation">6dp</dimen>
+ <dimen name="radio_logo_height">400dp</dimen>
+
+ <!-- Radio Name -->
+ <dimen name="radio_name_margin_top">12dp</dimen>
+ <dimen name="radio_name_text_size">18sp</dimen>
+
+ <!-- Player Controls -->
+ <dimen name="radio_controls_margin_top">24dp</dimen>
+ <dimen name="radio_control_prev_next_size">48dp</dimen>
+ <dimen name="radio_control_play_pause_size">64dp</dimen>
+ <dimen name="radio_control_button_margin">12dp</dimen>
+ <dimen name="radio_loading_progress_size">64dp</dimen>
+
+ <!-- Recommendations Section -->
+ <dimen name="radio_recommendations_margin">12dp</dimen>
+ <dimen name="radio_section_header_padding_bottom">8dp</dimen>
+ <dimen name="radio_section_title_size">20sp</dimen>
+ <dimen name="radio_see_all_size">16sp</dimen>
+ <dimen name="radio_recycler_padding_bottom">12dp</dimen>
+
+ <!-- RecyclerView Items -->
+ <dimen name="radio_recommendation_item_width">180dp</dimen>
+ <dimen name="radio_recommendation_item_height">220dp</dimen>
+ <dimen name="radio_recommendation_image_height">140dp</dimen>
+
+ <!-- Shimmer Loading -->
+ <dimen name="radio_shimmer_recycler_height">220dp</dimen>
+
+ <!-- Layout Weights -->
+ <dimen name="radio_player_container_weight">0.55</dimen>
+ <dimen name="radio_recycler_container_weight">0.45</dimen>
+
+
+ <dimen name="station_card_width">210dp</dimen>
+ <dimen name="station_card_margin">6dp</dimen>
+ <dimen name="station_card_corner_radius">10dp</dimen>
+ <dimen name="station_card_elevation">6dp</dimen>
+
+ <!-- Station Name -->
+ <dimen name="station_name_margin_top">10dp</dimen>
+ <dimen name="station_name_text_size">15sp</dimen>
+
+
+
+ <dimen name="video_player_weight">0.55</dimen>
+
+ <!-- Loading Spinner -->
+ <dimen name="video_loading_size">56dp</dimen>
+
+ <!-- Movie Text Margins -->
+ <dimen name="movie_text_margin_horizontal">16dp</dimen>
+ <dimen name="movie_text_margin_top">8dp</dimen>
+ <dimen name="movie_text_padding_left">8dp</dimen>
+
+ <!-- Movie Title -->
+ <dimen name="movie_title_text_size">24sp</dimen>
+
+ <!-- Movie Subtitle -->
+ <dimen name="movie_subtitle_text_size">18sp</dimen>
+
+ <!-- Movie Description -->
+ <dimen name="movie_description_text_size">18sp</dimen>
+
+ <!-- Shimmer Layouts -->
+ <dimen name="shimmer_margin_horizontal">16dp</dimen>
+ <dimen name="shimmer_margin_top">8dp</dimen>
+ <dimen name="shimmer_title_width">120dp</dimen>
+ <dimen name="shimmer_subtitle_width">240dp</dimen>
+ <dimen name="shimmer_description_width">400dp</dimen>
+ <dimen name="shimmer_text_height">24dp</dimen>
+
+ <!-- Action Buttons -->
+ <dimen name="action_button_margin_horizontal">16dp</dimen>
+ <dimen name="action_button_padding">12dp</dimen>
+ <dimen name="action_icon_size">28dp</dimen>
+ <dimen name="action_text_margin_top">6dp</dimen>
+ <dimen name="action_text_size">14sp</dimen>
+ <dimen name="action_button_spacing">16dp</dimen>
+
+ <!-- More Channels Section -->
+ <dimen name="more_channels_margin_top">40dp</dimen>
+ <dimen name="more_channels_margin_horizontal">16dp</dimen>
+ <dimen name="more_channels_padding">8dp</dimen>
+ <dimen name="more_channels_text_size">18sp</dimen>
+ <dimen name="channel_list_margin_horizontal">16dp</dimen>
+ <dimen name="channel_list_margin_top">8dp</dimen>
+
+
+
+ <dimen name="player_overlay_padding">16dp</dimen>
+
+ <!-- Control Buttons - Tablet -->
+ <dimen name="player_back_button_size">35dp</dimen>
+ <dimen name="player_control_button_size">55dp</dimen>
+ <dimen name="player_control_button_margin">28dp</dimen>
+ <dimen name="player_fullscreen_button_size">35dp</dimen>
+ <dimen name="player_scale_button_size">40dp</dimen>
+
+ <!-- SeekBar Controls - Tablet -->
+ <dimen name="player_time_text_size">18sp</dimen>
+
+ <!-- Brightness/Volume Controls - Tablet -->
+ <dimen name="player_brightness_seekbar_width">240dp</dimen>
+ <dimen name="player_brightness_seekbar_height">24dp</dimen>
+ <dimen name="player_brightness_icon_size">20dp</dimen>
+ <dimen name="player_volume_icon_size">28dp</dimen>
+ <dimen name="player_brightness_text_size">18sp</dimen>
+ <dimen name="player_brightness_layout_margin">-50dp</dimen>
+
+ <!-- Movie Title - Tablet -->
+ <dimen name="player_movie_title_text_size">22sp</dimen>
+ <dimen name="player_movie_title_margin_bottom">12dp</dimen>
+
+
+
+ <dimen name="catchup_top_margin_horizontal">16dp</dimen>
+ <dimen name="catchup_back_button_size">40dp</dimen>
+ <dimen name="catchup_back_padding">4dp</dimen>
+ <dimen name="catchup_channel_title_size">20sp</dimen>
+
+ <!-- Player Container - Tablet -->
+ <dimen name="catchup_player_weight">0.55</dimen>
+ <dimen name="catchup_loading_spinner_size">56dp</dimen>
+
+ <!-- Channel Display - Tablet -->
+ <dimen name="catchup_channel_name_padding">12dp</dimen>
+ <dimen name="catchup_channel_name_size">16sp</dimen>
+
+ <!-- Content Container - Tablet -->
+ <dimen name="catchup_content_weight">0.45</dimen>
+
+ <!-- Tabs RecyclerView - Tablet -->
+ <dimen name="catchup_tabs_padding_vertical">12dp</dimen>
+
+ <!-- Tab Item Dimensions - Tablet -->
+ <dimen name="catchup_tab_item_min_width">100dp</dimen>
+ <dimen name="catchup_tab_item_height">45dp</dimen>
+ <dimen name="catchup_tab_item_padding_horizontal">20dp</dimen>
+ <dimen name="catchup_tab_text_size">16sp</dimen>
+ <dimen name="catchup_tab_item_corner_radius">22dp</dimen>
+
+ <!-- Shimmer Layout - Tablet -->
+ <dimen name="catchup_shimmer_padding">20dp</dimen>
+ <dimen name="catchup_shimmer_padding_vertical">12dp</dimen>
+
+ <!-- Error Message - Tablet -->
+ <dimen name="catchup_error_text_size">18sp</dimen>
+
+ <!-- ViewPager - Tablet -->
+ <dimen name="catchup_viewpager_margin">12dp</dimen>
+ <dimen name="catchup_episode_item_height">180dp</dimen>
+
+
+
+ <dimen name="catchup_tab_padding">16dp</dimen>
+
+ <!-- Catchup Tab Indicator Line - Tablet -->
+ <dimen name="catchup_tab_line_width">50dp</dimen>
+ <dimen name="catchup_tab_line_height">3dp</dimen>
+ <dimen name="catchup_tab_line_margin_top">6dp</dimen>
+
+ <!-- Catchup Tab Spacing - Tablet -->
+ <dimen name="catchup_tab_item_margin_horizontal">8dp</dimen>
+ <dimen name="catchup_tab_item_margin_vertical">4dp</dimen>
+
+
+
+ <dimen name="drawer_width">350dp</dimen>
+ <dimen name="drawer_header_padding">16dp</dimen>
+ <dimen name="drawer_title_text_size">18sp</dimen>
+ <dimen name="drawer_close_button_size">28dp</dimen>
+ <dimen name="drawer_recycler_margin_top">10dp</dimen>
+
+
+
+
+ <dimen name="close_button_size">70dp</dimen>
+ <dimen name="close_margin_top">20dp</dimen>
+ <dimen name="close_margin_end">20dp</dimen>
+ <dimen name="close_padding">15dp</dimen>
+
+ <!-- Content Layout -->
+ <dimen name="content_horizontal_margin">32dp</dimen>
+
+ <!-- Title Section -->
+ <dimen name="crown_size">80dp</dimen>
+ <dimen name="title_icon_margin_bottom">30dp</dimen>
+ <dimen name="title_text_size">36sp</dimen>
+ <dimen name="title_margin_bottom">15dp</dimen>
+ <dimen name="subtitle_text_size">24sp</dimen>
+ <dimen name="subtitle_margin_bottom">100dp</dimen>
+
+ <!-- Phone Items -->
+ <dimen name="phone_item_padding">10dp</dimen>
+ <dimen name="phone_item_height">80dp</dimen>
+ <dimen name="phone_item_margin_top">15dp</dimen>
+ <dimen name="phone_content_padding">30dp</dimen>
+ <dimen name="phone_icon_size">40dp</dimen>
+ <dimen name="phone_text_margin">25dp</dimen>
+ <dimen name="phone_text_size">28sp</dimen>
+ <dimen name="last_item_margin_bottom">60dp</dimen>
+
+ <!-- Country Labels -->
+ <dimen name="country_margin_start">40dp</dimen>
+ <dimen name="country_margin_top">4dp</dimen>
+ <dimen name="country_padding_horizontal">10dp</dimen>
+ <dimen name="country_text_size">14sp</dimen>
+
+ <dimen name="splash_horizontal_margin">80dp</dimen>
+ <dimen name="splash_image_size">280dp</dimen>
+
+
+
+ <dimen name="profile_text_bg_size">90dp</dimen>
+
+ <dimen name="card_margin">20dp</dimen>
+ <dimen name="section_margin_top">30dp</dimen>
+ <dimen name="item_margin_top">10dp</dimen>
+ <dimen name="version_margin_bottom">35dp</dimen>
+ <dimen name="item_padding">10dp</dimen>
+
+ <dimen name="content_margin_small">10dp</dimen>
+ <dimen name="content_margin_medium">15dp</dimen>
+
+ <dimen name="content_icon_size">48dp</dimen>
+ <dimen name="arrow_icon_size">42dp</dimen>
+ <dimen name="arrow_icon_padding">6dp</dimen>
+ <dimen name="logout_icon_padding">8dp</dimen>
+
+ <dimen name="content_text_size">21sp</dimen>
+ <dimen name="username_text_size">20sp</dimen>
+ <dimen name="mobile_text_size">16sp</dimen>
+ <dimen name="logout_button_text_size">28sp</dimen>
+
+ <dimen name="logout_button_height">55dp</dimen>
+ <dimen name="logout_button_margin_horizontal">40dp</dimen>
+ <dimen name="logout_button_margin_bottom">35dp</dimen>
+
+ <dimen name="progress_bar_size">40dp</dimen>
+
+ <dimen name="empty_content_text_size">16sp</dimen>
+
+
+
+ <dimen name="dp_1">1.2dp</dimen>
+ <dimen name="dp_2">2.4dp</dimen>
+ <dimen name="dp_3">3.5999999999999996dp</dimen>
+ <dimen name="dp_4">4.8dp</dimen>
+ <dimen name="dp_5">6.0dp</dimen>
+ <dimen name="dp_6">7.199999999999999dp</dimen>
+ <dimen name="dp_7">8.4dp</dimen>
+ <dimen name="dp_8">9.6dp</dimen>
+ <dimen name="dp_9">10.799999999999999dp</dimen>
+ <dimen name="dp_10">12.0dp</dimen>
+ <dimen name="dp_11">13.2dp</dimen>
+ <dimen name="dp_12">14.399999999999999dp</dimen>
+ <dimen name="dp_13">15.6dp</dimen>
+ <dimen name="dp_14">16.8dp</dimen>
+ <dimen name="dp_15">18.0dp</dimen>
+ <dimen name="dp_16">19.2dp</dimen>
+ <dimen name="dp_17">20.4dp</dimen>
+ <dimen name="dp_18">21.599999999999998dp</dimen>
+ <dimen name="dp_19">22.8dp</dimen>
+ <dimen name="dp_20">24.0dp</dimen>
+ <dimen name="dp_21">25.2dp</dimen>
+ <dimen name="dp_22">26.4dp</dimen>
+ <dimen name="dp_23">27.599999999999998dp</dimen>
+ <dimen name="dp_24">28.799999999999997dp</dimen>
+ <dimen name="dp_25">30.0dp</dimen>
+ <dimen name="dp_26">31.2dp</dimen>
+ <dimen name="dp_27">32.4dp</dimen>
+ <dimen name="dp_28">33.6dp</dimen>
+ <dimen name="dp_29">34.8dp</dimen>
+ <dimen name="dp_30">36.0dp</dimen>
+ <dimen name="dp_31">37.199999999999996dp</dimen>
+ <dimen name="dp_32">38.4dp</dimen>
+ <dimen name="dp_33">39.6dp</dimen>
+ <dimen name="dp_34">40.8dp</dimen>
+ <dimen name="dp_35">42.0dp</dimen>
+ <dimen name="dp_36">43.199999999999996dp</dimen>
+ <dimen name="dp_37">44.4dp</dimen>
+ <dimen name="dp_38">45.6dp</dimen>
+ <dimen name="dp_39">46.8dp</dimen>
+ <dimen name="dp_40">48.0dp</dimen>
+ <dimen name="dp_41">49.199999999999996dp</dimen>
+ <dimen name="dp_42">50.4dp</dimen>
+ <dimen name="dp_43">51.6dp</dimen>
+ <dimen name="dp_44">52.8dp</dimen>
+ <dimen name="dp_45">54.0dp</dimen>
+ <dimen name="dp_46">55.199999999999996dp</dimen>
+ <dimen name="dp_47">56.4dp</dimen>
+ <dimen name="dp_48">57.599999999999994dp</dimen>
+ <dimen name="dp_49">58.8dp</dimen>
+ <dimen name="dp_50">60.0dp</dimen>
+ <dimen name="dp_51">61.199999999999996dp</dimen>
+ <dimen name="dp_52">62.4dp</dimen>
+ <dimen name="dp_53">63.599999999999994dp</dimen>
+ <dimen name="dp_54">64.8dp</dimen>
+ <dimen name="dp_55">66.0dp</dimen>
+ <dimen name="dp_56">67.2dp</dimen>
+ <dimen name="dp_57">68.39999999999999dp</dimen>
+ <dimen name="dp_58">69.6dp</dimen>
+ <dimen name="dp_59">70.8dp</dimen>
+ <dimen name="dp_60">72.0dp</dimen>
+ <dimen name="dp_61">73.2dp</dimen>
+ <dimen name="dp_62">74.39999999999999dp</dimen>
+ <dimen name="dp_63">75.6dp</dimen>
+ <dimen name="dp_64">76.8dp</dimen>
+ <dimen name="dp_65">78.0dp</dimen>
+ <dimen name="dp_66">79.2dp</dimen>
+ <dimen name="dp_67">80.39999999999999dp</dimen>
+ <dimen name="dp_68">81.6dp</dimen>
+ <dimen name="dp_69">82.8dp</dimen>
+ <dimen name="dp_70">84.0dp</dimen>
+ <dimen name="dp_71">85.2dp</dimen>
+ <dimen name="dp_72">86.39999999999999dp</dimen>
+ <dimen name="dp_73">87.6dp</dimen>
+ <dimen name="dp_74">88.8dp</dimen>
+ <dimen name="dp_75">90.0dp</dimen>
+ <dimen name="dp_76">91.2dp</dimen>
+ <dimen name="dp_77">92.39999999999999dp</dimen>
+ <dimen name="dp_78">93.6dp</dimen>
+ <dimen name="dp_79">94.8dp</dimen>
+ <dimen name="dp_80">96.0dp</dimen>
+ <dimen name="dp_81">97.2dp</dimen>
+ <dimen name="dp_82">98.39999999999999dp</dimen>
+ <dimen name="dp_83">99.6dp</dimen>
+ <dimen name="dp_84">100.8dp</dimen>
+ <dimen name="dp_85">102.0dp</dimen>
+ <dimen name="dp_86">103.2dp</dimen>
+ <dimen name="dp_87">104.39999999999999dp</dimen>
+ <dimen name="dp_88">105.6dp</dimen>
+ <dimen name="dp_89">106.8dp</dimen>
+ <dimen name="dp_90">108.0dp</dimen>
+ <dimen name="dp_91">109.2dp</dimen>
+ <dimen name="dp_92">110.39999999999999dp</dimen>
+ <dimen name="dp_93">111.6dp</dimen>
+ <dimen name="dp_94">112.8dp</dimen>
+ <dimen name="dp_95">114.0dp</dimen>
+ <dimen name="dp_96">115.19999999999999dp</dimen>
+ <dimen name="dp_97">116.39999999999999dp</dimen>
+ <dimen name="dp_98">117.6dp</dimen>
+ <dimen name="dp_99">118.8dp</dimen>
+ <dimen name="dp_100">120.0dp</dimen>
+ <dimen name="dp_101">121.19999999999999dp</dimen>
+ <dimen name="dp_102">122.39999999999999dp</dimen>
+ <dimen name="dp_103">123.6dp</dimen>
+ <dimen name="dp_104">124.8dp</dimen>
+ <dimen name="dp_105">126.0dp</dimen>
+ <dimen name="dp_106">127.19999999999999dp</dimen>
+ <dimen name="dp_107">128.4dp</dimen>
+ <dimen name="dp_108">129.6dp</dimen>
+ <dimen name="dp_109">130.79999999999998dp</dimen>
+ <dimen name="dp_110">132.0dp</dimen>
+ <dimen name="dp_111">133.2dp</dimen>
+ <dimen name="dp_112">134.4dp</dimen>
+ <dimen name="dp_113">135.6dp</dimen>
+ <dimen name="dp_114">136.79999999999998dp</dimen>
+ <dimen name="dp_115">138.0dp</dimen>
+ <dimen name="dp_116">139.2dp</dimen>
+ <dimen name="dp_117">140.4dp</dimen>
+ <dimen name="dp_118">141.6dp</dimen>
+ <dimen name="dp_119">142.79999999999998dp</dimen>
+ <dimen name="dp_120">144.0dp</dimen>
+ <dimen name="dp_121">145.2dp</dimen>
+ <dimen name="dp_122">146.4dp</dimen>
+ <dimen name="dp_123">147.6dp</dimen>
+ <dimen name="dp_124">148.79999999999998dp</dimen>
+ <dimen name="dp_125">150.0dp</dimen>
+ <dimen name="dp_126">151.2dp</dimen>
+ <dimen name="dp_127">152.4dp</dimen>
+ <dimen name="dp_128">153.6dp</dimen>
+ <dimen name="dp_129">154.79999999999998dp</dimen>
+ <dimen name="dp_130">156.0dp</dimen>
+ <dimen name="dp_131">157.2dp</dimen>
+ <dimen name="dp_132">158.4dp</dimen>
+ <dimen name="dp_133">159.6dp</dimen>
+ <dimen name="dp_134">160.79999999999998dp</dimen>
+ <dimen name="dp_135">162.0dp</dimen>
+ <dimen name="dp_136">163.2dp</dimen>
+ <dimen name="dp_137">164.4dp</dimen>
+ <dimen name="dp_138">165.6dp</dimen>
+ <dimen name="dp_139">166.79999999999998dp</dimen>
+ <dimen name="dp_140">168.0dp</dimen>
+ <dimen name="dp_141">169.2dp</dimen>
+ <dimen name="dp_142">170.4dp</dimen>
+ <dimen name="dp_143">171.6dp</dimen>
+ <dimen name="dp_144">172.79999999999998dp</dimen>
+ <dimen name="dp_145">174.0dp</dimen>
+ <dimen name="dp_146">175.2dp</dimen>
+ <dimen name="dp_147">176.4dp</dimen>
+ <dimen name="dp_148">177.6dp</dimen>
+ <dimen name="dp_149">178.79999999999998dp</dimen>
+ <dimen name="dp_150">180.0dp</dimen>
+ <dimen name="dp_151">181.2dp</dimen>
+ <dimen name="dp_152">182.4dp</dimen>
+ <dimen name="dp_153">183.6dp</dimen>
+ <dimen name="dp_154">184.79999999999998dp</dimen>
+ <dimen name="dp_155">186.0dp</dimen>
+ <dimen name="dp_156">187.2dp</dimen>
+ <dimen name="dp_157">188.4dp</dimen>
+ <dimen name="dp_158">189.6dp</dimen>
+ <dimen name="dp_159">190.79999999999998dp</dimen>
+ <dimen name="dp_160">192.0dp</dimen>
+ <dimen name="dp_161">193.2dp</dimen>
+ <dimen name="dp_162">194.4dp</dimen>
+ <dimen name="dp_163">195.6dp</dimen>
+ <dimen name="dp_164">196.79999999999998dp</dimen>
+ <dimen name="dp_165">198.0dp</dimen>
+ <dimen name="dp_166">199.2dp</dimen>
+ <dimen name="dp_167">200.4dp</dimen>
+ <dimen name="dp_168">201.6dp</dimen>
+ <dimen name="dp_169">202.79999999999998dp</dimen>
+ <dimen name="dp_170">204.0dp</dimen>
+ <dimen name="dp_171">205.2dp</dimen>
+ <dimen name="dp_172">206.4dp</dimen>
+ <dimen name="dp_173">207.6dp</dimen>
+ <dimen name="dp_174">208.79999999999998dp</dimen>
+ <dimen name="dp_175">210.0dp</dimen>
+ <dimen name="dp_176">211.2dp</dimen>
+ <dimen name="dp_177">212.4dp</dimen>
+ <dimen name="dp_178">213.6dp</dimen>
+ <dimen name="dp_179">214.79999999999998dp</dimen>
+ <dimen name="dp_180">216.0dp</dimen>
+ <dimen name="dp_181">217.2dp</dimen>
+ <dimen name="dp_182">218.4dp</dimen>
+ <dimen name="dp_183">219.6dp</dimen>
+ <dimen name="dp_184">220.79999999999998dp</dimen>
+ <dimen name="dp_185">222.0dp</dimen>
+ <dimen name="dp_186">223.2dp</dimen>
+ <dimen name="dp_187">224.4dp</dimen>
+ <dimen name="dp_188">225.6dp</dimen>
+ <dimen name="dp_189">226.79999999999998dp</dimen>
+ <dimen name="dp_190">228.0dp</dimen>
+ <dimen name="dp_191">229.2dp</dimen>
+ <dimen name="dp_192">230.39999999999998dp</dimen>
+ <dimen name="dp_193">231.6dp</dimen>
+ <dimen name="dp_194">232.79999999999998dp</dimen>
+ <dimen name="dp_195">234.0dp</dimen>
+ <dimen name="dp_196">235.2dp</dimen>
+ <dimen name="dp_197">236.39999999999998dp</dimen>
+ <dimen name="dp_198">237.6dp</dimen>
+ <dimen name="dp_199">238.79999999999998dp</dimen>
+ <dimen name="dp_200">240.0dp</dimen>
+ <dimen name="dp_201">241.2dp</dimen>
+ <dimen name="dp_202">242.39999999999998dp</dimen>
+ <dimen name="dp_203">243.6dp</dimen>
+ <dimen name="dp_204">244.79999999999998dp</dimen>
+ <dimen name="dp_205">246.0dp</dimen>
+ <dimen name="dp_206">247.2dp</dimen>
+ <dimen name="dp_207">248.39999999999998dp</dimen>
+ <dimen name="dp_208">249.6dp</dimen>
+ <dimen name="dp_209">250.79999999999998dp</dimen>
+ <dimen name="dp_210">252.0dp</dimen>
+ <dimen name="dp_211">253.2dp</dimen>
+ <dimen name="dp_212">254.39999999999998dp</dimen>
+ <dimen name="dp_213">255.6dp</dimen>
+ <dimen name="dp_214">256.8dp</dimen>
+ <dimen name="dp_215">258.0dp</dimen>
+ <dimen name="dp_216">259.2dp</dimen>
+ <dimen name="dp_217">260.4dp</dimen>
+ <dimen name="dp_218">261.59999999999997dp</dimen>
+ <dimen name="dp_219">262.8dp</dimen>
+ <dimen name="dp_220">264.0dp</dimen>
+ <dimen name="dp_221">265.2dp</dimen>
+ <dimen name="dp_222">266.4dp</dimen>
+ <dimen name="dp_223">267.59999999999997dp</dimen>
+ <dimen name="dp_224">268.8dp</dimen>
+ <dimen name="dp_225">270.0dp</dimen>
+ <dimen name="dp_226">271.2dp</dimen>
+ <dimen name="dp_227">272.4dp</dimen>
+ <dimen name="dp_228">273.59999999999997dp</dimen>
+ <dimen name="dp_229">274.8dp</dimen>
+ <dimen name="dp_230">276.0dp</dimen>
+ <dimen name="dp_231">277.2dp</dimen>
+ <dimen name="dp_232">278.4dp</dimen>
+ <dimen name="dp_233">279.59999999999997dp</dimen>
+ <dimen name="dp_234">280.8dp</dimen>
+ <dimen name="dp_235">282.0dp</dimen>
+ <dimen name="dp_236">283.2dp</dimen>
+ <dimen name="dp_237">284.4dp</dimen>
+ <dimen name="dp_238">285.59999999999997dp</dimen>
+ <dimen name="dp_239">286.8dp</dimen>
+ <dimen name="dp_240">288.0dp</dimen>
+ <dimen name="dp_241">289.2dp</dimen>
+ <dimen name="dp_242">290.4dp</dimen>
+ <dimen name="dp_243">291.59999999999997dp</dimen>
+ <dimen name="dp_244">292.8dp</dimen>
+ <dimen name="dp_245">294.0dp</dimen>
+ <dimen name="dp_246">295.2dp</dimen>
+ <dimen name="dp_247">296.4dp</dimen>
+ <dimen name="dp_248">297.59999999999997dp</dimen>
+ <dimen name="dp_249">298.8dp</dimen>
+ <dimen name="dp_250">300.0dp</dimen>
+ <dimen name="dp_251">301.2dp</dimen>
+ <dimen name="dp_252">302.4dp</dimen>
+ <dimen name="dp_253">303.59999999999997dp</dimen>
+ <dimen name="dp_254">304.8dp</dimen>
+ <dimen name="dp_255">306.0dp</dimen>
+ <dimen name="dp_256">307.2dp</dimen>
+ <dimen name="dp_257">308.4dp</dimen>
+ <dimen name="dp_258">309.59999999999997dp</dimen>
+ <dimen name="dp_259">310.8dp</dimen>
+ <dimen name="dp_260">312.0dp</dimen>
+ <dimen name="dp_261">313.2dp</dimen>
+ <dimen name="dp_262">314.4dp</dimen>
+ <dimen name="dp_263">315.59999999999997dp</dimen>
+ <dimen name="dp_264">316.8dp</dimen>
+ <dimen name="dp_265">318.0dp</dimen>
+ <dimen name="dp_266">319.2dp</dimen>
+ <dimen name="dp_267">320.4dp</dimen>
+ <dimen name="dp_268">321.59999999999997dp</dimen>
+ <dimen name="dp_269">322.8dp</dimen>
+ <dimen name="dp_270">324.0dp</dimen>
+ <dimen name="dp_271">325.2dp</dimen>
+ <dimen name="dp_272">326.4dp</dimen>
+ <dimen name="dp_273">327.59999999999997dp</dimen>
+ <dimen name="dp_274">328.8dp</dimen>
+ <dimen name="dp_275">330.0dp</dimen>
+ <dimen name="dp_276">331.2dp</dimen>
+ <dimen name="dp_277">332.4dp</dimen>
+ <dimen name="dp_278">333.59999999999997dp</dimen>
+ <dimen name="dp_279">334.8dp</dimen>
+ <dimen name="dp_280">336.0dp</dimen>
+ <dimen name="dp_281">337.2dp</dimen>
+ <dimen name="dp_282">338.4dp</dimen>
+ <dimen name="dp_283">339.59999999999997dp</dimen>
+ <dimen name="dp_284">340.8dp</dimen>
+ <dimen name="dp_285">342.0dp</dimen>
+ <dimen name="dp_286">343.2dp</dimen>
+ <dimen name="dp_287">344.4dp</dimen>
+ <dimen name="dp_288">345.59999999999997dp</dimen>
+ <dimen name="dp_289">346.8dp</dimen>
+ <dimen name="dp_290">348.0dp</dimen>
+ <dimen name="dp_291">349.2dp</dimen>
+ <dimen name="dp_292">350.4dp</dimen>
+ <dimen name="dp_293">351.59999999999997dp</dimen>
+ <dimen name="dp_294">352.8dp</dimen>
+ <dimen name="dp_295">354.0dp</dimen>
+ <dimen name="dp_296">355.2dp</dimen>
+ <dimen name="dp_297">356.4dp</dimen>
+ <dimen name="dp_298">357.59999999999997dp</dimen>
+ <dimen name="dp_299">358.8dp</dimen>
+ <dimen name="dp_300">360.0dp</dimen>
+ <dimen name="sp_1">1.1sp</dimen>
+ <dimen name="sp_2">2.2sp</dimen>
+ <dimen name="sp_3">3.3000000000000003sp</dimen>
+ <dimen name="sp_4">4.4sp</dimen>
+ <dimen name="sp_5">5.5sp</dimen>
+ <dimen name="sp_6">6.6000000000000005sp</dimen>
+ <dimen name="sp_7">7.700000000000001sp</dimen>
+ <dimen name="sp_8">8.8sp</dimen>
+ <dimen name="sp_9">9.9sp</dimen>
+ <dimen name="sp_10">11.0sp</dimen>
+ <dimen name="sp_11">12.100000000000001sp</dimen>
+ <dimen name="sp_12">13.200000000000001sp</dimen>
+ <dimen name="sp_13">14.3sp</dimen>
+ <dimen name="sp_14">15.400000000000002sp</dimen>
+ <dimen name="sp_15">16.5sp</dimen>
+ <dimen name="sp_16">17.6sp</dimen>
+ <dimen name="sp_17">18.700000000000003sp</dimen>
+ <dimen name="sp_18">19.8sp</dimen>
+ <dimen name="sp_19">20.900000000000002sp</dimen>
+ <dimen name="sp_20">22.0sp</dimen>
+ <dimen name="sp_21">23.1sp</dimen>
+ <dimen name="sp_22">24.200000000000003sp</dimen>
+ <dimen name="sp_23">25.3sp</dimen>
+ <dimen name="sp_24">26.400000000000002sp</dimen>
+ <dimen name="sp_25">27.500000000000004sp</dimen>
+ <dimen name="sp_26">28.6sp</dimen>
+ <dimen name="sp_27">29.700000000000003sp</dimen>
+ <dimen name="sp_28">30.800000000000004sp</dimen>
+ <dimen name="sp_29">31.900000000000002sp</dimen>
+ <dimen name="sp_30">33.0sp</dimen>
+ <dimen name="sp_31">34.1sp</dimen>
+ <dimen name="sp_32">35.2sp</dimen>
+ <dimen name="sp_33">36.300000000000004sp</dimen>
+ <dimen name="sp_34">37.400000000000006sp</dimen>
+ <dimen name="sp_35">38.5sp</dimen>
+ <dimen name="sp_36">39.6sp</dimen>
+ <dimen name="sp_37">40.7sp</dimen>
+ <dimen name="sp_38">41.800000000000004sp</dimen>
+ <dimen name="sp_39">42.900000000000006sp</dimen>
+ <dimen name="sp_40">44.0sp</dimen>
+ <dimen name="sp_41">45.1sp</dimen>
+ <dimen name="sp_42">46.2sp</dimen>
+ <dimen name="sp_43">47.300000000000004sp</dimen>
+ <dimen name="sp_44">48.400000000000006sp</dimen>
+ <dimen name="sp_45">49.50000000000001sp</dimen>
+ <dimen name="sp_46">50.6sp</dimen>
+ <dimen name="sp_47">51.7sp</dimen>
+ <dimen name="sp_48">52.800000000000004sp</dimen>
+ <dimen name="sp_49">53.900000000000006sp</dimen>
+ <dimen name="sp_50">55.00000000000001sp</dimen>
+ <dimen name="sp_51">56.1sp</dimen>
+ <dimen name="sp_52">57.2sp</dimen>
+ <dimen name="sp_53">58.300000000000004sp</dimen>
+ <dimen name="sp_54">59.400000000000006sp</dimen>
+ <dimen name="sp_55">60.50000000000001sp</dimen>
+ <dimen name="sp_56">61.60000000000001sp</dimen>
+ <dimen name="sp_57">62.7sp</dimen>
+ <dimen name="sp_58">63.800000000000004sp</dimen>
+ <dimen name="sp_59">64.9sp</dimen>
+ <dimen name="sp_60">66.0sp</dimen>
+ <dimen name="sp_61">67.10000000000001sp</dimen>
+ <dimen name="sp_62">68.2sp</dimen>
+ <dimen name="sp_63">69.30000000000001sp</dimen>
+ <dimen name="sp_64">70.4sp</dimen>
+ <dimen name="sp_65">71.5sp</dimen>
+ <dimen name="sp_66">72.60000000000001sp</dimen>
+ <dimen name="sp_67">73.7sp</dimen>
+ <dimen name="sp_68">74.80000000000001sp</dimen>
+ <dimen name="sp_69">75.9sp</dimen>
+ <dimen name="sp_70">77.0sp</dimen>
+ <dimen name="sp_71">78.10000000000001sp</dimen>
+ <dimen name="sp_72">79.2sp</dimen>
+ <dimen name="sp_73">80.30000000000001sp</dimen>
+ <dimen name="sp_74">81.4sp</dimen>
+ <dimen name="sp_75">82.5sp</dimen>
+ <dimen name="sp_76">83.60000000000001sp</dimen>
+ <dimen name="sp_77">84.7sp</dimen>
+ <dimen name="sp_78">85.80000000000001sp</dimen>
+ <dimen name="sp_79">86.9sp</dimen>
+ <dimen name="sp_80">88.0sp</dimen>
+ <dimen name="sp_81">89.10000000000001sp</dimen>
+ <dimen name="sp_82">90.2sp</dimen>
+ <dimen name="sp_83">91.30000000000001sp</dimen>
+ <dimen name="sp_84">92.4sp</dimen>
+ <dimen name="sp_85">93.50000000000001sp</dimen>
+ <dimen name="sp_86">94.60000000000001sp</dimen>
+ <dimen name="sp_87">95.7sp</dimen>
+ <dimen name="sp_88">96.80000000000001sp</dimen>
+ <dimen name="sp_89">97.9sp</dimen>
+ <dimen name="sp_90">99.00000000000001sp</dimen>
+ <dimen name="sp_91">100.10000000000001sp</dimen>
+ <dimen name="sp_92">101.2sp</dimen>
+ <dimen name="sp_93">102.30000000000001sp</dimen>
+ <dimen name="sp_94">103.4sp</dimen>
+ <dimen name="sp_95">104.50000000000001sp</dimen>
+ <dimen name="sp_96">105.60000000000001sp</dimen>
+ <dimen name="sp_97">106.7sp</dimen>
+ <dimen name="sp_98">107.80000000000001sp</dimen>
+ <dimen name="sp_99">108.9sp</dimen>
+ <dimen name="sp_100">110.00000000000001sp</dimen>
+
+</resources>

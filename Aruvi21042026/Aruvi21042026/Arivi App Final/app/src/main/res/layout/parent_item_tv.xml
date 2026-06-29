@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/section_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <!-- Section Title -->
+        <TextView
+            android:id="@+id/sectionTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Section Title"
+            android:fontFamily="@font/circularstdbold"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/section_title_text_size"
+            android:textStyle="bold"
+            android:paddingBottom="@dimen/section_padding"
+            android:ellipsize="end"
+            android:maxLines="1"/>
+
+        <!-- See All Button -->
+        <TextView
+            android:id="@+id/sellall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="See all"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/section_seeall_text_size"
+            android:fontFamily="@font/circularstdbold"
+            android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
+            android:drawablePadding="@dimen/section_padding"
+            android:gravity="end|center_vertical"
+            android:textStyle="bold"
+            android:paddingBottom="@dimen/section_padding"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/childRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/recycler_view_margin_top" />
+
+</LinearLayout>

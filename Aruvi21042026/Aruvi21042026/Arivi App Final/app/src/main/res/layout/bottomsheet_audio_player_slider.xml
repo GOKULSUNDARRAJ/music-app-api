@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_16"
+    android:background="@color/lightGray">
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:paddingLeft="-15dp"
+        android:src="@drawable/baseline_close_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!-- Song Info -->
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tvFullPlayerSongName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/dp_8"
+            android:clickable="true"
+            android:ellipsize="end"
+            android:focusable="true"
+            android:singleLine="true"
+            android:text="Song Name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_20"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tvFullPlayerSongArtist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/dp_4"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Artist Name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:padding="@dimen/dp_10"
+        android:src="@drawable/dots"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
+
+    <!-- Album Art Placeholder -->
+    <LinearLayout
+        android:id="@+id/cardView4"
+        android:layout_width="@dimen/dp_300"
+        android:layout_height="@dimen/dp_300"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/dp_100"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/albumArtViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/imgAlbumArt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/video_placholder"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/pageIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView4" />
+    <!-- SeekBar + Time -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        tools:layout_editor_absoluteX="16dp">
+
+        <TextView
+            android:id="@+id/tvCurrentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:text="00:00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_weight="1"
+            android:progress="0"
+            android:backgroundTint="@color/white"
+            android:progressTint="@color/yellow"
+            android:thumbTint="@color/yellow"
+            android:secondaryProgressTint="@color/gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:text="00:00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Playback Controls -->
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="16dp">
+
+        <ImageView
+            android:id="@+id/btnRepeat"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"
+            android:contentDescription="Repeat"
+            android:visibility="gone"
+            android:layout_marginRight="@dimen/dp_20"
+            android:padding="@dimen/dp_6"
+            android:src="@drawable/repeat"
+            android:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/btnFullPrev"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"
+            android:layout_marginEnd="@dimen/dp_24"
+            android:padding="@dimen/dp_10"
+            android:contentDescription="Previous"
+            android:src="@drawable/backwardmusic" />
+
+        <ImageView
+            android:id="@+id/btnFullPlayPause"
+            android:layout_width="@dimen/dp_64"
+            android:layout_height="@dimen/dp_64"
+            android:background="@drawable/yellowround"
+            android:padding="@dimen/dp_15"
+            android:contentDescription="Play/Pause"
+            android:src="@drawable/play_player" />
+        <ProgressBar
+            android:id="@+id/progressBarLoading"
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:progressTint="@android:color/white"
+            android:indeterminateTint="@android:color/white"
+            />
+
+
+        <ImageView
+            android:id="@+id/btnFullNext"
+            android:layout_width="@dimen/dp_42"
+            android:layout_height="@dimen/dp_48"
+            android:layout_marginStart="@dimen/dp_24"
+            android:contentDescription="Next"
+            android:padding="@dimen/dp_10"
+            android:src="@drawable/forwardmusic" />
+
+
+        <ImageView
+            android:id="@+id/btnShuffle"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/dp_10"
+            android:padding="@dimen/dp_6"
+            android:contentDescription="Shuffle"
+            android:src="@drawable/shuffle"
+            android:tint="@color/white" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

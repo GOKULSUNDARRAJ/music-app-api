@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_background_rounded"
+    android:padding="24dp">
+
+    <!-- Message -->
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:fontFamily="@font/circularstdmedium"
+        android:text="Do you want to logout ?"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <!-- Progress Bar (initially hidden) -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+        <Button
+            android:id="@+id/btnOk"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/btn_rounded_yellow"
+            android:text="Yes"
+            android:fontFamily="@font/circularstdmedium"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/btncancelogout"
+            android:text="No"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/circularstdmedium"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <!-- OK Button -->
+
+
+
+
+</LinearLayout>

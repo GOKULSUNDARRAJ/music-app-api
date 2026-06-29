@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingBottom="@dimen/dp_7"
+    android:paddingTop="@dimen/dp_7"
+    android:gravity="center_vertical">
+
+    <!-- Album Art with ProgressBar -->
+    <FrameLayout
+        android:layout_width="@dimen/dp_45"
+        android:layout_height="@dimen/dp_45"
+        android:layout_marginEnd="@dimen/dp_8">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="@dimen/dp_8"
+            app:cardElevation="4dp">
+
+            <ImageView
+                android:id="@+id/imgAudioArt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/video_placholder" />
+
+            <ProgressBar
+                android:id="@+id/imageProgress"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:progressTint="@color/bgred"
+                android:indeterminateTint="@color/bgred"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </androidx.cardview.widget.CardView>
+
+
+    </FrameLayout>
+
+    <!-- Audio Info -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/audioTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Audio Title"
+            android:textColor="@color/white"
+            android:fontFamily="@font/circularstdmedium"
+            android:textSize="@dimen/dp_16" />
+
+        <TextView
+            android:id="@+id/audioArtist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Artist Name"
+            android:fontFamily="@font/circularstdbook"
+            android:textSize="@dimen/sp_14"
+            android:textColor="@color/placeholder" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/waveContainer"
+        android:layout_width="25dp"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/playButton"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:gravity="center|bottom">
+
+        <View
+            android:id="@+id/bar1"
+            android:layout_width="2dp"
+            android:layout_height="10dp"
+            android:layout_margin="1dp"
+            android:background="@color/green" />
+
+        <View
+            android:id="@+id/bar2"
+            android:layout_width="2dp"
+            android:layout_height="14dp"
+            android:layout_margin="1dp"
+            android:background="@color/green" />
+
+        <View
+            android:id="@+id/bar3"
+            android:layout_width="2dp"
+            android:layout_height="16dp"
+            android:layout_margin="1dp"
+            android:background="@color/green" />
+
+    </LinearLayout>
+
+
+    <!-- Menu icon, hidden until image loads -->
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        android:src="@drawable/dots"
+     />
+
+    <!-- Play/Pause button -->
+    <ImageView
+        android:id="@+id/playButton"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:visibility="gone"
+        android:padding="@dimen/dp_5"
+        android:src="@android:drawable/ic_media_play"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Play Audio" />
+
+</LinearLayout>

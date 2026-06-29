@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tabLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/catchup_tab_padding"
+    android:gravity="center"
+    android:layout_marginStart="@dimen/catchup_tab_item_margin_horizontal"
+    android:layout_marginEnd="@dimen/catchup_tab_item_margin_horizontal"
+    android:layout_marginTop="@dimen/catchup_tab_item_margin_vertical"
+    android:layout_marginBottom="@dimen/catchup_tab_item_margin_vertical">
+
+    <TextView
+        android:id="@+id/tabText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tab"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/catchup_tab_text_size"
+        android:fontFamily="@font/circularstdmedium" />
+
+    <View
+        android:id="@+id/tabLine"
+        android:layout_width="@dimen/catchup_tab_line_width"
+        android:layout_height="@dimen/catchup_tab_line_height"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="@dimen/catchup_tab_line_margin_top" />
+
+</LinearLayout>

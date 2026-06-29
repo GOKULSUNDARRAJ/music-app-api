@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:keepScreenOn="true">
+
+    <!-- Camera Preview Container -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- OVERLAY SECTION (4 views to create a cutout) -->
+    <!-- Top Overlay -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/scanArea"
+        android:background="#99000000" />
+
+    <!-- Bottom Overlay -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/scanArea"
+        android:background="#99000000" />
+
+    <!-- Left Overlay -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_alignTop="@+id/scanArea"
+        android:layout_toStartOf="@+id/scanArea"
+        android:background="#99000000" />
+
+    <!-- Right Overlay -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_alignTop="@+id/scanArea"
+        android:layout_toEndOf="@+id/scanArea"
+        android:background="#99000000" />
+
+    <!-- Scan Area Frame -->
+    <RelativeLayout
+        android:id="@+id/scanArea"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_centerInParent="true">
+
+        <!-- Corner Borders - Top Left -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:background="@color/bgred"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+        <View
+            android:layout_width="4dp"
+            android:layout_height="40dp"
+            android:background="@color/bgred"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+
+        <!-- Corner Borders - Top Right -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:background="@color/bgred"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true" />
+        <View
+            android:layout_width="4dp"
+            android:layout_height="40dp"
+            android:background="@color/bgred"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true" />
+
+        <!-- Corner Borders - Bottom Left -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:background="@color/bgred"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true" />
+        <View
+            android:layout_width="4dp"
+            android:layout_height="40dp"
+            android:background="@color/bgred"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true" />
+
+        <!-- Corner Borders - Bottom Right -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:background="@color/bgred"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true" />
+        <View
+            android:layout_width="4dp"
+            android:layout_height="40dp"
+            android:background="@color/bgred"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true" />
+
+        <!-- Scanning Line -->
+        <View
+            android:id="@+id/scanLine"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/bgred" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:text="Align Aruvi Wave Here"
+            android:textColor="#CCFFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <!-- Top Bar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#CC000000"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-medium"
+            android:text="Aruvi Wave Scanner"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/btnCloseScanner"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/baseline_close_24"
+            android:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/btnUploadGallery"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="4dp"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:tint="@color/white" />
+    </RelativeLayout>
+
+    <!-- Bottom Status Area -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/rounded_bg_black"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/scanStatusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ready to scan"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <!-- Flashlight Button (Floating) -->
+    <ImageView
+        android:id="@+id/btnToggleFlash"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:padding="16dp"
+        android:src="@drawable/ic_heart_outline"
+        android:background="@drawable/circle_white_transparent"
+        android:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/permissionDeniedView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Camera access required"
+            android:textColor="@color/white" />
+        <Button
+            android:id="@+id/btnRetryPermission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Retry" />
+    </LinearLayout>
+
+    <!-- Permission Denied View -->
+</RelativeLayout>

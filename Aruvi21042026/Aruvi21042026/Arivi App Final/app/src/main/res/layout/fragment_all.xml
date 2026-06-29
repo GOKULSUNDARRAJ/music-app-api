@@ -1,0 +1,987 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/bgblack"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Shimmer Full Page Placeholder -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:shimmer_auto_start="true"
+        app:shimmer_duration="1500">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <!-- Fake Banner -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/shimmer_placeholder" />
+
+            <!-- Fake Dots -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <View
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <View
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/shimmer_placeholder" />
+            </LinearLayout>
+
+            <!-- Fake RecyclerView Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp">
+
+                <!-- Fake Section Title -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <!-- Fake horizontal cards -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp">
+
+                <!-- Fake Section Title -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <!-- Fake horizontal cards -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp">
+
+                <!-- Fake Section Title -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <!-- Fake horizontal cards -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp">
+
+                <!-- Fake Section Title -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <!-- Fake horizontal cards -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp">
+
+                <!-- Fake Section Title -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <!-- Fake horizontal cards -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp">
+
+                <!-- Fake Section Title -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <!-- Fake horizontal cards -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp">
+
+                <!-- Fake Section Title -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <!-- Fake horizontal cards -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp">
+
+                <!-- Fake Section Title -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <!-- Fake horizontal cards -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp">
+
+                <!-- Fake Section Title -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <!-- Fake horizontal cards -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp">
+
+                <!-- Fake Section Title -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <!-- Fake horizontal cards -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp">
+
+                <!-- Fake Section Title -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shimmer_placeholder" />
+
+                <!-- Fake horizontal cards -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/shimmer_placeholder" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <!-- Real Content -->
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:padding="@dimen/content_padding">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Option 1: Fixed height approach -->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/sliderViewPager"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="H,16:9"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- Option 2: Aspect ratio approach (choose one) -->
+                <!--
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/sliderViewPager"
+                    android:visibility="visible"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="@string/slider_aspect_ratio"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+                -->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/dotsContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dots_margin_top" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/parentRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/recycler_padding_bottom" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</RelativeLayout>

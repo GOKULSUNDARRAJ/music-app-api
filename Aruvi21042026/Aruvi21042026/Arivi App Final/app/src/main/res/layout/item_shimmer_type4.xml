@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shimmerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="7dp"
+    app:shimmer_auto_start="false"
+    app:shimmer_duration="1000">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="9dp"
+        app:cardBackgroundColor="@color/lightGray">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Album Art Placeholder -->
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="10dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/lightGray" />
+
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+
+            <!-- Artist Info Placeholder -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Artist Name Placeholder -->
+                <View
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="14dp"
+                    android:background="@color/lightGray" />
+
+                <!-- Song Count Placeholder -->
+                <View
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/lightGray" />
+
+            </LinearLayout>
+
+            <!-- Menu Icon Placeholder (hidden in original) -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/lightGray"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</com.facebook.shimmer.ShimmerFrameLayout>

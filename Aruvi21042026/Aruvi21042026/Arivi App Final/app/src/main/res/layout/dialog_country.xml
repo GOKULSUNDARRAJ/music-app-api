@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightGray">
+
+    <!-- Main Content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- Search Box -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <EditText
+                android:id="@+id/country_dialog_search_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:drawableStart="@drawable/baseline_search_24"
+                android:hint="Search country..."
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:backgroundTint="@color/white" />
+        </LinearLayout>
+
+        <!-- Country List -->
+        <ListView
+            android:id="@+id/country_dialog_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="0.5dp"
+            android:paddingBottom="8dp"
+            android:clipToPadding="false" />
+    </LinearLayout>
+
+
+
+</FrameLayout>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_300"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/alertbg"
+    android:padding="20dp">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Playlist Exists"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="12dp"
+        android:textColor="@color/white" />
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/light_grey"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Warning icon and message -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp">
+
+        <ImageView
+            android:id="@+id/warningIcon"
+            android:layout_width="24dp"
+            android:visibility="gone"
+            android:layout_height="24dp"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:id="@+id/dialogMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <!-- Playlist name highlight -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/playlistNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:textColor="#1976D2" />
+    </FrameLayout>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp_15"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_36"
+            android:background="@drawable/btncancelogout"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:minWidth="80dp"
+            android:layout_marginEnd="@dimen/dp_15"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+
+        <Button
+            android:id="@+id/overwriteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_36"
+            android:text="Overwrite"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bottombtn"
+            android:minWidth="80dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+    </LinearLayout>
+</LinearLayout>

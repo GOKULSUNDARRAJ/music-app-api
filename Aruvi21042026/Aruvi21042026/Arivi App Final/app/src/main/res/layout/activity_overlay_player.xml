@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/overlay_root"
+    android:layout_width="300dp"
+    android:layout_height="200dp"
+    android:background="@drawable/overlay_background"
+    android:elevation="16dp">
+
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/overlay_player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+       ></androidx.media3.ui.PlayerView>
+    <!-- Controls Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#80000000"
+        android:layout_alignParentBottom="true">
+
+        <ImageButton
+            android:id="@+id/btn_overlay_close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/bg_btn_watch_white"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_margin="4dp" />
+
+        <ImageButton
+            android:id="@+id/btn_overlay_play_pause"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/bg_btn_watch_white"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_margin="4dp" />
+
+        <ImageButton
+            android:id="@+id/btn_overlay_expand"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/bg_btn_watch_white"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_margin="4dp" />
+    </LinearLayout>
+
+    <!-- Drag handle -->
+    <View
+        android:id="@+id/drag_handle"
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:background="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp" />
+
+</RelativeLayout>

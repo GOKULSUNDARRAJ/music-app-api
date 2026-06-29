@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="60dp"
+    android:viewportWidth="200"
+    android:viewportHeight="60">
+
+    <!-- Simple waveform with fewer bars -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="
+            M10,40 v-20 h5 v20 h-5z
+            M25,30 v-15 h5 v30 h-5z
+            M40,35 v-10 h5 v20 h-5z
+            M55,25 v-20 h5 v40 h-5z
+            M70,40 v-25 h5 v50 h-5z
+            M85,30 v-10 h5 v20 h-5z
+            M100,35 v-15 h5 v30 h-5z
+            M115,25 v-5 h5 v10 h-5z
+            M130,40 v-30 h5 v60 h-5z
+            M145,30 v-8 h5 v16 h-5z
+            M160,35 v-20 h5 v40 h-5z
+            M175,25 v-12 h5 v24 h-5z
+            M190,40 v-18 h5 v36 h-5z" />
+
+</vector>

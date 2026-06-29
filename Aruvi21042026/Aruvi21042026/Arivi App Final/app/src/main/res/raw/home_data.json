@@ -1,0 +1,87 @@
+{
+  "sections": [
+    {
+      "sectionId": "sec_001",
+      "sectionTitle": "Latest Playlist",
+      "layoutType": 1,
+      "spanCount": 1,
+      "categories": [
+        {
+          "categoryId": "cat_005",
+          "categoryName": "Tamil Romantic",
+          "categoryImage": "69b8fa1d6f7f54.98684821.png",
+          "adapterType": 1,
+          "songs": [
+            {
+              "songId": "song_001",
+              "audioName": "Pooti Vachi",
+              "audioUrl": "https://enjoymoviez.com/aruvi_songs/api/song/1/stream",
+              "category": "Tamil Romantic",
+              "imageUrl": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69b8fb0c6e5048.11035543.png",
+              "categoryId": "cat_001"
+            },
+            {
+              "songId": "song_002",
+              "audioName": "Vaseekara",
+              "audioUrl": "https://enjoymoviez.com/aruvi_songs/api/song/2/stream",
+              "category": "Tamil Romantic",
+              "imageUrl": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69b8fadd6b9eb9.88537356.jpg",
+              "categoryId": "cat_001"
+            }
+          ]
+        },
+        {
+          "categoryId": "cat_002",
+          "categoryName": "Tamil Melodies",
+          "categoryImage": "69b8f98d5ff225.33480374.jpg",
+          "adapterType": 1,
+          "songs": [
+            {
+              "songId": "song_003",
+              "audioName": "Andrum Indrum - MassTamilan",
+              "audioUrl": "https://enjoymoviez.com/aruvi_songs/api/song/3/stream",
+              "category": "Tamil Melodies",
+              "imageUrl": "https://enjoymoviez.com/aruvi_songs/uploads/thumbnails/69be4e9b059c19.11012930.jpg",
+              "categoryId": "cat_002"
+            }
+          ]
+        },
+        {
+          "categoryId": "cat_003",
+          "categoryName": "Sad Songs",
+          "categoryImage": "69b8f9182b4b86.25357733.jpg",
+          "adapterType": 1,
+          "songs": []
+        }
+      ]
+    },
+    {
+      "sectionId": "sec_002",
+      "sectionTitle": "Trending Now",
+      "layoutType": 1,
+      "spanCount": 1,
+      "categories": []
+    },
+    {
+      "sectionId": "sec_003",
+      "sectionTitle": "New Releases",
+      "layoutType": 1,
+      "spanCount": 1,
+      "categories": []
+    },
+    {
+      "sectionId": "sec_004",
+      "sectionTitle": "Popular Artist",
+      "layoutType": 1,
+      "spanCount": 1,
+      "categories": []
+    },
+    {
+      "sectionId": "sec_005",
+      "sectionTitle": "Best 80's Songs",
+      "layoutType": 1,
+      "spanCount": 1,
+      "categories": []
+    }
+  ]
+}

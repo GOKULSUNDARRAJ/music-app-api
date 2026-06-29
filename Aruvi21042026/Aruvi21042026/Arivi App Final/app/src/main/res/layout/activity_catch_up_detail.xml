@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgblack"
+    android:orientation="vertical">
+
+    <!-- Top Bar with Back Button and Channel Name -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/catchup_top_margin_horizontal"
+        android:layout_marginRight="@dimen/catchup_top_margin_horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/backimg"
+            android:layout_width="@dimen/catchup_back_button_size"
+            android:layout_height="@dimen/catchup_back_button_size"
+            android:layout_gravity="center"
+            android:padding="@dimen/catchup_back_padding"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvChannelName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Channel Name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/catchup_channel_title_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Player Container -->
+    <androidx.media3.ui.AspectRatioFrameLayout
+        android:id="@+id/playerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:background="@color/black"
+        app:resize_mode="fit">
+
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:controller_layout_id="@layout/custom_player_controls_catchup"
+            app:resize_mode="fit"
+            app:show_timeout="3000"
+            app:use_controller="true">
+
+            <!-- Loading spinner inside PlayerView -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/GradientCircularProgressBar"
+                android:layout_width="@dimen/catchup_loading_spinner_size"
+                android:layout_height="@dimen/catchup_loading_spinner_size"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+        </androidx.media3.ui.PlayerView>
+    </androidx.media3.ui.AspectRatioFrameLayout>
+
+    <!-- Channel Display Name -->
+    <TextView
+        android:id="@+id/channel_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/catchup_channel_name_padding"
+        android:fontFamily="@font/circularstdmedium"
+        android:textColor="@color/white"
+        android:textSize="@dimen/catchup_channel_name_size"
+        android:textStyle="bold" />
+
+    <!-- Content Container -->
+
+
+        <!-- Tabs RecyclerView (Horizontal) -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewTabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/catchup_tabs_padding_vertical" />
+
+        <!-- Tabs Shimmer RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/shimmerrecyclerViewTabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/catchup_tabs_padding_vertical" />
+
+        <!-- Content Shimmer RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewShimmer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="@dimen/catchup_shimmer_padding"
+            android:paddingVertical="@dimen/catchup_shimmer_padding_vertical"
+            android:visibility="gone" />
+
+        <!-- Episodes ViewPager -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Error Message -->
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Failed to load channel details"
+            android:textColor="@color/white"
+            android:textSize="@dimen/catchup_error_text_size"
+            android:visibility="gone" />
+
+</LinearLayout>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingBottom="@dimen/dp_7"
+    android:paddingTop="@dimen/dp_7"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       >
+
+        <!-- Album art container -->
+        <FrameLayout
+            android:id="@+id/albumArtContainer"
+            android:layout_width="@dimen/dp_45"
+            android:layout_height="@dimen/dp_45"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="@dimen/dp_8"
+                app:cardElevation="4dp">
+
+                <ImageView
+                    android:id="@+id/imgAudioArt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/video_placholder" />
+
+                <ProgressBar
+                    android:id="@+id/imageProgress"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:progressTint="@color/bgred"
+                    android:indeterminateTint="@color/bgred"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+            </androidx.cardview.widget.CardView>
+
+        </FrameLayout>
+
+        <!-- Song info -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@id/albumArtContainer"
+            android:layout_toStartOf="@id/menu"
+            android:orientation="vertical">
+
+            <!-- Song title -->
+            <TextView
+                android:id="@+id/audioTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Audio Title"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Artist name -->
+            <TextView
+                android:id="@+id/audioArtist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Artist Name"
+                android:textSize="14sp"
+                android:textColor="@color/gray1" />
+
+            <!-- Status info -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:visibility="gone"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- Downloaded status icon -->
+                <ImageView
+                    android:id="@+id/ivDownloadStatus"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/downloadmusic"
+                    android:tint="@color/green" />
+
+                <!-- Downloaded status text -->
+                <TextView
+                    android:id="@+id/tvDownloadStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Downloaded"
+                    android:textColor="@color/green"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Menu (three dots) icon -->
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="8dp"
+            android:src="@drawable/dots"
+            android:tint="@color/white" />
+
+        <!-- Wave animation container -->
+        <LinearLayout
+            android:id="@+id/waveContainer"
+            android:layout_width="25dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/menu"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:gravity="center|bottom">
+
+            <View
+                android:id="@+id/bar1"
+                android:layout_width="2dp"
+                android:layout_height="10dp"
+                android:layout_margin="1dp"
+                android:background="@color/green" />
+
+            <View
+                android:id="@+id/bar2"
+                android:layout_width="2dp"
+                android:layout_height="14dp"
+                android:layout_margin="1dp"
+                android:background="@color/green" />
+
+            <View
+                android:id="@+id/bar3"
+                android:layout_width="2dp"
+                android:layout_height="16dp"
+                android:layout_margin="1dp"
+                android:background="@color/green" />
+
+        </LinearLayout>
+
+        <!-- Play/Pause button (visible when playing) -->
+        <ImageView
+            android:id="@+id/playButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:padding="10dp"
+            android:src="@drawable/play_player"
+            android:tint="@color/white"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</LinearLayout>

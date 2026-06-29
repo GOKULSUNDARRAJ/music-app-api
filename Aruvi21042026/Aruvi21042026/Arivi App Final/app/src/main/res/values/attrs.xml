@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GradientProgressBar">
+        <attr name="gradientColors" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SpotifyCodeView">
+        <!-- Number of bars to display -->
+        <attr name="barCount" format="integer" />
+
+        <!-- Ratio of bar width to total width per bar (0.0 - 1.0) -->
+        <attr name="barWidthRatio" format="float" />
+
+        <!-- Minimum height of bars in pixels -->
+        <attr name="minBarHeight" format="dimension" />
+
+        <!-- Maximum height of bars in pixels -->
+        <attr name="maxBarHeight" format="dimension" />
+
+        <!-- Color of the bars -->
+        <attr name="barColor" format="color" />
+
+        <!-- Background color of the view -->
+        <attr name="backgroundColor" format="color" />
+
+        <!-- Corner radius of bars in pixels -->
+        <attr name="cornerRadius" format="dimension" />
+    </declare-styleable>
+</resources>

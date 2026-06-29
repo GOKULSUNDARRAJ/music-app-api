@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_marginRight="@dimen/dp_50"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/popupArrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:paddingRight="@dimen/dp_10"
+        android:src="@drawable/popup_arrow_right"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView3"
+        app:layout_constraintStart_toEndOf="@+id/cardView3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/popupArrow1"
+        android:layout_width="15dp"
+        android:layout_height="30dp"
+        android:paddingRight="@dimen/dp_10"
+        android:visibility="invisible"
+        android:src="@drawable/popup_arrow_right"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView3"
+        app:layout_constraintStart_toEndOf="@+id/popupArrow"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- CardView container -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:background="@android:color/transparent"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/lightGray"
+            android:orientation="vertical">
+
+            <!-- Play/Pause Option -->
+            <LinearLayout
+                android:id="@+id/menuPlayPause"
+                android:layout_width="160dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/playPauseIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Play/Pause icon"
+                    android:src="@drawable/play_player"
+                    android:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/playPauseText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp"
+                    android:text="Play"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
+
+            <!-- Delete Option -->
+            <LinearLayout
+                android:id="@+id/menuDelete"
+                android:layout_width="160dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintTop_toBottomOf="@id/menuPlayPause"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Delete icon"
+                    android:src="@drawable/trash"
+                    android:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp"
+                    android:text="Delete"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

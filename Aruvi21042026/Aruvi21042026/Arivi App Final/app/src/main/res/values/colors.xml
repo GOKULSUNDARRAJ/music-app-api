@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+
+    <color name="bgblack">#181A20</color>
+    <color name="bgblack2">#323232</color>
+    <color name="yellow">#EB1C24</color>
+    <color name="gray">#a7a7a7</color>
+    <color name="gray1">#828993</color>
+    <color name="gray2">#4b4b4b</color>
+
+
+    <color name="colorPrimary">#632a86</color>
+    <color name="colorPrimaryLight">#180522</color>
+    <color name="colorPrimaryDark">#632a86</color>
+    <color name="colorAccent">#4cc6cc</color>
+    <color name="textgray">#958F9B</color>
+    <color name="tab_background_selected">#FF4081</color>
+    <color name="light_grey">#f7f4f5</color>
+    <color name="tab_background_unselected">@android:color/transparent</color>
+    <color name="teal_1">#fdb333</color>
+    <color name="seleteditem">#200931</color>
+    <color name="colorGrey">#dddddd</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="semi_transperant">#80444444</color>
+    <color name="black_opacity_80">#A6000000</color>
+    <color name="blueplay">#3039ee</color>
+    <color name="black_opacitys">#59000000</color>
+
+    <color name="blue_bkg">#55B9FF</color>
+
+    <color name="blue_light">#2c90ff</color>
+    <!--<color name="blue_light">#7DCBF2</color>
+    <color name="blue_dark">#1564DB</color>-->
+
+
+    <color name="off_white">#F2F2F2</color>
+
+    <color name="shadow">#D9E4E9</color>
+    <color name="textcolor">#cb5500</color>
+
+    <!--<color name="green">#52B22B</color>-->
+
+    <color name="txt_gray_dark">#8894AB</color>
+    <color name="txt_gray_light">#A3B8E1</color>
+
+    <color name="btn_disabeled">#808080</color>
+
+    <color name="transparent">#33000000</color>
+    <color name="transparentDark">#99000000</color>
+    <color name="dialog_transparent">#000000</color>
+
+
+    <color name="light_blank">#212121</color>
+    <color name="selected_option">#009688</color>
+    <!--<color name="red">#D72026</color>-->
+    <color name="semiTranspirent">#99000000</color>
+    <color name="semiTranspirent2">#22000000</color>
+    <color name="colorBlue">#3d6fc3</color>
+    <color name="color_d6d5d8">#d6d5d8</color>
+
+    <!--Merged-->
+    <!--<color name="shadow">#ff666666</color>-->
+    <color name="shadow_light">#FF949292</color>
+    <color name="textGray">#B5B5BC</color>
+    <color name="blue">#0B66FF</color>
+    <color name="dialog_background">#99000000</color>
+
+    <color name="blue_dark">#1664dc</color>
+
+    <color name="green">#EB1C24</color>
+    <color name="light_gray">#ecebed</color> <!-- ($31.50)-->
+    <color name="dark_gray">#919191</color> <!-- (You are the....)-->
+    <color name="white_dull">#feffff</color> <!-- (BG or Text)-->
+    <color name="red">#ec493b</color> <!--  (red..)-->
+    <color name="semi_transparent">#30000000</color>
+    <color name="blue_user_status">#516b88</color>
+    <!--    <color name="yellow">#fef200</color>-->
+
+    <color name="blue_verified">#2B6ECA</color>
+
+    <color name="transperentcolor">#80000000</color>
+
+
+    <color name="primary_color">#FF5722</color>
+    <color name="card_background">#1E1E1E</color>
+
+    <color name="placeholdercolor">#323232</color>
+
+    <color name="green1">#EB1C24</color>
+    <color name="blue1">#7b519c</color>
+    <color name="yellow1">#fecb3b</color>
+
+
+    <color name="bgred">#EB1C24</color>
+    <color name="bgred2">#F1343B</color>
+    <color name="bgred3">#EF777C</color>
+    <color name="darkGray">#181A20</color>
+    <color name="lightGray">#1f222a</color>
+    <color name="placeholder">#9E9E9E</color>
+    <color name="textplaceholder">#8592A2</color>ggg
+
+
+
+    <color name="medium_gray">#FF666666</color>
+
+
+
+
+
+
+</resources>

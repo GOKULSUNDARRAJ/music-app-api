@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:fitsSystemWindows="true"
+    android:keepScreenOn="true"
+    android:orientation="vertical">
+
+    <!-- AspectRatioFrameLayout for proper video scaling -->
+    <androidx.media3.ui.AspectRatioFrameLayout
+        android:id="@+id/playerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="@dimen/player_container_weight"
+        android:background="@color/black"
+        app:resize_mode="fit">
+
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:controller_layout_id="@layout/custom_player_controls_moview"
+            app:resize_mode="fit"
+            app:show_timeout="3000"
+            app:use_controller="true">
+
+            <!-- Loading spinner inside PlayerView -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/GradientCircularProgressBar"
+                android:layout_width="@dimen/video_loading_size"
+                android:layout_height="@dimen/video_loading_size"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+        </androidx.media3.ui.PlayerView>
+    </androidx.media3.ui.AspectRatioFrameLayout>
+
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="@dimen/channel_recycler_weight" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <!-- Movie Title -->
+            <TextView
+                android:id="@+id/movieTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/movie_text_margin_top"
+                android:layout_marginLeft="@dimen/movie_text_margin_horizontal"
+                android:layout_marginRight="@dimen/movie_text_margin_horizontal"
+                android:fontFamily="@font/circularstdbold"
+                android:paddingLeft="@dimen/movie_text_padding_left"
+                android:text="Movie title"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/movie_title_text_size" />
+
+            <!-- Movie Subtitle -->
+            <TextView
+                android:id="@+id/movieSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/movie_text_margin_top"
+                android:layout_marginLeft="@dimen/movie_text_margin_horizontal"
+                android:layout_marginRight="@dimen/movie_text_margin_horizontal"
+                android:fontFamily="@font/circularstdbold"
+                android:paddingLeft="@dimen/movie_text_padding_left"
+                android:text="Movie sub title"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/movie_subtitle_text_size" />
+
+            <!-- Movie Description -->
+            <TextView
+                android:id="@+id/movieDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/movie_text_margin_top"
+                android:layout_marginLeft="@dimen/movie_text_margin_horizontal"
+                android:layout_marginRight="@dimen/movie_text_margin_horizontal"
+                android:fontFamily="@font/circularstdbold"
+                android:paddingLeft="@dimen/movie_text_padding_left"
+                android:text="Movie Description"
+                android:textColor="@color/gray1"
+                android:textSize="@dimen/movie_description_text_size" />
+
+
+
+            <!-- Title Shimmer -->
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_movieTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/shimmer_margin_horizontal"
+                android:layout_marginRight="@dimen/shimmer_margin_horizontal"
+                app:shimmer_auto_start="true"
+                app:shimmer_duration="1000">
+
+                <TextView
+                    android:id="@+id/movieTitleshimmer"
+                    android:layout_width="@dimen/shimmer_title_width"
+                    android:layout_height="@dimen/shimmer_text_height"
+                    android:layout_marginTop="@dimen/shimmer_margin_top"
+                    android:background="@android:color/darker_gray"
+                    android:fontFamily="@font/circularstdbold"
+                    android:paddingLeft="@dimen/movie_text_padding_left"
+                    android:text="" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <!-- Subtitle Shimmer -->
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_movieSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/shimmer_margin_horizontal"
+                android:layout_marginRight="@dimen/shimmer_margin_horizontal"
+                app:shimmer_auto_start="true"
+                app:shimmer_duration="1000">
+
+                <TextView
+                    android:id="@+id/movieSubtitleshimmer"
+                    android:layout_width="@dimen/shimmer_subtitle_width"
+                    android:layout_height="@dimen/shimmer_text_height"
+                    android:layout_marginTop="@dimen/shimmer_margin_top"
+                    android:background="@android:color/darker_gray"
+                    android:fontFamily="@font/circularstdbold"
+                    android:paddingLeft="@dimen/movie_text_padding_left"
+                    android:text="" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <!-- Description Shimmer -->
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_movieDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/shimmer_margin_horizontal"
+                android:layout_marginRight="@dimen/shimmer_margin_horizontal"
+                app:shimmer_auto_start="true"
+                app:shimmer_duration="1000">
+
+                <TextView
+                    android:id="@+id/movieDescriptionshimmer"
+                    android:layout_width="@dimen/shimmer_description_width"
+                    android:layout_height="@dimen/shimmer_text_height"
+                    android:layout_marginTop="@dimen/shimmer_margin_top"
+                    android:background="@android:color/darker_gray"
+                    android:fontFamily="@font/circularstdbold"
+                    android:paddingLeft="@dimen/movie_text_padding_left"
+                    android:text="" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:id="@+id/ll_share1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/action_button_margin_horizontal"
+                android:layout_marginRight="@dimen/action_button_margin_horizontal"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <!-- Share Button -->
+                <LinearLayout
+                    android:id="@+id/ll_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/action_button_padding">
+
+                    <ImageView
+                        android:id="@+id/icon_share"
+                        android:layout_width="@dimen/action_icon_size"
+                        android:layout_height="@dimen/action_icon_size"
+                        android:src="@drawable/share"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/text_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/action_text_margin_top"
+                        android:text="Share"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/action_text_size" />
+
+                </LinearLayout>
+
+                <!-- Wishlist Button -->
+                <LinearLayout
+                    android:id="@+id/ll_wishlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/action_button_spacing"
+                    android:layout_marginRight="@dimen/action_button_spacing"
+                    android:orientation="vertical"
+                    android:padding="@dimen/action_button_padding">
+
+                    <ImageView
+                        android:id="@+id/icon_wishlist"
+                        android:layout_width="@dimen/action_icon_size"
+                        android:layout_height="@dimen/action_icon_size"
+                        android:src="@drawable/baseline_add_24" />
+
+                    <TextView
+                        android:id="@+id/text_wishlist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/action_text_margin_top"
+                        android:text="Wish List"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/action_text_size" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- More Channels Title -->
+            <TextView
+                android:id="@+id/more_channels_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/more_channels_margin_horizontal"
+                android:layout_marginTop="@dimen/more_channels_margin_top"
+                android:layout_marginRight="@dimen/more_channels_margin_horizontal"
+                android:fontFamily="@font/circularstdbold"
+                android:padding="@dimen/more_channels_padding"
+                android:text="More Movies"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/more_channels_text_size" />
+
+
+
+            <!-- RecyclerViews stacked -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/channelRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/more_channels_margin_horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="@dimen/more_channels_margin_horizontal"
+                android:layout_weight="@dimen/channel_recycler_weight" />
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>

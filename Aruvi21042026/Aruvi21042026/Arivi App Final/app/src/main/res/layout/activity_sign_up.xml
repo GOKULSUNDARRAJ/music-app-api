@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkGray"
+    android:id="@+id/root_view"
+    android:backgroundTint="@color/darkGray"
+    android:padding="10dp"
+    tools:context=".Activity.SignUpActivity">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:layout_width="350dp"
+                android:layout_height="@dimen/dp_150"
+                android:layout_gravity="start"
+                android:src="@drawable/arivumusiclogo"
+                android:padding="@dimen/dp_20"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
+        tools:layout_editor_absoluteX="20dp">
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout8"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font1"
+                    android:visibility="gone"
+                    android:text="Name"
+                    android:textColor="@color/gray1"
+                    android:textSize="13dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/ipedt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edittextbg"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:hint="Name"
+                    android:textColorHint="@color/gray1"
+                    android:padding="13dp"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font1"
+                    android:text="Choose Your Country"
+                    android:textColor="@color/gray1"
+                    android:textSize="13dp"
+                    android:visibility="gone"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/cc_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edittextbg"
+                    android:orientation="horizontal"
+                    android:padding="13dp">
+
+                    <TextView
+                        android:id="@+id/countryCodeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+235"
+                        android:textColor="@color/gray1"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/countryNameTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="United Kingdom"
+                        android:textColor="@color/gray1"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font1"
+                    android:text="Mobile Number"
+                    android:textColor="@color/gray1"
+                    android:textSize="13dp"
+                    android:visibility="gone"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/postedt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edittextbg"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:hint="Mobile Number"
+                    android:textColorHint="@color/gray1"
+                    android:padding="13dp"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font1"
+                    android:text="Referral Code (optional)"
+                    android:textColor="@color/gray1"
+                    android:textSize="13dp"
+                    android:visibility="gone"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/passwordedt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/edittextbg"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:hint="Referral Code (optional)"
+                    android:textColorHint="@color/gray1"
+                    android:padding="13dp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/myCheckbox"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_gravity="left|center"
+                    android:background="@drawable/checkbackground"
+                    android:button="@drawable/checkbox_red"
+                    android:gravity="left|center" />
+
+
+                <TextView
+                    android:id="@+id/termsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/font1"
+                    android:lineSpacingExtra="4dp"
+                    android:maxLines="3"
+                    android:paddingStart="5dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="8dp"
+                    android:text="By entering your number, you are agreeing to our Terms and Conditions and Privacy Policy"
+                    android:textColor="@color/gray1"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llsignup"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/onboardbtnbg"
+                android:gravity="center"
+                android:text="Next"
+                android:textAllCaps="false"
+                android:textColor="@color/black">
+
+                <LinearLayout
+                    android:id="@+id/btnlayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/onboardbtnbg"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Submit"
+                        android:fontFamily="@font/circularstdmedium"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="24sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:tint="@color/white"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/baseline_arrow_forward_24" />
+
+
+                </LinearLayout>
+
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerInParent="true"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/white"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+        <!-- Progress Loader (Centered) -->
+        <ProgressBar
+            android:id="@+id/progressBarDialog"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

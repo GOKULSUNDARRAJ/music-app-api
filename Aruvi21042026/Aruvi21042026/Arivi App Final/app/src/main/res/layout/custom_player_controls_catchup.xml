@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playerOverlay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Main Controls Container -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/player_overlay_padding">
+
+        <!-- Back Button -->
+        <ImageView
+            android:id="@+id/backbtn"
+            android:layout_width="@dimen/player_back_button_size"
+            android:layout_height="@dimen/player_back_button_size"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Center Control Buttons -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Rewind Button -->
+            <ImageButton
+                android:id="@+id/btnRewind"
+                android:layout_width="@dimen/player_control_button_size"
+                android:layout_height="@dimen/player_control_button_size"
+                android:layout_marginEnd="@dimen/player_control_button_margin"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="@dimen/player_control_button_padding"
+                android:scaleType="centerInside"
+                android:src="@drawable/reply"
+                android:tint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/exo_pause"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Play Button -->
+            <ImageButton
+                android:id="@+id/exo_play"
+                android:layout_width="@dimen/player_control_button_size"
+                android:layout_height="@dimen/player_control_button_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_play_active"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Pause Button -->
+            <ImageButton
+                android:id="@+id/exo_pause"
+                android:layout_width="@dimen/player_control_button_size"
+                android:layout_height="@dimen/player_control_button_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_pause_active"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Forward Button -->
+            <ImageButton
+                android:id="@+id/btnForward"
+                android:layout_width="@dimen/player_control_button_size"
+                android:layout_height="@dimen/player_control_button_size"
+                android:layout_marginStart="@dimen/player_control_button_margin"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="@dimen/player_control_button_padding"
+                android:scaleType="centerInside"
+                android:src="@drawable/forward"
+                android:tint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/exo_pause"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Fullscreen Button -->
+        <ImageView
+            android:id="@+id/btnFullscreen"
+            android:layout_width="@dimen/player_fullscreen_button_size"
+            android:layout_height="@dimen/player_fullscreen_button_size"
+            android:src="@drawable/baseline_fullscreen_24"
+            android:tint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Scale Button -->
+        <ImageView
+            android:id="@+id/btnScale"
+            android:layout_width="@dimen/player_scale_button_size"
+            android:layout_height="@dimen/player_scale_button_size"
+            android:layout_marginBottom="@dimen/player_scale_button_margin_bottom"
+            android:padding="@dimen/player_scale_button_padding"
+            android:src="@drawable/baseline_open_in_full_24"
+            android:tint="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/playerSeekBar"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- SeekBar & Timer -->
+        <LinearLayout
+            android:id="@+id/playerControls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/tvCurrentTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/player_time_text_size" />
+
+            <SeekBar
+                android:id="@+id/playerSeekBar"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/player_seekbar_height"
+                android:layout_weight="1"
+                android:backgroundTint="@color/gray1"
+                android:max="100"
+                android:progressTint="@color/red"
+                android:thumbTint="@color/white" />
+
+            <TextView
+                android:id="@+id/tvTotalTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/player_time_text_size" />
+        </LinearLayout>
+
+        <!-- Add this near your back button -->
+        <ImageView
+            android:id="@+id/btnOpenDrawer"
+            android:layout_width="@dimen/player_back_button_size"
+            android:layout_height="@dimen/player_back_button_size"
+            android:src="@drawable/more"
+            android:tint="@color/white"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Right Drawer Container -->
+        <LinearLayout
+            android:id="@+id/rightDrawerContainer"
+            android:layout_width="500dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:visibility="gone"
+            android:background="@color/black"
+            android:orientation="vertical"
+            android:translationX="@dimen/drawer_width"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Drawer Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Related Content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/drawer_title_text_size"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/btnCloseDrawer"
+                    android:layout_width="@dimen/drawer_close_button_size"
+                    android:layout_height="@dimen/drawer_close_button_size"
+                    android:src="@drawable/baseline_close_24"
+                    android:tint="@color/white" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewTabs1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/catchup_tabs_padding_vertical" />
+            <!-- RecyclerView for Drawer Content -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager1"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <!-- Overlay to close drawer when tapping outside -->
+        <View
+            android:id="@+id/drawerOverlay"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rightDrawerContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

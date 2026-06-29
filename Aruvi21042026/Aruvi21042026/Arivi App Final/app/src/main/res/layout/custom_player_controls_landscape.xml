@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:fitsSystemWindows="true"
+    android:orientation="horizontal"
+    android:keepScreenOn="true">
+
+    <!-- Player Container - Takes 70% of screen in landscape -->
+    <androidx.media3.ui.AspectRatioFrameLayout
+        android:id="@+id/playerContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="7"
+        android:background="@color/black"
+        app:resize_mode="zoom">
+
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:use_controller="true"
+            app:resize_mode="zoom"
+            app:show_timeout="3000"
+            app:show_buffering="when_playing"
+            app:show_shuffle_button="false"
+            app:show_subtitle_button="false">
+
+
+        </androidx.media3.ui.PlayerView>
+    </androidx.media3.ui.AspectRatioFrameLayout>
+
+    <!-- Channel List Container - Takes 30% of screen in landscape -->
+    <LinearLayout
+        android:id="@+id/recyclerViewcontainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:orientation="vertical"
+
+        android:background="@color/dark_gray">
+
+        <!-- Channel List Header -->
+        <TextView
+            android:id="@+id/more_channels_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:fontFamily="@font/circularstdbold"
+            android:text="More Channels"
+            android:textColor="@android:color/white"
+            android:padding="16dp"
+            android:gravity="center"
+            android:background="@color/black"/>
+
+        <!-- Channel List RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/channelRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+
+            android:clipToPadding="false"
+            android:paddingVertical="8dp"
+            android:scrollbars="vertical" />
+
+        <!-- Shimmer Loading RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/shimmerRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <!-- Pagination Progress Bar -->
+        <ProgressBar
+            android:id="@+id/paginationProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:visibility="gone"
+            style="@style/ShapeAppearance.Material3.Corner.Small"
+            android:indeterminateTint="@color/white"
+            android:progressTint="@color/white" />
+
+        <!-- Playback Progress Bar (Optional for landscape) -->
+        <ProgressBar
+            android:id="@+id/playbackProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressTint="@color/white"
+            android:progressBackgroundTint="@color/gray"
+            android:max="100"
+            android:progress="0"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</LinearLayout>
