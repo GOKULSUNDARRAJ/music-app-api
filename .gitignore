@@ -6,3 +6,8 @@ frontend/dist/
 frontend/node_modules/
 .DS_Store
 *.log
+
+# Large archive files
+*.rar
+*.zip
+*.7z
