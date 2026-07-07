@@ -15,6 +15,7 @@ import 'services/database_service.dart';
 import 'bottom_sheet_player.dart';
 import 'widgets/song_options_sheet.dart';
 import 'widgets/add_to_playlist_sheet.dart';
+import 'playlist_search_screen.dart';
 import 'aruvi_code_generator_sheet.dart';
 
 class PlaylistScreen extends StatefulWidget {
@@ -410,25 +411,38 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                           right: 20,
                           child: Opacity(
                             opacity: (progress * 2).clamp(0.0, 1.0),
-                            child: Container(
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.15),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                children: [
-                                  const SizedBox(width: 15),
-                                  Icon(Icons.search, color: Colors.white.withOpacity(0.7), size: 20),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    "Find on this page",
-                                    style: TextStyle(
-                                      color: Colors.white.withOpacity(0.7),
-                                      fontSize: 14,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PlaylistSearchScreen(
+                                      songs: _songs,
+                                      title: widget.title,
                                     ),
                                   ),
-                                ],
+                                );
+                              },
+                              child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(width: 15),
+                                    Icon(Icons.search, color: Colors.white.withOpacity(0.7), size: 20),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      "Find on this page",
+                                      style: TextStyle(
+                                        color: Colors.white.withOpacity(0.7),
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
