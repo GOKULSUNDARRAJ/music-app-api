@@ -1,6 +1,7 @@
 package com.example.aruviflutter
 
 import io.flutter.embedding.android.FlutterActivity
+import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import android.bluetooth.BluetoothAdapter
@@ -14,7 +15,7 @@ import android.provider.Settings
 import android.media.AudioManager
 import android.media.AudioDeviceInfo
 
-class MainActivity : FlutterActivity() {
+class MainActivity : AudioServiceActivity() {
     private val CHANNEL = "com.saalai.salaimusicapp/bluetooth"
     private val scannedDevices = mutableSetOf<Map<String, String>>()
     private var isReceiverRegistered = false

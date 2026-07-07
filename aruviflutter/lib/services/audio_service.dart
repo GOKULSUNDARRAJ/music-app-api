@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -120,40 +121,62 @@ class AudioService extends ChangeNotifier {
     }
   }
 
+  AudioSource _createAudioSource(AudioModel song, {String? localPath}) {
+    final mediaItem = MediaItem(
+      id: song.songId?.toString() ?? song.audioName ?? 'unknown',
+      album: song.categoryName ?? 'Unknown Album',
+      title: song.audioName ?? 'Unknown Title',
+      artUri: song.imageUrl != null ? Uri.parse(song.imageUrl!) : null,
+    );
+
+    if (localPath != null) {
+      return AudioSource.uri(Uri.file(localPath), tag: mediaItem);
+    } else if (song.audioUrl != null && song.audioUrl!.isNotEmpty) {
+      return AudioSource.uri(Uri.parse(song.audioUrl!), tag: mediaItem);
+    } else {
+      return AudioSource.uri(Uri.parse('asset:///assets/empty.mp3'), tag: mediaItem);
+    }
+  }
+
   Future<void> _restoreState() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final savedPlaylist = prefs.getString('last_playlist');
-      final savedIndex = prefs.getInt('last_index') ?? 0;
-      final savedName = prefs.getString('last_playlist_name');
-      final savedPositionSeconds = prefs.getInt('last_position') ?? 0;
       
-      if (savedPlaylist != null && savedPlaylist.isNotEmpty) {
-        final List<dynamic> parsed = json.decode(savedPlaylist);
-        _playlist = parsed.map((json) => AudioModel.fromJson(json)).toList();
-        _currentIndex = savedIndex;
-        _currentPlaylistName = savedName;
+      _isClipModeActive = prefs.getBool('clip_mode_active') ?? false;
+      final clipStartSeconds = prefs.getInt('clip_start_position') ?? 0;
+      final clipDurationSeconds = prefs.getInt('clip_duration') ?? 30;
+      
+      _clipStartPosition = Duration(seconds: clipStartSeconds);
+      _clipDuration = Duration(seconds: clipDurationSeconds);
+
+      final playlistJson = prefs.getString('playlist');
+      final currentIndex = prefs.getInt('current_index');
+      final savedPositionSeconds = prefs.getInt('last_position') ?? 0;
+      _currentPlaylistName = prefs.getString('current_playlist_name');
+
+      if (playlistJson != null && currentIndex != null) {
+        final List<dynamic> decodedList = jsonDecode(playlistJson);
+        final List<AudioModel> songs = decodedList.map((item) => AudioModel.fromJson(item)).toList();
         
-        if (_playlist.isNotEmpty && _currentIndex >= 0 && _currentIndex < _playlist.length) {
+        if (songs.isNotEmpty) {
+          _playlist = songs;
+          _currentIndex = currentIndex;
+          
           final List<AudioSource> audioSources = [];
           final dir = await getApplicationDocumentsDirectory();
           
-          for (var song in _playlist) {
+          for (var song in songs) {
+            String? localPath;
             if (song.songId != null) {
               final dbSong = await DatabaseService().getDownload(song.songId!);
               if (dbSong != null) {
                 final localFile = File('${dir.path}/song_${song.songId}.mp3');
                 if (localFile.existsSync()) {
-                  audioSources.add(AudioSource.uri(Uri.file(localFile.path)));
-                  continue;
+                  localPath = localFile.path;
                 }
               }
             }
-            if (song.audioUrl != null && song.audioUrl!.isNotEmpty) {
-              audioSources.add(AudioSource.uri(Uri.parse(song.audioUrl!)));
-            } else {
-              audioSources.add(AudioSource.uri(Uri.parse('asset:///assets/empty.mp3')));
-            }
+            audioSources.add(_createAudioSource(song, localPath: localPath));
           }
           final audioSource = ConcatenatingAudioSource(children: audioSources);
           // Set source but don't play, preserving the last known position
@@ -178,23 +201,19 @@ class AudioService extends ChangeNotifier {
       final List<AudioSource> audioSources = [];
       final dir = await getApplicationDocumentsDirectory();
       
-      for (var song in songs) {
-        if (song.songId != null) {
-          final dbSong = await DatabaseService().getDownload(song.songId!);
-          if (dbSong != null) {
-            final localFile = File('${dir.path}/song_${song.songId}.mp3');
-            if (localFile.existsSync()) {
-              audioSources.add(AudioSource.uri(Uri.file(localFile.path)));
-              continue;
+          for (var song in songs) {
+            String? localPath;
+            if (song.songId != null) {
+              final dbSong = await DatabaseService().getDownload(song.songId!);
+              if (dbSong != null) {
+                final localFile = File('${dir.path}/song_${song.songId}.mp3');
+                if (localFile.existsSync()) {
+                  localPath = localFile.path;
+                }
+              }
             }
+            audioSources.add(_createAudioSource(song, localPath: localPath));
           }
-        }
-        if (song.audioUrl != null && song.audioUrl!.isNotEmpty) {
-          audioSources.add(AudioSource.uri(Uri.parse(song.audioUrl!)));
-        } else {
-          audioSources.add(AudioSource.uri(Uri.parse('asset:///assets/empty.mp3')));
-        }
-      }
       final audioSource = ConcatenatingAudioSource(children: audioSources);
       
       await _player.setAudioSource(audioSource, initialIndex: initialIndex, initialPosition: Duration.zero);
