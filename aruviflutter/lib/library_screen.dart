@@ -3,6 +3,7 @@ import 'liked_screen.dart';
 import 'my_playlists_screen.dart';
 import 'downloaded_screen.dart';
 import 'custom_playlists_screen.dart';
+import 'followed_artists_screen.dart';
 import 'services/database_service.dart';
 import 'playlist_screen.dart';
 import 'recently_played_playlists_screen.dart';
@@ -92,7 +93,9 @@ class LibraryScreen extends StatelessWidget {
           _buildListItem(Icons.album_outlined, 'Albums & Playlists', () {
             Navigator.push(context, MaterialPageRoute(builder: (_) => const CustomPlaylistsScreen()));
           }),
-          _buildListItem(Icons.person_outline, 'Artist', () {}),
+          _buildListItem(Icons.person_outline, 'Artist', () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const FollowedArtistsScreen()));
+          }),
           _buildListItem(Icons.queue_music, 'Add to Playlist', () {
             Navigator.push(context, MaterialPageRoute(builder: (_) => const MyPlaylistsScreen()));
           }),

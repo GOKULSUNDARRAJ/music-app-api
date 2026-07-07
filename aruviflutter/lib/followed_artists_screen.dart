@@ -7,26 +7,27 @@ import 'models/artist_category.dart';
 import 'playlist_screen.dart';
 import 'services/audio_service.dart';
 
-class LikedScreen extends StatefulWidget {
-  const LikedScreen({super.key});
+class FollowedArtistsScreen extends StatefulWidget {
+  const FollowedArtistsScreen({super.key});
 
   @override
-  State<LikedScreen> createState() => _LikedScreenState();
+  State<FollowedArtistsScreen> createState() => _FollowedArtistsScreenState();
 }
 
-class _LikedScreenState extends State<LikedScreen> {
+class _FollowedArtistsScreenState extends State<FollowedArtistsScreen> {
   bool _isLoading = true;
-  List<ArtistCategory> _likedItems = [];
+  List<ArtistCategory> _followedArtists = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchLikedItems();
+    _fetchFollowedArtists();
   }
 
-  Future<void> _fetchLikedItems() async {
+  Future<void> _fetchFollowedArtists() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      // We store both liked playlists and followed artists in the same key
       final likedListStr = prefs.getStringList('local_liked_playlists_data') ?? [];
       
       final List<ArtistCategory> loadedItems = [];
@@ -34,22 +35,23 @@ class _LikedScreenState extends State<LikedScreen> {
         try {
           final decoded = json.decode(item);
           final category = ArtistCategory.fromJson(decoded);
-          if (category.adapterType != 2) {
+          // Only show artists (adapterType == 2)
+          if (category.adapterType == 2) {
             loadedItems.add(category);
           }
         } catch (e) {
-          debugPrint('Error parsing liked item: $e');
+          debugPrint('Error parsing followed artist: $e');
         }
       }
 
       if (mounted) {
         setState(() {
-          _likedItems = loadedItems.reversed.toList(); // Newest first
+          _followedArtists = loadedItems.reversed.toList(); // Newest first
           _isLoading = false;
         });
       }
     } catch (e) {
-      debugPrint('Failed to load local liked items: $e');
+      debugPrint('Failed to load local followed artists: $e');
       if (mounted) setState(() => _isLoading = false);
     }
   }
@@ -66,17 +68,17 @@ class _LikedScreenState extends State<LikedScreen> {
               title: category.categoryName ?? '',
               subtitle: '',
               songs: category.songs,
-              isArtist: category.adapterType == 2,
+              isArtist: true,
             ),
           ),
-        );
+        ).then((_) => _fetchFollowedArtists()); // Refresh if they unfollow
       },
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(100), // Circle for artists
               child: Image.network(
                 category.categoryImage ?? '',
                 fit: BoxFit.cover,
@@ -125,16 +127,16 @@ class _LikedScreenState extends State<LikedScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          'Your Likes',
+          'Followed Artists',
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator(color: Color(0xFFEB1C24)))
-          : _likedItems.isEmpty
+          : _followedArtists.isEmpty
               ? const Center(
                   child: Text(
-                    'No liked items yet.',
+                    'No followed artists yet.',
                     style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                 )
@@ -146,9 +148,9 @@ class _LikedScreenState extends State<LikedScreen> {
                     crossAxisSpacing: 16,
                     childAspectRatio: 0.85,
                   ),
-                  itemCount: _likedItems.length,
+                  itemCount: _followedArtists.length,
                   itemBuilder: (context, index) {
-                    return _buildGridCardItem(context, _likedItems[index]);
+                    return _buildGridCardItem(context, _followedArtists[index]);
                   },
                 ),
     );
