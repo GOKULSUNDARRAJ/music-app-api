@@ -25,7 +25,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 4,
+      version: 5,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -71,6 +71,9 @@ class DatabaseService {
         )
       ''');
     }
+    if (oldVersion < 5) {
+      await db.execute('ALTER TABLE downloads ADD COLUMN isSingle INTEGER DEFAULT 0');
+    }
   }
 
   Future<void> _createDB(Database db, int version) async {
@@ -86,7 +89,8 @@ class DatabaseService {
         downloadPath TEXT,
         duration TEXT,
         durationInMillis INTEGER,
-        playlistId TEXT
+        playlistId TEXT,
+        isSingle INTEGER DEFAULT 0
       )
     ''');
     await db.execute('''
@@ -124,7 +128,7 @@ class DatabaseService {
     ''');
   }
 
-  Future<void> insertDownload(AudioModel song, String localPath) async {
+  Future<void> insertDownload(AudioModel song, String localPath, {bool isSingle = false}) async {
     final db = await database;
     
     // Check if exists
@@ -146,6 +150,7 @@ class DatabaseService {
         'duration': song.duration,
         'durationInMillis': song.durationInMillis,
         'playlistId': song.playlistId,
+        'isSingle': isSingle ? 1 : 0,
       });
     } else {
       await db.update('downloads', {
@@ -199,7 +204,12 @@ class DatabaseService {
 
   Future<List<AudioModel>> getAllDownloads() async {
     final db = await database;
-    final maps = await db.query('downloads');
+    // Only return single downloads for the Songs tab
+    final maps = await db.query(
+      'downloads',
+      where: 'isSingle = ?',
+      whereArgs: [1],
+    );
     return maps.map((data) => AudioModel(
       songId: data['songId'] as String?,
       audioName: data['audioName'] as String?,
@@ -216,7 +226,28 @@ class DatabaseService {
   }
 
   Future<List<ArtistCategory>> getDownloadedPlaylists() async {
-    final songs = await getAllDownloads();
+    final db = await database;
+    // Only fetch songs downloaded as part of a playlist
+    final maps = await db.query(
+      'downloads',
+      where: 'isSingle = ?',
+      whereArgs: [0],
+    );
+    
+    final songs = maps.map((data) => AudioModel(
+      songId: data['songId'] as String?,
+      audioName: data['audioName'] as String?,
+      audioUrl: data['audioUrl'] as String?,
+      categoryName: data['categoryName'] as String?,
+      categoryId: data['categoryId'] as String?,
+      imageUrl: data['imageUrl'] as String?,
+      downloadPath: data['downloadPath'] as String?,
+      isDownloaded: true,
+      duration: data['duration'] as String?,
+      durationInMillis: data['durationInMillis'] as int?,
+      playlistId: data['playlistId'] as String?,
+    )).toList();
+
     final Map<String, ArtistCategory> categoryMap = {};
 
     for (var song in songs) {

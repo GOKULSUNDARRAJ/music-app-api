@@ -141,7 +141,7 @@ class DownloadService extends ChangeNotifier {
         }
         
         // Save to DB (as a generic download without forcing category)
-        await DatabaseService().insertDownload(song, file.path);
+        await DatabaseService().insertDownload(song, file.path, isSingle: true);
       }
     } catch (e) {
       debugPrint('Error downloading single song ${song.songId}: $e');
