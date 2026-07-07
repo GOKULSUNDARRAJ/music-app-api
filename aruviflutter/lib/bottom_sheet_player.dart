@@ -270,21 +270,25 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                             children: [
                               Positioned(
                                 left: padding + (startFraction * availableWidth) - 1.5,
-                                top: 0,
-                                bottom: 0,
                                 child: Container(
                                   width: 3,
-                                  color: Colors.yellow,
+                                  height: 12,
+                                  decoration: BoxDecoration(
+                                    color: Colors.yellow,
+                                    borderRadius: BorderRadius.circular(1.5),
+                                  ),
                                 ),
                               ),
                               if (endFraction <= 1.0)
                                 Positioned(
                                   left: padding + (endFraction * availableWidth) - 1.5,
-                                  top: 0,
-                                  bottom: 0,
                                   child: Container(
                                     width: 3,
-                                    color: Colors.yellow,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: Colors.yellow,
+                                      borderRadius: BorderRadius.circular(1.5),
+                                    ),
                                   ),
                                 ),
                             ],
