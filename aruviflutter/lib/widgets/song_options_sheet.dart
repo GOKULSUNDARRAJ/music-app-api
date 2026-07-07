@@ -3,7 +3,7 @@ import '../models/audio_model.dart';
 import '../services/audio_service.dart';
 import '../services/download_service.dart';
 import 'add_to_playlist_sheet.dart';
-import '../scanner_screen.dart'; // For AruviCodeGeneratorSheet
+import '../aruvi_code_generator_sheet.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class SongOptionsSheet extends StatelessWidget {
