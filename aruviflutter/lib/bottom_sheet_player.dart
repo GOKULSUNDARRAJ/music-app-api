@@ -3,6 +3,7 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'models/audio_model.dart';
 import 'services/audio_service.dart';
+import 'widgets/song_options_sheet.dart';
 
 class BottomSheetPlayer extends StatefulWidget {
   final AudioModel currentSong;
@@ -175,7 +176,14 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                       const SizedBox(width: 16),
                       IconButton(
                         icon: const Icon(Icons.more_vert, color: Colors.white, size: 24),
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            builder: (context) => SongOptionsSheet(song: song),
+                          );
+                        },
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
                       ),

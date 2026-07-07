@@ -12,6 +12,8 @@ import 'models/artist_category.dart';
 import 'services/audio_service.dart';
 import 'services/download_service.dart';
 import 'services/database_service.dart';
+import 'bottom_sheet_player.dart';
+import 'widgets/song_options_sheet.dart';
 import 'widgets/add_to_playlist_sheet.dart';
 import 'aruvi_code_generator_sheet.dart';
 
@@ -800,7 +802,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                 context: context,
                                 backgroundColor: Colors.transparent,
                                 isScrollControlled: true,
-                                builder: (context) => AddToPlaylistSheet(song: song),
+                                builder: (context) => SongOptionsSheet(song: song),
                               );
                             },
                           ),
