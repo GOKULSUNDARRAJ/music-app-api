@@ -89,7 +89,7 @@ class DownloadService extends ChangeNotifier {
             }
             
             // Save to DB
-            await DatabaseService().insertDownload(song, file.path);
+            await DatabaseService().insertDownload(song, file.path, isPlaylist: true);
           }
         } catch (e) {
           debugPrint('Error downloading song ${song.songId}: $e');
@@ -160,17 +160,18 @@ class DownloadService extends ChangeNotifier {
     try {
       final dir = await getApplicationDocumentsDirectory();
       
-      final audioFile = File('${dir.path}/song_${song.songId}.mp3');
-      if (audioFile.existsSync()) {
-        await audioFile.delete();
-      }
+      final shouldCompletelyRemove = await DatabaseService().unmarkSingleDownload(song.songId!);
+      if (shouldCompletelyRemove) {
+        final audioFile = File('${dir.path}/song_${song.songId}.mp3');
+        if (audioFile.existsSync()) {
+          await audioFile.delete();
+        }
 
-      final imgFile = File('${dir.path}/song_${song.songId}.jpg');
-      if (imgFile.existsSync()) {
-        await imgFile.delete();
+        final imgFile = File('${dir.path}/song_${song.songId}.jpg');
+        if (imgFile.existsSync()) {
+          await imgFile.delete();
+        }
       }
-
-      await DatabaseService().removeDownload(song.songId!);
     } catch (e) {
       debugPrint('Error removing single song ${song.songId}: $e');
     }

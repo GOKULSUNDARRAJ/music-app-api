@@ -25,7 +25,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 5,
+      version: 6,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -74,6 +74,12 @@ class DatabaseService {
     if (oldVersion < 5) {
       await db.execute('ALTER TABLE downloads ADD COLUMN isSingle INTEGER DEFAULT 0');
     }
+    if (oldVersion < 6) {
+      await db.execute('ALTER TABLE downloads ADD COLUMN isPlaylist INTEGER DEFAULT 0');
+      // For existing downloads from before version 6, assume they are playlist downloads if they aren't single downloads, 
+      // or just set all existing non-single to playlist to be safe.
+      await db.execute('UPDATE downloads SET isPlaylist = 1 WHERE isSingle = 0');
+    }
   }
 
   Future<void> _createDB(Database db, int version) async {
@@ -90,7 +96,8 @@ class DatabaseService {
         duration TEXT,
         durationInMillis INTEGER,
         playlistId TEXT,
-        isSingle INTEGER DEFAULT 0
+        isSingle INTEGER DEFAULT 0,
+        isPlaylist INTEGER DEFAULT 0
       )
     ''');
     await db.execute('''
@@ -128,7 +135,7 @@ class DatabaseService {
     ''');
   }
 
-  Future<void> insertDownload(AudioModel song, String localPath, {bool isSingle = false}) async {
+  Future<void> insertDownload(AudioModel song, String localPath, {bool isSingle = false, bool isPlaylist = false}) async {
     final db = await database;
     
     // Check if exists
@@ -151,10 +158,17 @@ class DatabaseService {
         'durationInMillis': song.durationInMillis,
         'playlistId': song.playlistId,
         'isSingle': isSingle ? 1 : 0,
+        'isPlaylist': isPlaylist ? 1 : 0,
       });
     } else {
+      final existingData = existing.first;
+      final currentIsSingle = (existingData['isSingle'] as int?) ?? 0;
+      final currentIsPlaylist = (existingData['isPlaylist'] as int?) ?? 0;
+
       await db.update('downloads', {
         'downloadPath': localPath,
+        'isSingle': isSingle ? 1 : currentIsSingle,
+        'isPlaylist': isPlaylist ? 1 : currentIsPlaylist,
       }, where: 'songId = ?', whereArgs: [song.songId]);
     }
   }
@@ -188,12 +202,33 @@ class DatabaseService {
 
   Future<void> markAsSingleDownload(String songId) async {
     final db = await database;
+    // We only set isSingle to 1, we preserve isPlaylist as is.
     await db.update(
       'downloads',
       {'isSingle': 1},
       where: 'songId = ?',
       whereArgs: [songId],
     );
+  }
+
+  Future<bool> unmarkSingleDownload(String songId) async {
+    final db = await database;
+    
+    // Check if it's also a playlist download
+    final maps = await db.query('downloads', where: 'songId = ?', whereArgs: [songId]);
+    if (maps.isNotEmpty) {
+      final isPlaylist = (maps.first['isPlaylist'] as int?) ?? 0;
+      if (isPlaylist == 1) {
+        // Just unmark single, keep it in DB for the playlist
+        await db.update('downloads', {'isSingle': 0}, where: 'songId = ?', whereArgs: [songId]);
+        return false; // Not completely removed
+      } else {
+        // Not in a playlist, safe to remove completely
+        await removeDownload(songId);
+        return true; // Completely removed
+      }
+    }
+    return false;
   }
 
   Future<AudioModel?> getDownload(String songId) async {
@@ -251,8 +286,8 @@ class DatabaseService {
     // Only fetch songs downloaded as part of a playlist
     final maps = await db.query(
       'downloads',
-      where: 'isSingle = ?',
-      whereArgs: [0],
+      where: 'isPlaylist = ?',
+      whereArgs: [1],
     );
     
     final songs = maps.map((data) => AudioModel(
