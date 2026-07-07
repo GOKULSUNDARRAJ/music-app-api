@@ -18,6 +18,7 @@ class SongOptionsSheet extends StatefulWidget {
 class _SongOptionsSheetState extends State<SongOptionsSheet> {
   bool _isLiked = false;
   bool _isDownloaded = false;
+  bool _isDownloading = false;
 
   @override
   void initState() {
@@ -62,13 +63,14 @@ class _SongOptionsSheetState extends State<SongOptionsSheet> {
     );
   }
 
-  Widget _buildOptionTile(IconData icon, String title, VoidCallback onTap, {Color iconColor = Colors.white}) {
+  Widget _buildOptionTile(IconData icon, String title, VoidCallback onTap, {Color iconColor = Colors.white, Widget? trailing}) {
     return ListTile(
       leading: Icon(icon, color: iconColor, size: 28),
       title: Text(
         title,
         style: const TextStyle(color: Colors.white, fontSize: 16),
       ),
+      trailing: trailing,
       onTap: onTap,
     );
   }
@@ -83,39 +85,19 @@ class _SongOptionsSheetState extends State<SongOptionsSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Header with Cover Art
+          // Header without Cover Art
           Padding(
-            padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 10),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.song.imageUrl ?? '',
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, error, stackTrace) => Container(
-                      width: 100,
-                      height: 100,
-                      color: Colors.grey[800],
-                      child: const Icon(Icons.music_note, color: Colors.white54, size: 50),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  widget.song.audioName ?? 'Unknown Song',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+            padding: const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
+            child: Text(
+              widget.song.audioName ?? 'Unknown Song',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           
@@ -142,9 +124,16 @@ class _SongOptionsSheetState extends State<SongOptionsSheet> {
                 _buildOptionTile(Icons.queue_music, 'Add to Playlist', () => _showAddToPlaylist(context)),
                 _buildOptionTile(
                   _isDownloaded ? Icons.download_done : Icons.download_outlined,
-                  _isDownloaded ? 'Remove from download' : 'Download',
+                  _isDownloading 
+                      ? 'Downloading...' 
+                      : (_isDownloaded ? 'Remove from download' : 'Download'),
                   () async {
-                    Navigator.pop(context);
+                    if (_isDownloading) return;
+                    
+                    setState(() {
+                      _isDownloading = true;
+                    });
+
                     if (_isDownloaded) {
                       await DownloadService().removeSingleSong(widget.song);
                       if (context.mounted) {
@@ -156,12 +145,26 @@ class _SongOptionsSheetState extends State<SongOptionsSheet> {
                       await DownloadService().downloadSingleSong(widget.song);
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Downloading...'), backgroundColor: Colors.green),
+                          const SnackBar(content: Text('Downloaded successfully'), backgroundColor: Colors.green),
                         );
                       }
                     }
+
+                    if (mounted) {
+                      setState(() {
+                        _isDownloading = false;
+                      });
+                      _checkStatus();
+                    }
                   },
                   iconColor: _isDownloaded ? Colors.green : Colors.white,
+                  trailing: _isDownloading 
+                      ? const SizedBox(
+                          width: 24, 
+                          height: 24, 
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)
+                        )
+                      : null,
                 ),
               ],
             ),
