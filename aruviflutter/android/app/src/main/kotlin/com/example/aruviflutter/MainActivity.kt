@@ -99,7 +99,29 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    private fun getConnectedBluetoothDevice(): String? {
+    private fun getConnectedBluetoothDevice(): Map<String, String>? {
+        // Try BluetoothManager first
+        try {
+            val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+            val a2dpDevices = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.A2DP)
+            if (a2dpDevices.isNotEmpty()) {
+                return mapOf(
+                    "name" to (a2dpDevices[0].name ?: "Unknown Device"),
+                    "address" to a2dpDevices[0].address
+                )
+            }
+            val headsetDevices = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.HEADSET)
+            if (headsetDevices.isNotEmpty()) {
+                return mapOf(
+                    "name" to (headsetDevices[0].name ?: "Unknown Device"),
+                    "address" to headsetDevices[0].address
+                )
+            }
+        } catch (e: Exception) {
+            // Ignore
+        }
+
+        // Fallback to AudioManager
         try {
             val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
             val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
@@ -107,7 +129,23 @@ class MainActivity : FlutterActivity() {
                 if (device.type == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP ||
                     device.type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO ||
                     device.type == AudioDeviceInfo.TYPE_BLE_HEADSET) {
-                    return device.productName.toString()
+                    
+                    var address = ""
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        try {
+                            val method = device.javaClass.getMethod("getAddress")
+                            val result = method.invoke(device)
+                            if (result is String) {
+                                address = result
+                            }
+                        } catch (e: Exception) {
+                            // Ignore
+                        }
+                    }
+                    return mapOf(
+                        "name" to device.productName.toString(),
+                        "address" to address
+                    )
                 }
             }
         } catch (e: Exception) {

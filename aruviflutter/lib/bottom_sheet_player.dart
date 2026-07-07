@@ -168,12 +168,13 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                         ),
                         
                         // Bluetooth Device Chip
-                        FutureBuilder<String?>(
+                        FutureBuilder<Map<String, String>?>(
                           future: BluetoothService().getConnectedDevice(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData || snapshot.data == null) {
                               return const SizedBox.shrink();
                             }
+                            final deviceName = snapshot.data!['name'] ?? 'Connected';
                             return GestureDetector(
                               onTap: () {
                                 showModalBottomSheet(
@@ -192,7 +193,7 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                                     const Icon(Icons.headset, color: Colors.red, size: 16),
                                     const SizedBox(width: 8),
                                     Text(
-                                      snapshot.data!,
+                                      deviceName,
                                       style: const TextStyle(color: Colors.red, fontSize: 12),
                                     ),
                                   ],

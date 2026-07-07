@@ -3,10 +3,13 @@ import 'package:flutter/services.dart';
 class BluetoothService {
   static const MethodChannel _channel = MethodChannel('com.saalai.salaimusicapp/bluetooth');
 
-  Future<String?> getConnectedDevice() async {
+  Future<Map<String, String>?> getConnectedDevice() async {
     try {
-      final String? deviceName = await _channel.invokeMethod('getConnectedDevice');
-      return deviceName;
+      final dynamic result = await _channel.invokeMethod('getConnectedDevice');
+      if (result != null) {
+        return Map<String, String>.from(result as Map);
+      }
+      return null;
     } catch (e) {
       return null;
     }

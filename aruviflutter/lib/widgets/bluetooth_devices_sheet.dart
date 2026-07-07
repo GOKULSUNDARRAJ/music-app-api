@@ -14,7 +14,7 @@ class _BluetoothDevicesSheetState extends State<BluetoothDevicesSheet> {
   bool _isLoading = true;
   List<Map<String, String>> _pairedDevices = [];
   List<Map<String, String>> _scannedDevices = [];
-  String? _connectedDeviceName;
+  String? _connectedDeviceAddress;
   Timer? _scanTimer;
 
   @override
@@ -39,7 +39,7 @@ class _BluetoothDevicesSheetState extends State<BluetoothDevicesSheet> {
     await _bluetoothService.startScan();
     
     setState(() {
-      _connectedDeviceName = connected;
+      _connectedDeviceAddress = connected?['address'];
       _pairedDevices = paired;
       _isLoading = false;
     });
@@ -117,7 +117,7 @@ class _BluetoothDevicesSheetState extends State<BluetoothDevicesSheet> {
                       ),
                     ),
                     ..._pairedDevices.map((device) {
-                      final isConnected = device['name'] == _connectedDeviceName;
+                      final isConnected = device['address'] == _connectedDeviceAddress && _connectedDeviceAddress != null && _connectedDeviceAddress!.isNotEmpty;
                       return _buildDeviceTile(device, isConnected: isConnected, isPaired: true);
                     }).toList(),
                   ],
