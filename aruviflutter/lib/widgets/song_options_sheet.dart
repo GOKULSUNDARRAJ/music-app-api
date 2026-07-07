@@ -4,7 +4,6 @@ import '../services/audio_service.dart';
 import '../services/download_service.dart';
 import '../services/database_service.dart';
 import 'add_to_playlist_sheet.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class SongOptionsSheet extends StatefulWidget {
   final AudioModel song;
@@ -117,10 +116,26 @@ class _SongOptionsSheetState extends State<SongOptionsSheet> {
                   },
                   iconColor: _isLiked ? const Color(0xFFEB1C24) : Colors.white,
                 ),
-                _buildOptionTile(Icons.play_arrow, 'Play', () {
-                  Navigator.pop(context);
-                  AudioService().playSongs([widget.song], initialIndex: 0, playlistName: widget.song.categoryName ?? 'Song');
-                }),
+                AnimatedBuilder(
+                  animation: AudioService(),
+                  builder: (context, child) {
+                    final isCurrentSong = AudioService().currentSong?.songId == widget.song.songId;
+                    final isPlaying = isCurrentSong && AudioService().isPlaying;
+                    
+                    return _buildOptionTile(
+                      isPlaying ? Icons.pause : Icons.play_arrow,
+                      isPlaying ? 'Pause' : 'Play',
+                      () {
+                        Navigator.pop(context);
+                        if (isCurrentSong) {
+                          AudioService().togglePlayPause();
+                        } else {
+                          AudioService().playSongs([widget.song], initialIndex: 0, playlistName: widget.song.categoryName ?? 'Song');
+                        }
+                      },
+                    );
+                  },
+                ),
                 _buildOptionTile(Icons.queue_music, 'Add to Playlist', () => _showAddToPlaylist(context)),
                 _buildOptionTile(
                   _isDownloaded ? Icons.download_done : Icons.download_outlined,
