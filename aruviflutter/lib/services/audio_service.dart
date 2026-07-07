@@ -38,6 +38,8 @@ class AudioService extends ChangeNotifier {
   Duration _clipStartPosition = Duration.zero;
   final Duration _clipDuration = const Duration(seconds: 30);
   bool get isClipModeActive => _isClipModeActive;
+  Duration get clipStartPosition => _clipStartPosition;
+  Duration get clipDuration => _clipDuration;
 
   void _init() {
     _player.playerStateStream.listen((state) {

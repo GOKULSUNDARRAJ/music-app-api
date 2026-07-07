@@ -230,25 +230,70 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
               const SizedBox(height: 30),
               
               // 4. Progress Slider
-              SliderTheme(
-                data: SliderThemeData(
-                  trackHeight: 2.0,
-                  thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6.0),
-                  overlayShape: const RoundSliderOverlayShape(overlayRadius: 14.0),
-                  activeTrackColor: const Color(0xFFEB1C24),
-                  inactiveTrackColor: Colors.grey.shade800,
-                  thumbColor: const Color(0xFFEB1C24),
-                  overlayColor: const Color(0xFFEB1C24).withOpacity(0.2),
-                ),
-                child: Slider(
-                  value: sliderVal,
-                  onChanged: (value) {
-                    final newPosition = Duration(
-                      milliseconds: (value * duration.inMilliseconds).round(),
-                    );
-                    audioService.seek(newPosition);
-                  },
-                ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  SliderTheme(
+                    data: SliderThemeData(
+                      trackHeight: 2.0,
+                      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6.0),
+                      overlayShape: const RoundSliderOverlayShape(overlayRadius: 14.0),
+                      activeTrackColor: const Color(0xFFEB1C24),
+                      inactiveTrackColor: Colors.grey.shade800,
+                      thumbColor: const Color(0xFFEB1C24),
+                      overlayColor: const Color(0xFFEB1C24).withOpacity(0.2),
+                    ),
+                    child: Slider(
+                      value: sliderVal,
+                      onChanged: (value) {
+                        final newPosition = Duration(
+                          milliseconds: (value * duration.inMilliseconds).round(),
+                        );
+                        audioService.seek(newPosition);
+                      },
+                    ),
+                  ),
+                  if (audioService.isClipModeActive && duration.inMilliseconds > 0)
+                    Positioned.fill(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final padding = 24.0;
+                          final availableWidth = constraints.maxWidth - (padding * 2);
+                          
+                          final clipStartMs = audioService.clipStartPosition.inMilliseconds;
+                          final clipDurationMs = audioService.clipDuration.inMilliseconds;
+                          final clipEndMs = clipStartMs + clipDurationMs;
+                          
+                          final startFraction = clipStartMs / duration.inMilliseconds;
+                          final endFraction = clipEndMs / duration.inMilliseconds;
+                          
+                          return Stack(
+                            children: [
+                              Positioned(
+                                left: padding + (startFraction * availableWidth) - 1.5,
+                                top: 0,
+                                bottom: 0,
+                                child: Container(
+                                  width: 3,
+                                  color: Colors.yellow,
+                                ),
+                              ),
+                              if (endFraction <= 1.0)
+                                Positioned(
+                                  left: padding + (endFraction * availableWidth) - 1.5,
+                                  top: 0,
+                                  bottom: 0,
+                                  child: Container(
+                                    width: 3,
+                                    color: Colors.yellow,
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                ],
               ),
               
               // Time Labels
