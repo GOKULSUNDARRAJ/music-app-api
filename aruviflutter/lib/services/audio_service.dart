@@ -149,10 +149,10 @@ class AudioService extends ChangeNotifier {
       _clipStartPosition = Duration(seconds: clipStartSeconds);
       _clipDuration = Duration(seconds: clipDurationSeconds);
 
-      final playlistJson = prefs.getString('playlist');
-      final currentIndex = prefs.getInt('current_index');
+      final playlistJson = prefs.getString('last_playlist');
+      final currentIndex = prefs.getInt('last_index');
       final savedPositionSeconds = prefs.getInt('last_position') ?? 0;
-      _currentPlaylistName = prefs.getString('current_playlist_name');
+      _currentPlaylistName = prefs.getString('last_playlist_name');
 
       if (playlistJson != null && currentIndex != null) {
         final List<dynamic> decodedList = jsonDecode(playlistJson);
