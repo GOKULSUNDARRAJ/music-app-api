@@ -539,4 +539,35 @@ class DatabaseService {
       return {'songs': <AudioModel>[], 'playlists': <ArtistCategory>[], 'hasMore': false};
     }
   }
+
+  Future<List<AudioModel>> getCategorySongs(String categoryId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token');
+
+      final url = Uri.parse('https://music-app-api-1.onrender.com/api/search/category/$categoryId/songs');
+      
+      final headers = {
+        'Content-Type': 'application/json',
+      };
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final response = await http.get(url, headers: headers);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['status'] == true) {
+          return (data['songs'] as List?)
+                  ?.map((s) => AudioModel.fromJson(s))
+                  .toList() ??
+              [];
+        }
+      }
+      return [];
+    } catch (e) {
+      print('Error fetching category songs: $e');
+      return [];
+    }
+  }
 }

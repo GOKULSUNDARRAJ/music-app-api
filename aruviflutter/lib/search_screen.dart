@@ -235,9 +235,42 @@ class _SearchScreenState extends State<SearchScreen> {
           );
         },
       ),
-      onTap: () {
-        // Use the song's actual category name so the mini player shows the correct source
-        AudioService().playSongs(_songs, initialIndex: index, playlistName: song.categoryName ?? "Search Results");
+      onTap: () async {
+        if (song.categoryId == null || song.categoryId!.isEmpty) {
+          AudioService().playSongs([song], initialIndex: 0, playlistName: song.categoryName ?? "Search Results");
+          return;
+        }
+
+        setState(() {
+          _isLoading = true;
+        });
+
+        // Fetch the full playlist this song belongs to
+        final categoryId = song.categoryId!.replaceAll('cat_', '');
+        final categorySongs = await DatabaseService().getCategorySongs(categoryId);
+
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+
+          if (categorySongs.isNotEmpty) {
+            // Find the index of the tapped song in the full playlist
+            final initialIndex = categorySongs.indexWhere((s) => s.songId == song.songId);
+            AudioService().playSongs(
+              categorySongs,
+              initialIndex: initialIndex != -1 ? initialIndex : 0,
+              playlistName: song.categoryName ?? "Search Results"
+            );
+          } else {
+            // Fallback to playing just the song if playlist is empty or fails
+            AudioService().playSongs(
+              [song],
+              initialIndex: 0,
+              playlistName: song.categoryName ?? "Search Results"
+            );
+          }
+        }
       },
     );
   }
