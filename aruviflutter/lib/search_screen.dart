@@ -15,9 +15,8 @@ class SearchScreen extends StatefulWidget {
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> with SingleTickerProviderStateMixin {
+class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
-  late TabController _tabController;
   Timer? _debounce;
 
   String _currentQuery = '';
@@ -35,14 +34,12 @@ class _SearchScreenState extends State<SearchScreen> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
     _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
     _searchController.dispose();
-    _tabController.dispose();
     _debounce?.cancel();
     _scrollController.dispose();
     super.dispose();
@@ -148,188 +145,152 @@ class _SearchScreenState extends State<SearchScreen> with SingleTickerProviderSt
             onChanged: _onSearchChanged,
           ),
         ),
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.red,
-          labelColor: Colors.red,
-          unselectedLabelColor: Colors.white.withValues(alpha: 0.5),
-          tabs: const [
-            Tab(text: "Songs"),
-            Tab(text: "Playlists"),
-          ],
-        ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildSongsTab(),
-          _buildPlaylistsTab(),
-        ],
-      ),
+      body: _buildUnifiedList(),
     );
   }
 
-  Widget _buildSongsTab() {
+  Widget _buildUnifiedList() {
     if (_currentQuery.isEmpty) {
-      return _buildEmptyState("Search for your favorite songs");
+      return _buildEmptyState("Search for your favorite songs and playlists");
     }
 
     if (_isLoading && _currentPage == 1) {
       return const Center(child: CircularProgressIndicator(color: Colors.red));
     }
 
-    if (_songs.isEmpty) {
-      return _buildEmptyState("No songs found");
+    final totalItems = _songs.length + _playlists.length;
+
+    if (totalItems == 0) {
+      return _buildEmptyState("No results found");
     }
 
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.only(bottom: 100),
-      itemCount: _songs.length + (_hasMore ? 1 : 0),
+      itemCount: totalItems + (_hasMore ? 1 : 0),
       itemBuilder: (context, index) {
-        if (index == _songs.length) {
+        if (index == totalItems) {
           return const Padding(
             padding: EdgeInsets.all(16.0),
             child: Center(child: CircularProgressIndicator(color: Colors.red)),
           );
         }
 
-        final song = _songs[index];
-        return ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: SizedBox(
-              width: 50,
-              height: 50,
-              child: song.imageUrl != null
-                  ? SafeNetworkImage(
-                      url: song.imageUrl!,
-                      fit: BoxFit.cover,
-                    )
-                  : Container(
-                      color: const Color(0xFF2B2B2B),
-                      child: const Icon(Icons.music_note, color: Colors.white54),
-                    ),
-            ),
-          ),
-          title: Text(
-            song.audioName ?? 'Unknown Title',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          subtitle: Text(
-            song.categoryName ?? 'Unknown Artist',
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.5),
-              fontSize: 14,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          trailing: IconButton(
-            icon: const Icon(Icons.more_vert, color: Colors.white54),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                isScrollControlled: true,
-                builder: (context) => SongOptionsSheet(song: song),
-              );
-            },
-          ),
-          onTap: () {
-            AudioService().playSongs(_songs, initialIndex: index, playlistName: "Search Results");
-          },
-        );
+        if (index < _songs.length) {
+          return _buildSongTile(_songs[index], index);
+        } else {
+          return _buildPlaylistTile(_playlists[index - _songs.length]);
+        }
       },
     );
   }
 
-  Widget _buildPlaylistsTab() {
-    if (_currentQuery.isEmpty) {
-      return _buildEmptyState("Search for your favorite playlists");
-    }
-
-    if (_isLoading && _currentPage == 1) {
-      return const Center(child: CircularProgressIndicator(color: Colors.red));
-    }
-
-    if (_playlists.isEmpty) {
-      return _buildEmptyState("No playlists found");
-    }
-
-    return GridView.builder(
-      controller: _scrollController,
-      padding: const EdgeInsets.all(16).copyWith(bottom: 100),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 0.8,
+  Widget _buildSongTile(AudioModel song, int index) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(4),
+        child: SizedBox(
+          width: 50,
+          height: 50,
+          child: song.imageUrl != null
+              ? SafeNetworkImage(
+                  url: song.imageUrl!,
+                  fit: BoxFit.cover,
+                )
+              : Container(
+                  color: const Color(0xFF2B2B2B),
+                  child: const Icon(Icons.music_note, color: Colors.white54),
+                ),
+        ),
       ),
-      itemCount: _playlists.length + (_hasMore ? 2 : 0),
-      itemBuilder: (context, index) {
-        if (index >= _playlists.length) {
-          if (index == _playlists.length) {
-             return const Center(child: CircularProgressIndicator(color: Colors.red));
-          }
-          return const SizedBox.shrink();
-        }
+      title: Text(
+        song.audioName ?? 'Unknown Title',
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        "Song • ${song.categoryName ?? 'Unknown Artist'}",
+        style: TextStyle(
+          color: Colors.white.withValues(alpha: 0.5),
+          fontSize: 14,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      trailing: IconButton(
+        icon: const Icon(Icons.more_vert, color: Colors.white54),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent,
+            isScrollControlled: true,
+            builder: (context) => SongOptionsSheet(song: song),
+          );
+        },
+      ),
+      onTap: () {
+        // Use the song's actual category name so the mini player shows the correct source
+        AudioService().playSongs(_songs, initialIndex: index, playlistName: song.categoryName ?? "Search Results");
+      },
+    );
+  }
 
-        final playlist = _playlists[index];
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PlaylistScreen(
-                  title: playlist.categoryName ?? 'Unknown',
-                  subtitle: 'Search Result',
-                  categoryId: playlist.categoryId ?? '',
-                  imageUrl: playlist.categoryImage ?? '',
-                  songs: playlist.songs,
+  Widget _buildPlaylistTile(ArtistCategory playlist) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(4),
+        child: SizedBox(
+          width: 50,
+          height: 50,
+          child: playlist.categoryImage != null
+              ? SafeNetworkImage(
+                  url: playlist.categoryImage!,
+                  fit: BoxFit.cover,
+                )
+              : Container(
+                  color: const Color(0xFF2B2B2B),
+                  child: const Icon(Icons.album, color: Colors.white54),
                 ),
-              ),
-            );
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: playlist.categoryImage != null
-                        ? SafeNetworkImage(
-                            url: playlist.categoryImage!,
-                            fit: BoxFit.cover,
-                          )
-                        : Container(
-                            color: const Color(0xFF2B2B2B),
-                            child: const Icon(Icons.album, color: Colors.white54, size: 40),
-                          ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                playlist.categoryName ?? 'Unknown',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+        ),
+      ),
+      title: Text(
+        playlist.categoryName ?? 'Unknown',
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        "Playlist",
+        style: TextStyle(
+          color: Colors.white.withValues(alpha: 0.5),
+          fontSize: 14,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlaylistScreen(
+              title: playlist.categoryName ?? 'Unknown',
+              subtitle: 'Playlist',
+              categoryId: playlist.categoryId ?? '',
+              imageUrl: playlist.categoryImage ?? '',
+              songs: playlist.songs,
+            ),
           ),
         );
       },
