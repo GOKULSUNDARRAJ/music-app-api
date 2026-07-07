@@ -220,7 +220,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
           _buildListItem(Icons.auto_awesome, 'Recently Played', () {
             Navigator.push(context, MaterialPageRoute(builder: (_) => const RecentlyPlayedPlaylistsScreen())).then((_) => _loadArtists());
           }),
-          _buildListItem(Icons.headphones_outlined, 'Listening Library', () {}),
           _buildListItem(Icons.headset_mic_outlined, 'Settings', () {}),
           
           if (_followedArtists.isNotEmpty) ...[
