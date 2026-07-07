@@ -57,9 +57,13 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
         
         // Ensure slider value is between 0 and 1
         double sliderVal = 0.0;
-        if (duration.inMilliseconds > 0 && position.inMilliseconds > 0) {
+        double bufferedVal = 0.0;
+        if (duration.inMilliseconds > 0) {
           sliderVal = position.inMilliseconds / duration.inMilliseconds;
           if (sliderVal > 1.0) sliderVal = 1.0;
+          
+          bufferedVal = audioService.bufferedPosition.inMilliseconds / duration.inMilliseconds;
+          if (bufferedVal > 1.0) bufferedVal = 1.0;
         }
 
         final backgroundGradient = LinearGradient(
@@ -238,12 +242,14 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                       thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6.0),
                       overlayShape: const RoundSliderOverlayShape(overlayRadius: 14.0),
                       activeTrackColor: const Color(0xFFEB1C24),
-                      inactiveTrackColor: Colors.grey.shade800,
+                      inactiveTrackColor: const Color(0xFF1E1E1E), // Black/Dark Grey
+                      secondaryActiveTrackColor: Colors.grey.shade600, // Buffered Grey
                       thumbColor: const Color(0xFFEB1C24),
                       overlayColor: const Color(0xFFEB1C24).withValues(alpha: 0.2),
                     ),
                     child: Slider(
                       value: sliderVal,
+                      secondaryTrackValue: bufferedVal,
                       onChanged: (value) {
                         final newPosition = Duration(
                           milliseconds: (value * duration.inMilliseconds).round(),

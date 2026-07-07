@@ -26,6 +26,7 @@ class AudioService extends ChangeNotifier {
   bool get isPlaying => _player.playing;
   Duration get position => _player.position;
   Duration get duration => _player.duration ?? Duration.zero;
+  Duration get bufferedPosition => _player.bufferedPosition;
 
   // Sleep Timer State
   Timer? _sleepTimer;
@@ -80,6 +81,10 @@ class AudioService extends ChangeNotifier {
         }
       }
 
+      notifyListeners();
+    });
+
+    _player.bufferedPositionStream.listen((_) {
       notifyListeners();
     });
 
