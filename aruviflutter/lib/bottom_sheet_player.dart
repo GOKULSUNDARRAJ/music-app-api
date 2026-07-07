@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'models/audio_model.dart';
 import 'services/audio_service.dart';
 import 'widgets/song_options_sheet.dart';
+import 'widgets/sleep_timer_sheet.dart';
 
 class BottomSheetPlayer extends StatefulWidget {
   final AudioModel currentSong;
@@ -160,18 +161,52 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.access_time, color: Colors.white, size: 24),
-                        onPressed: () {},
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
+                      AnimatedBuilder(
+                        animation: audioService,
+                        builder: (context, child) {
+                          final isSleepTimerActive = audioService.isSleepTimerActive;
+                          return IconButton(
+                            icon: Icon(
+                              isSleepTimerActive ? Icons.timer : Icons.access_time, 
+                              color: isSleepTimerActive ? const Color(0xFFEB1C24) : Colors.white, 
+                              size: 24
+                            ),
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) => const SleepTimerSheet(),
+                              );
+                            },
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          );
+                        }
                       ),
                       const SizedBox(width: 16),
-                      IconButton(
-                        icon: const Icon(Icons.timer_outlined, color: Colors.white, size: 24),
-                        onPressed: () {},
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
+                      AnimatedBuilder(
+                        animation: audioService,
+                        builder: (context, child) {
+                          final isClipModeActive = audioService.isClipModeActive;
+                          return IconButton(
+                            icon: Icon(
+                              Icons.timer_outlined, 
+                              color: isClipModeActive ? const Color(0xFFEB1C24) : Colors.white, 
+                              size: 24
+                            ),
+                            onPressed: () {
+                              audioService.toggleClipMode();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(audioService.isClipModeActive ? 'Clip Mode Enabled' : 'Clip Mode Disabled'),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            },
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          );
+                        }
                       ),
                       const SizedBox(width: 16),
                       IconButton(

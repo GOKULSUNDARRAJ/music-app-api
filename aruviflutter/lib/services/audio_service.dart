@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
@@ -26,6 +27,18 @@ class AudioService extends ChangeNotifier {
   Duration get position => _player.position;
   Duration get duration => _player.duration ?? Duration.zero;
 
+  // Sleep Timer State
+  Timer? _sleepTimer;
+  DateTime? _sleepTimerEndTime;
+  bool get isSleepTimerActive => _sleepTimer != null && _sleepTimer!.isActive;
+  Duration? get sleepTimerRemaining => _sleepTimerEndTime?.difference(DateTime.now());
+
+  // Clip Mode State
+  bool _isClipModeActive = false;
+  Duration _clipStartPosition = Duration.zero;
+  final Duration _clipDuration = const Duration(seconds: 30);
+  bool get isClipModeActive => _isClipModeActive;
+
   void _init() {
     _player.playerStateStream.listen((state) {
       notifyListeners();
@@ -42,6 +55,14 @@ class AudioService extends ChangeNotifier {
           prefs.setInt('last_position', seconds);
         });
       }
+      
+      // Clip Mode Logic
+      if (_isClipModeActive) {
+        if (pos >= _clipStartPosition + _clipDuration) {
+          _player.seek(_clipStartPosition);
+        }
+      }
+
       notifyListeners();
     });
 
@@ -194,6 +215,36 @@ class AudioService extends ChangeNotifier {
   }
   
   void disposeService() {
+    _sleepTimer?.cancel();
     _player.dispose();
+  }
+
+  // Sleep Timer Actions
+  void startSleepTimer(Duration duration) {
+    _sleepTimer?.cancel();
+    _sleepTimerEndTime = DateTime.now().add(duration);
+    _sleepTimer = Timer(duration, () {
+      pause();
+      _sleepTimer = null;
+      _sleepTimerEndTime = null;
+      notifyListeners();
+    });
+    notifyListeners();
+  }
+
+  void cancelSleepTimer() {
+    _sleepTimer?.cancel();
+    _sleepTimer = null;
+    _sleepTimerEndTime = null;
+    notifyListeners();
+  }
+
+  // Clip Mode Actions
+  void toggleClipMode() {
+    _isClipModeActive = !_isClipModeActive;
+    if (_isClipModeActive) {
+      _clipStartPosition = _player.position;
+    }
+    notifyListeners();
   }
 }
