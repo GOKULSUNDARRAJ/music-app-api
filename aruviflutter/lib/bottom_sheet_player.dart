@@ -57,13 +57,20 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
         
         // Ensure slider value is between 0 and 1
         double sliderVal = 0.0;
-        double bufferedVal = 0.0;
+        double secondaryVal = 0.0;
         if (duration.inMilliseconds > 0) {
           sliderVal = position.inMilliseconds / duration.inMilliseconds;
           if (sliderVal > 1.0) sliderVal = 1.0;
           
-          bufferedVal = audioService.bufferedPosition.inMilliseconds / duration.inMilliseconds;
-          if (bufferedVal > 1.0) bufferedVal = 1.0;
+          if (audioService.isClipModeActive) {
+            // Show the clip end position as the secondary (grey) track
+            final clipEndMs = audioService.clipStartPosition.inMilliseconds + audioService.clipDuration.inMilliseconds;
+            secondaryVal = clipEndMs / duration.inMilliseconds;
+          } else {
+            // Standard buffered progress
+            secondaryVal = audioService.bufferedPosition.inMilliseconds / duration.inMilliseconds;
+          }
+          if (secondaryVal > 1.0) secondaryVal = 1.0;
         }
 
         final backgroundGradient = LinearGradient(
@@ -249,7 +256,7 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                     ),
                     child: Slider(
                       value: sliderVal,
-                      secondaryTrackValue: bufferedVal,
+                      secondaryTrackValue: secondaryVal,
                       onChanged: (value) {
                         final newPosition = Duration(
                           milliseconds: (value * duration.inMilliseconds).round(),
@@ -258,50 +265,6 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                       },
                     ),
                   ),
-                  if (audioService.isClipModeActive && duration.inMilliseconds > 0)
-                    Positioned.fill(
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final padding = 24.0;
-                          final availableWidth = constraints.maxWidth - (padding * 2);
-                          
-                          final clipStartMs = audioService.clipStartPosition.inMilliseconds;
-                          final clipDurationMs = audioService.clipDuration.inMilliseconds;
-                          final clipEndMs = clipStartMs + clipDurationMs;
-                          
-                          final startFraction = clipStartMs / duration.inMilliseconds;
-                          final endFraction = clipEndMs / duration.inMilliseconds;
-                          
-                          return Stack(
-                            children: [
-                              Positioned(
-                                left: padding + (startFraction * availableWidth) - 1.5,
-                                child: Container(
-                                  width: 3,
-                                  height: 12,
-                                  decoration: BoxDecoration(
-                                    color: Colors.yellow,
-                                    borderRadius: BorderRadius.circular(1.5),
-                                  ),
-                                ),
-                              ),
-                              if (endFraction <= 1.0)
-                                Positioned(
-                                  left: padding + (endFraction * availableWidth) - 1.5,
-                                  child: Container(
-                                    width: 3,
-                                    height: 12,
-                                    decoration: BoxDecoration(
-                                      color: Colors.yellow,
-                                      borderRadius: BorderRadius.circular(1.5),
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
                 ],
               ),
               
