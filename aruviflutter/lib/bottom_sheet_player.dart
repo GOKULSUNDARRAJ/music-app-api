@@ -6,6 +6,7 @@ import 'services/audio_service.dart';
 import 'widgets/song_options_sheet.dart';
 import 'widgets/sleep_timer_sheet.dart';
 import 'widgets/bluetooth_devices_sheet.dart';
+import 'widgets/lyrics_view.dart';
 import 'services/bluetooth_service.dart';
 
 class BottomSheetPlayer extends StatefulWidget {
@@ -18,8 +19,8 @@ class BottomSheetPlayer extends StatefulWidget {
 }
 
 class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
-  Color _dominantColor = const Color(0xFF1E1E1E); // Fallback color
-  double _sliderValue = 0.0;
+  Color _dominantColor = const Color(0xFF1E1E1E);
+  bool _showLyrics = false;
   
   @override
   void initState() {
@@ -57,7 +58,14 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
         final duration = audioService.duration;
         final position = audioService.position;
         
-        // Ensure slider value is between 0 and 1
+        // Reset lyrics view when song changes
+        final hasLyrics = song.lyrics != null && song.lyrics!.trim().isNotEmpty;
+        if (!hasLyrics && _showLyrics) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) setState(() => _showLyrics = false);
+          });
+        }
+
         double sliderVal = 0.0;
         double secondaryVal = 0.0;
         if (duration.inMilliseconds > 0) {
@@ -65,11 +73,9 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
           if (sliderVal > 1.0) sliderVal = 1.0;
           
           if (audioService.isClipModeActive) {
-            // Show the clip end position as the secondary (grey) track
             final clipEndMs = audioService.clipStartPosition.inMilliseconds + audioService.clipDuration.inMilliseconds;
             secondaryVal = clipEndMs / duration.inMilliseconds;
           } else {
-            // Standard buffered progress
             secondaryVal = audioService.bufferedPosition.inMilliseconds / duration.inMilliseconds;
           }
           if (secondaryVal > 1.0) secondaryVal = 1.0;
@@ -79,7 +85,7 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
           colors: [
             _dominantColor.withValues(alpha: 1.0),
             Color.lerp(_dominantColor, const Color(0xFF121212), 0.5)!.withValues(alpha: 1.0),
-            const Color(0xFF121212), // Dark grey / almost black
+            const Color(0xFF121212),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -88,56 +94,81 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
 
         return Container(
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            gradient: backgroundGradient,
-          ),
+          decoration: BoxDecoration(gradient: backgroundGradient),
           padding: const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. Close Button (X)
-              IconButton(
-                icon: const Icon(Icons.close, color: Colors.white, size: 28),
-                padding: EdgeInsets.zero,
-                alignment: Alignment.centerLeft,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              
-              const Spacer(flex: 1),
-              
-              // 2. Album Art
-              Center(
-                child: Container(
-                  width: 300,
-                  height: 300,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
+              // 1. Top Bar: Close + Lyrics Toggle
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white, size: 28),
+                    padding: EdgeInsets.zero,
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  if (hasLyrics)
+                    GestureDetector(
+                      onTap: () => setState(() => _showLyrics = !_showLyrics),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: _showLyrics
+                              ? const Color(0xFFEB1C24)
+                              : Colors.white.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: _showLyrics
+                                ? const Color(0xFFEB1C24)
+                                : Colors.white.withValues(alpha: 0.3),
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.lyrics_outlined,
+                              color: _showLyrics ? Colors.white : Colors.white70,
+                              size: 16,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              'LYRICS',
+                              style: TextStyle(
+                                color: _showLyrics ? Colors.white : Colors.white70,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
+                ],
+              ),
+
+              // 2. Main area: Album Art OR Lyrics
+              Expanded(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 350),
+                  transitionBuilder: (child, animation) => FadeTransition(
+                    opacity: animation,
+                    child: child,
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: song.imageUrl != null && song.imageUrl!.isNotEmpty
-                        ? CachedNetworkImage(
-                            imageUrl: song.imageUrl!,
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, error) => _buildPlaceholder(),
-                          )
-                        : _buildPlaceholder(),
-                  ),
+                  child: _showLyrics && hasLyrics
+                      ? LyricsView(
+                          key: ValueKey('lyrics_${song.songId}'),
+                          lyrics: song.lyrics!,
+                          position: position,
+                          duration: duration,
+                        )
+                      : _buildAlbumArtSection(song, audioService),
                 ),
               ),
-              
-              const Spacer(flex: 1),
-              
+
               // 3. Song Info & Actions Row
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -159,14 +190,11 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                         const SizedBox(height: 8),
                         Text(
                           AudioService().currentPlaylistName ?? widget.currentSong.categoryName ?? 'Unknown Artist',
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 18,
-                          ),
+                          style: const TextStyle(color: Colors.white70, fontSize: 18),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        
+
                         // Bluetooth Device Chip
                         FutureBuilder<Map<String, String>?>(
                           future: BluetoothService().getConnectedDevice(),
@@ -205,7 +233,7 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                       ],
                     ),
                   ),
-                  // Actions (Timer, Stopwatch, Menu)
+                  // Actions (Timer, Clip, Menu)
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -215,9 +243,9 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                           final isSleepTimerActive = audioService.isSleepTimerActive;
                           return IconButton(
                             icon: Icon(
-                              isSleepTimerActive ? Icons.timer : Icons.access_time, 
-                              color: isSleepTimerActive ? const Color(0xFFEB1C24) : Colors.white, 
-                              size: 24
+                              isSleepTimerActive ? Icons.timer : Icons.access_time,
+                              color: isSleepTimerActive ? const Color(0xFFEB1C24) : Colors.white,
+                              size: 24,
                             ),
                             onPressed: () {
                               showModalBottomSheet(
@@ -229,7 +257,7 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                           );
-                        }
+                        },
                       ),
                       const SizedBox(width: 16),
                       AnimatedBuilder(
@@ -238,15 +266,17 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                           final isClipModeActive = audioService.isClipModeActive;
                           return IconButton(
                             icon: Icon(
-                              Icons.timer_outlined, 
-                              color: isClipModeActive ? const Color(0xFFEB1C24) : Colors.white, 
-                              size: 24
+                              Icons.timer_outlined,
+                              color: isClipModeActive ? const Color(0xFFEB1C24) : Colors.white,
+                              size: 24,
                             ),
                             onPressed: () {
                               audioService.toggleClipMode();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(audioService.isClipModeActive ? 'Clip Mode Enabled' : 'Clip Mode Disabled'),
+                                  content: Text(audioService.isClipModeActive
+                                      ? 'Clip Mode Enabled'
+                                      : 'Clip Mode Disabled'),
                                   duration: const Duration(seconds: 2),
                                 ),
                               );
@@ -254,7 +284,7 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                           );
-                        }
+                        },
                       ),
                       const SizedBox(width: 16),
                       IconButton(
@@ -274,9 +304,9 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 30),
-              
+
               // 4. Progress Slider
               Stack(
                 alignment: Alignment.center,
@@ -287,8 +317,10 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                       thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6.0),
                       overlayShape: const RoundSliderOverlayShape(overlayRadius: 14.0),
                       activeTrackColor: const Color(0xFFEB1C24),
-                      inactiveTrackColor: const Color(0xFF1E1E1E), // Black/Dark Grey
-                      secondaryActiveTrackColor: audioService.isClipModeActive ? Colors.green : Colors.grey.shade600, // Buffered Grey or Clip Mode Green
+                      inactiveTrackColor: const Color(0xFF1E1E1E),
+                      secondaryActiveTrackColor: audioService.isClipModeActive
+                          ? Colors.green
+                          : Colors.grey.shade600,
                       thumbColor: const Color(0xFFEB1C24),
                       overlayColor: const Color(0xFFEB1C24).withValues(alpha: 0.2),
                     ),
@@ -305,27 +337,23 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                   ),
                 ],
               ),
-              
+
               // Time Labels
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      _formatDuration(position),
-                      style: const TextStyle(color: Colors.white70, fontSize: 12),
-                    ),
-                    Text(
-                      _formatDuration(duration),
-                      style: const TextStyle(color: Colors.white70, fontSize: 12),
-                    ),
+                    Text(_formatDuration(position),
+                        style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                    Text(_formatDuration(duration),
+                        style: const TextStyle(color: Colors.white70, fontSize: 12)),
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // 5. Playback Controls
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -360,7 +388,7 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 40),
             ],
           ),
@@ -369,11 +397,45 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
     );
   }
 
+  Widget _buildAlbumArtSection(AudioModel song, AudioService audioService) {
+    return Column(
+      key: const ValueKey('album_art'),
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: Container(
+            width: 300,
+            height: 300,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.3),
+                  spreadRadius: 2,
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: song.imageUrl != null && song.imageUrl!.isNotEmpty
+                  ? CachedNetworkImage(
+                      imageUrl: song.imageUrl!,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) => _buildPlaceholder(),
+                    )
+                  : _buildPlaceholder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   String _formatDuration(Duration d) {
     String twoDigits(int n) => n.toString().padLeft(2, "0");
-    String twoDigitMinutes = twoDigits(d.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(d.inSeconds.remainder(60));
-    return "$twoDigitMinutes:$twoDigitSeconds";
+    return "${twoDigits(d.inMinutes.remainder(60))}:${twoDigits(d.inSeconds.remainder(60))}";
   }
 
   Widget _buildPlaceholder() {

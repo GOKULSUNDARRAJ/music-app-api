@@ -530,4 +530,28 @@ exports.deleteUser = async (req, res, next) => {
   }
 };
 
+// ─── Update Song Lyrics ────────────────────────────────────────────────────────
+exports.updateLyrics = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { lyrics } = req.body;
+
+    const song = await Song.findByPk(id);
+    if (!song) {
+      return res.status(404).json({ status: false, message: 'Song not found' });
+    }
+
+    await song.update({ lyrics: lyrics || null });
+
+    return res.status(200).json({
+      status: true,
+      message: 'Lyrics updated successfully',
+      songId: id,
+      hasLyrics: !!lyrics
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 

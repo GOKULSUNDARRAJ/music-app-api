@@ -65,7 +65,8 @@ const getContentData = async (req, res, next, contentType) => {
             category: category.categoryName,
             imageUrl: normalizeUrl(song.imageUrl),
             categoryId: formatEntityId('cat', song.categoryId),
-            isLiked: userLikedSongs.has(song.id)
+            isLiked: userLikedSongs.has(song.id),
+            lyrics: song.lyrics || null
           }))
         }))
       };

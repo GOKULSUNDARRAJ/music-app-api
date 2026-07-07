@@ -95,6 +95,7 @@ router.post('/song/upload', requireAdminAuth, upload.array('files'), adminContro
 router.get('/songs', requireAdminAuth, adminController.getSongs);
 router.put('/song/:id', requireAdminAuth, adminController.updateSong);
 router.delete('/song/:id', requireAdminAuth, adminController.deleteSong);
+router.put('/song/:id/lyrics', requireAdminAuth, adminController.updateLyrics);
 
 router.get('/fetch-metadata', requireAdminAuth, adminController.fetchUrlMetadata);
 

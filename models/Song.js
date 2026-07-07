@@ -25,6 +25,11 @@ const Song = sequelize.define('Song', {
       model: 'categories',
       key: 'id'
     }
+  },
+  lyrics: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    defaultValue: null,
   }
 }, {
   tableName: 'songs',

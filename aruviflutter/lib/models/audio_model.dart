@@ -11,6 +11,7 @@ class AudioModel {
   String? duration;
   int? durationInMillis;
   String? playlistId;
+  String? lyrics;
 
   AudioModel({
     this.songId,
@@ -25,6 +26,7 @@ class AudioModel {
     this.duration,
     this.durationInMillis,
     this.playlistId,
+    this.lyrics,
   });
 
   factory AudioModel.fromJson(Map<String, dynamic> json) {
@@ -39,6 +41,7 @@ class AudioModel {
       fileSize: json['fileSize'] != null ? int.tryParse(json['fileSize'].toString()) : null,
       duration: json['duration'],
       playlistId: json['playlistId']?.toString(),
+      lyrics: json['lyrics'],
     );
   }
 
@@ -55,6 +58,7 @@ class AudioModel {
       'fileSize': fileSize,
       'duration': duration,
       'playlistId': playlistId,
+      'lyrics': lyrics,
     };
   }
 }
