@@ -52,8 +52,8 @@ import retrofit2.Response;
 //github Latest commit -First commit after clip mode settings
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private static final int MIN_SPLASH_DURATION = 5000; // Minimum 2 seconds
-    private static final int MAX_SPLASH_DURATION = 10000; // Maximum 10 seconds
+    private static final int MIN_SPLASH_DURATION = 5000; // Minimum 5 seconds
+    private static final int MAX_SPLASH_DURATION = 40000; // 40 seconds to allow Render.com cold start (can take 30-60s)
 
     private boolean minSplashReached = false;
     private boolean isNavigating = false;

@@ -404,20 +404,20 @@ exports.uploadSongs = async (req, res, next) => {
     }
 
     let audioUrl = '';
-    let imageUrl = req.body.imageUrl || '';
+    let finalImageUrl = imageUrl || '';
     
-    if (process.env.CLOUDINARY_CLOUD_NAME) {
-      audioUrl = audioFile.path;
-      if (imageFile) imageUrl = imageFile.path;
+    if (process.env.FIREBASE_PROJECT_ID) {
+      audioUrl = audioFile.fileUrl || audioFile.publicUrl;
+      if (imageFile) finalImageUrl = imageFile.fileUrl || imageFile.publicUrl;
     } else {
       audioUrl = `/uploads/${audioFile.filename}`;
-      if (imageFile) imageUrl = `/uploads/${imageFile.filename}`;
+      if (imageFile) finalImageUrl = `/uploads/${imageFile.filename}`;
     }
 
     const newSong = {
       audioName: req.body.audioName || audioFile.originalname.replace(/\.[^/.]+$/, ""),
       audioUrl: audioUrl,
-      imageUrl: imageUrl,
+      imageUrl: finalImageUrl,
       categoryId: Number(categoryId)
     };
 

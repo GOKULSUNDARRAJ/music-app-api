@@ -13,7 +13,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 
 public class ApiClient {
@@ -174,10 +176,18 @@ public class ApiClient {
     private static void testSingleUrl(final String url, final ApiClientCallback callback) {
         Log.d("ApiClient", "Testing URL: " + url);
 
-        // Create a temporary Retrofit instance to test the URL
+        // Use a custom OkHttpClient with 30s timeouts.
+        // OkHttp's default is only 10s — not enough for Render.com free-tier cold starts (30-60s).
+        OkHttpClient testClient = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
+
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit testRetrofit = new Retrofit.Builder()
                 .baseUrl(url)
+                .client(testClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -186,25 +196,14 @@ public class ApiClient {
         // Test with getTermsAndConditions API call (doesn't require authentication)
         retrofit2.Call<ResponseBody> testCall = testService.getTermsAndConditions();
 
-        // Set a timeout for the test call
-        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-            if (!testCall.isExecuted()) {
-                testCall.cancel();
-                Log.w("ApiClient", "URL test TIMEOUT: " + url);
-                callback.onAllUrlsFailed("Timeout");
-            }
-        }, 5000); // 5 second timeout
-
         testCall.enqueue(new retrofit2.Callback<ResponseBody>() {
             @Override
             public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    // URL is working
                     hasWorkingUrl = true;
                     Log.d("ApiClient", "URL test SUCCESS: " + url);
                     callback.onUrlLoaded(url);
                 } else {
-                    // URL failed
                     Log.w("ApiClient", "URL test FAILED (HTTP " + response.code() + "): " + url);
                     callback.onAllUrlsFailed("HTTP " + response.code());
                 }
@@ -212,11 +211,7 @@ public class ApiClient {
 
             @Override
             public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
-                if (call.isCanceled()) {
-                    // Timeout occurred, already handled
-                    return;
-                }
-                // URL failed
+                if (call.isCanceled()) return;
                 Log.w("ApiClient", "URL test FAILED (Network error): " + url + " - " + t.getMessage());
                 callback.onAllUrlsFailed("Network error: " + t.getMessage());
             }

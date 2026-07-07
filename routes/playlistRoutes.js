@@ -4,23 +4,35 @@ const playlistController = require('../controllers/playlistController');
 const { requireUserAuth } = require('../middleware/authMiddleware');
 const multer = require('multer');
 const path = require('path');
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const admin = require('firebase-admin');
+const FirebaseStorage = require('multer-firebase-storage');
 
-// Configure Cloudinary (re-uses config if already set in other files, but safe to set again)
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-});
+// Initialize Firebase Admin if not already initialized
+if (process.env.FIREBASE_PROJECT_ID && !admin.getApps().length) {
+  admin.initializeApp({
+    credential: admin.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    }),
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+  });
+}
 
 // Configure multer for playlist image uploads
-const storage = process.env.CLOUDINARY_CLOUD_NAME ? new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'music_app_playlists',
-    resource_type: 'image',
-    public_id: (req, file) => Date.now() + '-' + Math.round(Math.random() * 1e9),
+const storage = process.env.FIREBASE_PROJECT_ID ? FirebaseStorage({
+  bucketName: process.env.FIREBASE_STORAGE_BUCKET,
+  credentials: admin.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  }),
+  public: true,
+  namePrefix: 'music_app_playlists/',
+  hooks: {
+    beforeUpload: (req, file) => {
+      file.originalname = Date.now() + '-' + Math.round(Math.random() * 1e9) + path.extname(file.originalname);
+    }
   }
 }) : multer.diskStorage({
   destination: (req, file, cb) => {

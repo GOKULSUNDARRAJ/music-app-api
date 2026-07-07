@@ -24,8 +24,18 @@ const getContentData = async (req, res, next, contentType) => {
       ]
     });
 
-    let userLikedCategories = new Set();
-    let userLikedSongs = new Set();
+    const userLikedSongs = new Set();
+    const userLikedCategories = new Set();
+
+    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const normalizeUrl = (url) => {
+      if (!url) return '';
+      if (url.startsWith('/uploads/')) return `${baseUrl}${url}`;
+      if (url.includes('localhost:')) return url.replace(/http:\/\/localhost:\d+/, baseUrl);
+      if (!url.startsWith('http')) return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+      return url;
+    };
+    
     if (req.userId) {
       const likes = await Like.findAll({ where: { userId: req.userId } });
       likes.forEach(l => {
@@ -45,15 +55,15 @@ const getContentData = async (req, res, next, contentType) => {
         categories: (sectionData.categories || []).map((category) => ({
           categoryId: formatEntityId('cat', category.id),
           categoryName: category.categoryName,
-          categoryImage: category.categoryImage,
+          categoryImage: normalizeUrl(category.categoryImage),
           adapterType: category.adapterType,
           isLiked: userLikedCategories.has(category.id),
           songs: (category.songs || []).map((song) => ({
             songId: formatEntityId('song', song.id),
             audioName: song.audioName,
-            audioUrl: song.audioUrl,
+            audioUrl: normalizeUrl(song.audioUrl),
             category: category.categoryName,
-            imageUrl: song.imageUrl,
+            imageUrl: normalizeUrl(song.imageUrl),
             categoryId: formatEntityId('cat', song.categoryId),
             isLiked: userLikedSongs.has(song.id)
           }))
@@ -82,15 +92,15 @@ const getContentData = async (req, res, next, contentType) => {
           .map(rp => ({
             categoryId: formatEntityId('cat', rp.category.id),
             categoryName: rp.category.categoryName,
-            categoryImage: rp.category.categoryImage,
+            categoryImage: normalizeUrl(rp.category.categoryImage),
             adapterType: 4,
             isLiked: userLikedCategories.has(rp.category.id),
             songs: (rp.category.songs || []).map(song => ({
               songId: formatEntityId('song', song.id),
               audioName: song.audioName,
-              audioUrl: song.audioUrl,
+              audioUrl: normalizeUrl(song.audioUrl),
               category: rp.category.categoryName,
-              imageUrl: song.imageUrl,
+              imageUrl: normalizeUrl(song.imageUrl),
               categoryId: formatEntityId('cat', song.categoryId),
               isLiked: userLikedSongs.has(song.id)
             }))
@@ -121,6 +131,14 @@ exports.getArtistData = async (req, res, next) => getContentData(req, res, next,
 exports.getLikedSongsSection = async (req, res, next) => {
   try {
     const userId = req.userId;
+    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const normalizeUrl = (url) => {
+      if (!url) return '';
+      if (url.startsWith('/uploads/')) return `${baseUrl}${url}`;
+      if (url.includes('localhost:')) return url.replace(/http:\/\/localhost:\d+/, baseUrl);
+      if (!url.startsWith('http')) return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+      return url;
+    };
 
     const likes = await Like.findAll({
       where: { userId, songId: { [require('sequelize').Op.ne]: null } },
@@ -140,9 +158,9 @@ exports.getLikedSongsSection = async (req, res, next) => {
       .map(l => ({
         songId: formatEntityId('song', l.song.id),
         audioName: l.song.audioName,
-        audioUrl: l.song.audioUrl,
+        audioUrl: normalizeUrl(l.song.audioUrl),
         category: l.song.category ? l.song.category.categoryName : 'Unknown',
-        imageUrl: l.song.imageUrl,
+        imageUrl: normalizeUrl(l.song.imageUrl),
         categoryId: l.song.categoryId ? formatEntityId('cat', l.song.categoryId) : null,
         isLiked: true
       }));

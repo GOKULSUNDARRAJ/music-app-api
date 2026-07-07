@@ -10,8 +10,8 @@ exports.createPlaylist = async (req, res, next) => {
     const userId = req.userId;
     let image = null;
     if (req.file) {
-      if (process.env.CLOUDINARY_CLOUD_NAME) {
-        image = req.file.path; // Cloudinary URL
+      if (process.env.FIREBASE_PROJECT_ID) {
+        image = req.file.fileUrl || req.file.publicUrl; // Firebase URL
       } else {
         image = `/uploads/${req.file.filename}`;
       }

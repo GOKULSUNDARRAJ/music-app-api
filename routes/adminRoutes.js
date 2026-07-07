@@ -5,31 +5,41 @@ const { requireAdminAuth } = require('../middleware/authMiddleware');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const admin = require('firebase-admin');
+const FirebaseStorage = require('multer-firebase-storage');
 
 const uploadDir = 'uploads';
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-});
+// Initialize Firebase Admin if not already initialized
+if (process.env.FIREBASE_PROJECT_ID && !admin.getApps().length) {
+  admin.initializeApp({
+    credential: admin.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    }),
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+  });
+}
 
-// Dynamic Storage: Use Cloudinary if credentials exist, else fallback to local
-const storage = process.env.CLOUDINARY_CLOUD_NAME ? new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: async (req, file) => {
-    const isAudio = file.mimetype.startsWith('audio/');
-    return {
-      folder: 'music_app_uploads',
-      resource_type: isAudio ? 'video' : 'image', // Cloudinary uses 'video' for audio files
-      public_id: Date.now() + '-' + Math.round(Math.random() * 1e9),
-    };
+// Dynamic Storage: Use Firebase if credentials exist, else fallback to local
+const storage = process.env.FIREBASE_PROJECT_ID ? FirebaseStorage({
+  bucketName: process.env.FIREBASE_STORAGE_BUCKET,
+  credentials: admin.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  }),
+  public: true,
+  namePrefix: 'music_app_uploads/',
+  hooks: {
+    beforeUpload: (req, file) => {
+      // Create a unique filename
+      file.originalname = Date.now() + '-' + Math.round(Math.random() * 1e9) + path.extname(file.originalname);
+    }
   }
 }) : multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
@@ -60,8 +70,8 @@ router.get('/dashboard', requireAdminAuth, adminController.getDashboardCounts);
 router.post('/upload', requireAdminAuth, upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
   
-  let url = req.file.path; // Cloudinary automatically puts the URL here
-  if (!process.env.CLOUDINARY_CLOUD_NAME) {
+  let url = req.file.fileUrl || req.file.publicUrl; // Firebase returns fileUrl
+  if (!process.env.FIREBASE_PROJECT_ID) {
     const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
     url = `${baseUrl}/uploads/${req.file.filename}`;
   }

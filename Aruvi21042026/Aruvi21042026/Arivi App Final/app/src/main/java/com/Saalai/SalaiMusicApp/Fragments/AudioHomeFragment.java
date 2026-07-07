@@ -323,7 +323,8 @@ public class AudioHomeFragment extends Fragment implements ArtistAdapter.OnArtis
     }
 
     private void loadData() {
-        if (isLoading) return;
+        // Removed `if (isLoading) return;` because showShimmerLoading() already sets it to true,
+        // which was causing the initial data fetch to get skipped and stuck in shimmer forever.
         isLoading = true;
 
         SharedPrefManager sp = SharedPrefManager.getInstance(getContext());

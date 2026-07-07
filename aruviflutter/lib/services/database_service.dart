@@ -1,0 +1,348 @@
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import '../models/audio_model.dart';
+import '../models/artist_category.dart';
+
+class DatabaseService {
+  static final DatabaseService _instance = DatabaseService._internal();
+  factory DatabaseService() => _instance;
+  DatabaseService._internal();
+
+  Database? _database;
+
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDB();
+    return _database!;
+  }
+
+  Future<Database> _initDB() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, 'aruvi_downloads.db');
+
+    return await openDatabase(
+      path,
+      version: 3,
+      onCreate: _createDB,
+      onUpgrade: _upgradeDB,
+    );
+  }
+
+  Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('''
+        CREATE TABLE custom_playlists (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          playlistId TEXT UNIQUE,
+          name TEXT,
+          imageUrl TEXT,
+          createdAt INTEGER
+        )
+      ''');
+      await db.execute('''
+        CREATE TABLE custom_playlist_songs (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          playlistId TEXT,
+          songId TEXT,
+          audioModelJson TEXT
+        )
+      ''');
+    }
+    if (oldVersion < 3) {
+      await db.execute('''
+        CREATE TABLE recently_played (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          songId TEXT UNIQUE,
+          audioModelJson TEXT,
+          playedAt INTEGER
+        )
+      ''');
+    }
+  }
+
+  Future<void> _createDB(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE downloads (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        songId TEXT,
+        audioName TEXT,
+        audioUrl TEXT,
+        categoryName TEXT,
+        categoryId TEXT,
+        imageUrl TEXT,
+        downloadPath TEXT,
+        duration TEXT,
+        durationInMillis INTEGER,
+        playlistId TEXT
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE custom_playlists (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        playlistId TEXT UNIQUE,
+        name TEXT,
+        imageUrl TEXT,
+        createdAt INTEGER
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE custom_playlist_songs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        playlistId TEXT,
+        songId TEXT,
+        audioModelJson TEXT
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE recently_played (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        songId TEXT UNIQUE,
+        audioModelJson TEXT,
+        playedAt INTEGER
+      )
+    ''');
+  }
+
+  Future<void> insertDownload(AudioModel song, String localPath) async {
+    final db = await database;
+    
+    // Check if exists
+    final existing = await db.query(
+      'downloads',
+      where: 'songId = ?',
+      whereArgs: [song.songId],
+    );
+
+    if (existing.isEmpty) {
+      await db.insert('downloads', {
+        'songId': song.songId,
+        'audioName': song.audioName,
+        'audioUrl': song.audioUrl,
+        'categoryName': song.categoryName,
+        'categoryId': song.categoryId,
+        'imageUrl': song.imageUrl,
+        'downloadPath': localPath,
+        'duration': song.duration,
+        'durationInMillis': song.durationInMillis,
+        'playlistId': song.playlistId,
+      });
+    } else {
+      await db.update('downloads', {
+        'downloadPath': localPath,
+      }, where: 'songId = ?', whereArgs: [song.songId]);
+    }
+  }
+
+  Future<void> removeDownload(String songId) async {
+    final db = await database;
+    await db.delete('downloads', where: 'songId = ?', whereArgs: [songId]);
+  }
+
+  Future<bool> isDownloaded(String songId) async {
+    final db = await database;
+    final maps = await db.query(
+      'downloads',
+      columns: ['songId'],
+      where: 'songId = ?',
+      whereArgs: [songId],
+    );
+    return maps.isNotEmpty;
+  }
+
+  Future<AudioModel?> getDownload(String songId) async {
+    final db = await database;
+    final maps = await db.query(
+      'downloads',
+      where: 'songId = ?',
+      whereArgs: [songId],
+    );
+
+    if (maps.isNotEmpty) {
+      final data = maps.first;
+      return AudioModel(
+        songId: data['songId'] as String?,
+        audioName: data['audioName'] as String?,
+        audioUrl: data['audioUrl'] as String?,
+        categoryName: data['categoryName'] as String?,
+        categoryId: data['categoryId'] as String?,
+        imageUrl: data['imageUrl'] as String?,
+        downloadPath: data['downloadPath'] as String?,
+        isDownloaded: true,
+        duration: data['duration'] as String?,
+        durationInMillis: data['durationInMillis'] as int?,
+        playlistId: data['playlistId'] as String?,
+      );
+    }
+    return null;
+  }
+
+  Future<List<AudioModel>> getAllDownloads() async {
+    final db = await database;
+    final maps = await db.query('downloads');
+    return maps.map((data) => AudioModel(
+      songId: data['songId'] as String?,
+      audioName: data['audioName'] as String?,
+      audioUrl: data['audioUrl'] as String?,
+      categoryName: data['categoryName'] as String?,
+      categoryId: data['categoryId'] as String?,
+      imageUrl: data['imageUrl'] as String?,
+      downloadPath: data['downloadPath'] as String?,
+      isDownloaded: true,
+      duration: data['duration'] as String?,
+      durationInMillis: data['durationInMillis'] as int?,
+      playlistId: data['playlistId'] as String?,
+    )).toList();
+  }
+
+  Future<List<ArtistCategory>> getDownloadedPlaylists() async {
+    final songs = await getAllDownloads();
+    final Map<String, ArtistCategory> categoryMap = {};
+
+    for (var song in songs) {
+      final String catId = song.categoryId ?? 'unknown';
+      if (!categoryMap.containsKey(catId)) {
+        categoryMap[catId] = ArtistCategory(
+          categoryId: catId,
+          categoryName: song.categoryName ?? 'Unknown Playlist',
+          categoryImage: song.imageUrl ?? '',
+          songs: [],
+        );
+      }
+      categoryMap[catId]!.songs.add(song);
+    }
+
+    return categoryMap.values.toList();
+  }
+
+  // --- CUSTOM PLAYLISTS ---
+
+  Future<String> createCustomPlaylist(String name) async {
+    final db = await database;
+    final playlistId = 'custom_${DateTime.now().millisecondsSinceEpoch}';
+    await db.insert('custom_playlists', {
+      'playlistId': playlistId,
+      'name': name,
+      'createdAt': DateTime.now().millisecondsSinceEpoch,
+    });
+    return playlistId;
+  }
+
+  Future<List<Map<String, dynamic>>> getCustomPlaylists() async {
+    final db = await database;
+    return await db.query('custom_playlists', orderBy: 'createdAt DESC');
+  }
+
+  Future<void> addSongToCustomPlaylist(String playlistId, AudioModel song) async {
+    final db = await database;
+    // Check if song already in playlist
+    final existing = await db.query(
+      'custom_playlist_songs',
+      where: 'playlistId = ? AND songId = ?',
+      whereArgs: [playlistId, song.songId],
+    );
+
+    if (existing.isEmpty) {
+      await db.insert('custom_playlist_songs', {
+        'playlistId': playlistId,
+        'songId': song.songId,
+        'audioModelJson': jsonEncode(song.toJson()),
+      });
+      
+      // Update playlist image if it doesn't have one
+      final playlist = await db.query('custom_playlists', where: 'playlistId = ?', whereArgs: [playlistId]);
+      if (playlist.isNotEmpty) {
+        final img = playlist.first['imageUrl'] as String?;
+        if (img == null || img.isEmpty) {
+          if (song.imageUrl != null && song.imageUrl!.isNotEmpty) {
+            await db.update('custom_playlists', {'imageUrl': song.imageUrl}, where: 'playlistId = ?', whereArgs: [playlistId]);
+          }
+        }
+      }
+    }
+  }
+  
+  Future<List<AudioModel>> getCustomPlaylistSongs(String playlistId) async {
+    final db = await database;
+    final maps = await db.query(
+      'custom_playlist_songs',
+      where: 'playlistId = ?',
+      whereArgs: [playlistId],
+    );
+    
+    return maps.map((data) {
+      final jsonStr = data['audioModelJson'] as String;
+      return AudioModel.fromJson(jsonDecode(jsonStr));
+    }).toList();
+  }
+
+  Future<List<String>> getPlaylistsContainingSong(String songId) async {
+    final db = await database;
+    final maps = await db.query(
+      'custom_playlist_songs',
+      columns: ['playlistId'],
+      where: 'songId = ?',
+      whereArgs: [songId],
+    );
+    return maps.map((e) => e['playlistId'] as String).toList();
+  }
+
+  Future<void> addToRecentlyPlayed(AudioModel song) async {
+    if (song.songId == null) return;
+    final db = await database;
+    await db.insert(
+      'recently_played',
+      {
+        'songId': song.songId,
+        'audioModelJson': jsonEncode(song.toJson()),
+        'playedAt': DateTime.now().millisecondsSinceEpoch,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<AudioModel>> getRecentlyPlayedSongs() async {
+    final db = await database;
+    final maps = await db.query(
+      'recently_played',
+      orderBy: 'playedAt DESC',
+      limit: 100, // Keep a reasonable history limit
+    );
+    return maps.map((data) {
+      final jsonStr = data['audioModelJson'] as String;
+      return AudioModel.fromJson(jsonDecode(jsonStr));
+    }).toList();
+  }
+
+  Future<void> syncRecentlyPlayedFromApi() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token') ?? '';
+      if (token.isEmpty) return;
+
+      final authHeader = token.startsWith('Bearer ') ? token : 'Bearer $token';
+
+      final response = await http.get(
+        Uri.parse('https://music-app-api-1.onrender.com/api/user/getRecentPlays'),
+        headers: {'Authorization': authHeader},
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List<dynamic> songsData = data['data'] ?? data['songs'] ?? data['recentPlays'] ?? [];
+        
+        final db = await database;
+        await db.delete('recently_played'); // Clear local cache
+
+        for (var item in songsData) {
+          final song = AudioModel.fromJson(item);
+          await addToRecentlyPlayed(song);
+        }
+      }
+    } catch (e) {
+      print('Failed to sync recently played: $e');
+    }
+  }
+}
