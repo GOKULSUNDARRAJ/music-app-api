@@ -587,7 +587,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       ),
 
                       _buildIconButton(Icons.reply, () {}),
-                      if (!widget.isLocal) ...[
+                      if (!widget.isLocal && widget.subtitle.toLowerCase() != 'artist') ...[
                         _buildIconButton(
                           _isLoadingPlaylistStatus ? Icons.add : (_isAddedToPlaylist ? Icons.check : Icons.add),
                           _isLoadingPlaylistStatus ? () {} : _togglePlaylist,
@@ -614,14 +614,35 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       ),
                       const Spacer(),
                       if (!widget.isLocal) ...[
-                        IconButton(
-                          icon: Icon(
-                            _isLoadingLike ? Icons.favorite_border : (_isLiked ? Icons.favorite : Icons.favorite_border),
-                            color: _isLoadingLike ? Colors.white54 : (_isLiked ? const Color(0xFFEB1C24) : Colors.white),
-                            size: 28,
+                        if (widget.subtitle.toLowerCase() == 'artist')
+                          GestureDetector(
+                            onTap: _isLoadingLike ? null : _toggleLike,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: _isLiked ? Colors.transparent : Colors.white,
+                                border: Border.all(color: Colors.white),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                _isLiked ? 'Following' : 'Follow',
+                                style: TextStyle(
+                                  color: _isLiked ? Colors.white : Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                          )
+                        else
+                          IconButton(
+                            icon: Icon(
+                              _isLoadingLike ? Icons.favorite_border : (_isLiked ? Icons.favorite : Icons.favorite_border),
+                              color: _isLoadingLike ? Colors.white54 : (_isLiked ? const Color(0xFFEB1C24) : Colors.white),
+                              size: 28,
+                            ),
+                            onPressed: _isLoadingLike ? null : _toggleLike,
                           ),
-                          onPressed: _isLoadingLike ? null : _toggleLike,
-                        ),
                       ],
                       const SizedBox(width: 4),
                       // Big Red Play Button in row — fades out when floating one appears
