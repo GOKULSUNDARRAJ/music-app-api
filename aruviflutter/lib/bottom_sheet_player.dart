@@ -185,11 +185,7 @@ class _BottomSheetPlayerState extends State<BottomSheetPlayer> {
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(top: 8),
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.yellow, width: 1),
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [

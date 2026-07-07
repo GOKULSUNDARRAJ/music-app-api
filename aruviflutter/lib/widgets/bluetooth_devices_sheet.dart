@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../services/bluetooth_service.dart';
 
@@ -12,12 +13,20 @@ class _BluetoothDevicesSheetState extends State<BluetoothDevicesSheet> {
   final BluetoothService _bluetoothService = BluetoothService();
   bool _isLoading = true;
   List<Map<String, String>> _pairedDevices = [];
+  List<Map<String, String>> _scannedDevices = [];
   String? _connectedDeviceName;
+  Timer? _scanTimer;
 
   @override
   void initState() {
     super.initState();
     _loadDevices();
+  }
+
+  @override
+  void dispose() {
+    _scanTimer?.cancel();
+    super.dispose();
   }
 
   Future<void> _loadDevices() async {
@@ -26,10 +35,25 @@ class _BluetoothDevicesSheetState extends State<BluetoothDevicesSheet> {
     final connected = await _bluetoothService.getConnectedDevice();
     final paired = await _bluetoothService.getPairedDevices();
     
+    // Start scanning for available devices
+    await _bluetoothService.startScan();
+    
     setState(() {
       _connectedDeviceName = connected;
       _pairedDevices = paired;
       _isLoading = false;
+    });
+
+    // Poll for scanned devices every 2 seconds
+    _scanTimer?.cancel();
+    _scanTimer = Timer.periodic(const Duration(seconds: 2), (timer) async {
+      final scanned = await _bluetoothService.getScannedDevices();
+      if (mounted) {
+        setState(() {
+          // Filter out devices that are already in the paired list
+          _scannedDevices = scanned.where((s) => !_pairedDevices.any((p) => p['address'] == s['address'])).toList();
+        });
+      }
     });
   }
 
@@ -82,60 +106,88 @@ class _BluetoothDevicesSheetState extends State<BluetoothDevicesSheet> {
             )
           else ...[
             Expanded(
-              child: ListView.separated(
-                itemCount: _pairedDevices.length,
-                separatorBuilder: (context, index) => const Divider(
-                  color: Colors.white24,
-                  height: 1,
-                  indent: 64,
-                  endIndent: 16,
-                ),
-                itemBuilder: (context, index) {
-                  final device = _pairedDevices[index];
-                  final isConnected = device['name'] == _connectedDeviceName;
-
-                  return ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    leading: const Icon(
-                      Icons.headset,
-                      color: Colors.red,
-                      size: 32,
-                    ),
-                    title: Text(
-                      device['name'] ?? 'Unknown Device',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+              child: ListView(
+                children: [
+                  if (_pairedDevices.isNotEmpty) ...[
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Text(
+                        'Paired Devices',
+                        style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          device['address'] ?? '',
-                          style: const TextStyle(color: Colors.white54, fontSize: 12),
-                        ),
-                        Text(
-                          isConnected ? 'Connected' : 'Paired',
-                          style: TextStyle(
-                            color: isConnected ? Colors.green : Colors.red,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
+                    ..._pairedDevices.map((device) {
+                      final isConnected = device['name'] == _connectedDeviceName;
+                      return _buildDeviceTile(device, isConnected: isConnected, isPaired: true);
+                    }).toList(),
+                  ],
+                  if (_scannedDevices.isNotEmpty) ...[
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Text(
+                        'Available Devices',
+                        style: TextStyle(color: Colors.white54, fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
-                      _bluetoothService.openBluetoothSettings();
-                    },
-                  );
-                },
+                    ..._scannedDevices.map((device) {
+                      return _buildDeviceTile(device, isConnected: false, isPaired: false);
+                    }).toList(),
+                  ],
+                  if (_pairedDevices.isEmpty && _scannedDevices.isEmpty)
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Center(
+                        child: Text(
+                          'No devices found',
+                          style: TextStyle(color: Colors.white54),
+                        ),
+                      ),
+                    )
+                ],
               ),
             ),
           ],
         ],
       ),
+    );
+  }
+
+  Widget _buildDeviceTile(Map<String, String> device, {required bool isConnected, required bool isPaired}) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      leading: Icon(
+        isPaired ? Icons.headset : Icons.headset_mic_outlined,
+        color: isPaired ? Colors.red : Colors.white54,
+        size: 32,
+      ),
+      title: Text(
+        device['name'] ?? 'Unknown Device',
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            device['address'] ?? '',
+            style: const TextStyle(color: Colors.white54, fontSize: 12),
+          ),
+          Text(
+            isConnected ? 'Connected' : (isPaired ? 'Paired' : 'Available'),
+            style: TextStyle(
+              color: isConnected ? Colors.green : (isPaired ? Colors.red : Colors.white54),
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+      onTap: () {
+        Navigator.pop(context);
+        _bluetoothService.openBluetoothSettings();
+      },
     );
   }
 }

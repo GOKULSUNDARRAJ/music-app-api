@@ -21,6 +21,23 @@ class BluetoothService {
     }
   }
 
+  Future<void> startScan() async {
+    try {
+      await _channel.invokeMethod('startScan');
+    } catch (e) {
+      // Ignore
+    }
+  }
+
+  Future<List<Map<String, String>>> getScannedDevices() async {
+    try {
+      final List<dynamic> devices = await _channel.invokeMethod('getScannedDevices');
+      return devices.map((e) => Map<String, String>.from(e as Map)).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<void> openBluetoothSettings() async {
     try {
       await _channel.invokeMethod('openBluetoothSettings');
