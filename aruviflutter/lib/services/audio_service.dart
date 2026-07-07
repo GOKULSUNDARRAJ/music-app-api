@@ -91,6 +91,7 @@ class AudioService extends ChangeNotifier {
     _player.currentIndexStream.listen((index) {
       if (index != null && index != _currentIndex) {
         _currentIndex = index;
+        _isClipModeActive = false; // Reset clip mode when song changes
         lastSavedPositionInSeconds = 0; // Reset saved position for new song
         SharedPreferences.getInstance().then((prefs) {
           prefs.setInt('last_position', 0);
@@ -171,6 +172,7 @@ class AudioService extends ChangeNotifier {
     _playlist = songs;
     _currentIndex = initialIndex;
     _currentPlaylistName = playlistName;
+    _isClipModeActive = false; // Reset clip mode when playing new playlist/song
     
     try {
       final List<AudioSource> audioSources = [];
