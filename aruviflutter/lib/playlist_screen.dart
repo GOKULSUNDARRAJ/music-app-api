@@ -139,10 +139,17 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   Future<void> _fetchLikeStatus() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final likedList = prefs.getStringList('local_liked_playlists') ?? [];
+      final likedListStr = prefs.getStringList('local_liked_playlists_data') ?? [];
       if (mounted) {
         setState(() {
-          _isLiked = likedList.contains(widget.categoryId);
+          _isLiked = likedListStr.any((item) {
+            try {
+              final decoded = json.decode(item);
+              return decoded['categoryId'] == widget.categoryId;
+            } catch (e) {
+              return false;
+            }
+          });
           _isLoadingLike = false;
         });
       }
@@ -239,17 +246,28 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final likedList = prefs.getStringList('local_liked_playlists') ?? [];
+      final likedListStr = prefs.getStringList('local_liked_playlists_data') ?? [];
       
-      if (_isLiked) {
-        if (!likedList.contains(widget.categoryId)) {
-          likedList.add(widget.categoryId);
+      likedListStr.removeWhere((item) {
+        try {
+          final decoded = json.decode(item);
+          return decoded['categoryId'] == widget.categoryId;
+        } catch (e) {
+          return false;
         }
-      } else {
-        likedList.remove(widget.categoryId);
+      });
+
+      if (_isLiked) {
+        final category = ArtistCategory(
+          categoryId: widget.categoryId,
+          categoryName: widget.title,
+          categoryImage: widget.imageUrl,
+          songs: widget.songs,
+        );
+        likedListStr.add(json.encode(category.toJson()));
       }
       
-      await prefs.setStringList('local_liked_playlists', likedList);
+      await prefs.setStringList('local_liked_playlists_data', likedListStr);
     } catch (e) {
       debugPrint('Failed to toggle like locally: $e');
       if (mounted) {

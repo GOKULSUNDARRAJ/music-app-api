@@ -27,33 +27,26 @@ class _LikedScreenState extends State<LikedScreen> {
   Future<void> _fetchLikedItems() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('access_token') ?? '';
-      final authHeader = token.startsWith('Bearer ') ? token : 'Bearer $token';
-
-      final response = await http.get(
-        Uri.parse('https://music-app-api-1.onrender.com/api/categories'),
-        headers: {'Authorization': authHeader},
-      );
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['sections'] != null && (data['sections'] as List).isNotEmpty) {
-          final sectionData = data['sections'][0];
-          final section = PlaylistSection.fromJson(sectionData);
-          if (mounted) {
-            setState(() {
-              _likedItems = section.categories ?? [];
-              _isLoading = false;
-            });
-          }
-        } else {
-          if (mounted) setState(() => _isLoading = false);
+      final likedListStr = prefs.getStringList('local_liked_playlists_data') ?? [];
+      
+      final List<ArtistCategory> loadedItems = [];
+      for (var item in likedListStr) {
+        try {
+          final decoded = json.decode(item);
+          loadedItems.add(ArtistCategory.fromJson(decoded));
+        } catch (e) {
+          debugPrint('Error parsing liked item: $e');
         }
-      } else {
-        if (mounted) setState(() => _isLoading = false);
+      }
+
+      if (mounted) {
+        setState(() {
+          _likedItems = loadedItems.reversed.toList(); // Newest first
+          _isLoading = false;
+        });
       }
     } catch (e) {
-      debugPrint('Failed to load liked items: $e');
+      debugPrint('Failed to load local liked items: $e');
       if (mounted) setState(() => _isLoading = false);
     }
   }
