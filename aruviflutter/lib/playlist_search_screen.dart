@@ -106,7 +106,7 @@ class _PlaylistSearchScreenState extends State<PlaylistSearchScreen> {
                       height: 50,
                       child: song.imageUrl != null
                           ? SafeNetworkImage(
-                              imageUrl: song.imageUrl!,
+                              url: song.imageUrl!,
                               fit: BoxFit.cover,
                             )
                           : Container(
