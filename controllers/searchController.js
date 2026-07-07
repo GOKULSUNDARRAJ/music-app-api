@@ -107,3 +107,48 @@ exports.search = async (req, res, next) => {
     return next(error);
   }
 };
+
+exports.getCategorySongs = async (req, res, next) => {
+  try {
+    const categoryIdStr = req.params.categoryId;
+    const idParts = categoryIdStr.split('_');
+    const categoryId = idParts.length > 1 ? parseInt(idParts[1], 10) : parseInt(categoryIdStr, 10);
+
+    const category = await Category.findByPk(categoryId, {
+      include: [
+        {
+          model: Song,
+          as: 'songs'
+        }
+      ]
+    });
+
+    if (!category) {
+      return res.status(404).json({ status: false, message: 'Category not found', songs: [] });
+    }
+
+    let userLikedSongs = new Set();
+    if (req.userId) {
+      const likes = await Like.findAll({ where: { userId: req.userId, songId: { [Op.ne]: null } } });
+      likes.forEach(l => userLikedSongs.add(l.songId));
+    }
+
+    const songs = (category.songs || []).map(song => ({
+      songId: formatEntityId('song', song.id),
+      audioName: song.audioName,
+      audioUrl: song.audioUrl,
+      category: category.categoryName,
+      imageUrl: song.imageUrl,
+      categoryId: formatEntityId('cat', song.categoryId),
+      isLiked: userLikedSongs.has(song.id)
+    }));
+
+    return res.status(200).json({
+      status: true,
+      songs: songs
+    });
+  } catch (err) {
+    console.error('Error fetching category songs:', err);
+    return res.status(500).json({ status: false, error: 'Internal Server Error' });
+  }
+};
