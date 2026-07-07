@@ -25,48 +25,43 @@ class _SplashScreenState extends State<SplashScreen> {
     final bool onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
     final String accessToken = prefs.getString('access_token') ?? '';
 
-    if (accessToken.isNotEmpty) {
-      final hasLocalMenu = prefs.getString('top_navigation') != null && prefs.getString('bottom_navigation') != null;
+    // Always show splash for at least 1.5 seconds so user sees the logo
+    final minDelay = Future.delayed(const Duration(milliseconds: 1500));
 
+    if (accessToken.isNotEmpty) {
       Future<void> fetchMenu() async {
         try {
           final authHeader = accessToken.startsWith('Bearer ') ? accessToken : 'Bearer $accessToken';
           final response = await http.post(
             Uri.parse('https://music-app-api-1.onrender.com/api/secure/appMenuList'),
             headers: {'Authorization': authHeader},
-          ).timeout(const Duration(seconds: 10));
+          ).timeout(const Duration(seconds: 5)); // 5s max — don't block UI
 
           if (response.statusCode == 200) {
             final data = json.decode(response.body);
             if (data['status'] == true) {
               final topMenuJson = json.encode(data['topMenu']);
               final bottomMenuJson = json.encode(data['bottomMenu']);
-              
               await prefs.setString('top_navigation', topMenuJson);
               await prefs.setString('bottom_navigation', bottomMenuJson);
               debugPrint('Successfully saved app menu lists');
             }
           }
         } catch (e) {
-          debugPrint('Error fetching app menu: $e');
+          debugPrint('Error fetching app menu (will use cached if available): $e');
         }
       }
 
-      if (hasLocalMenu) {
-        // Fire and forget so we load FAST
-        fetchMenu();
-        await Future.delayed(const Duration(milliseconds: 300)); // Tiny delay for smooth transition
-      } else {
-        // Wait for it if we don't have it
-        await fetchMenu();
-      }
+      // Always fire fetch in background; wait for both fetch and min delay to finish
+      await Future.wait([fetchMenu(), minDelay]);
 
       if (!mounted) return;
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainActivity()));
     } else {
-      await Future.delayed(const Duration(seconds: 1)); // Small delay for branding
+      // Wait at least 1.5s so user sees the splash branding
+      await minDelay;
       if (!mounted) return;
-      
+
       if (onboardingComplete) {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const SignUpScreen()));
       } else {
