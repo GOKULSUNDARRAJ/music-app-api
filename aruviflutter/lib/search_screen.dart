@@ -4,6 +4,8 @@ import 'services/database_service.dart';
 import 'services/audio_service.dart';
 import 'models/audio_model.dart';
 import 'models/artist_category.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'widgets/safe_network_image.dart';
 import 'widgets/song_options_sheet.dart';
 import 'playlist_screen.dart';
@@ -29,12 +31,78 @@ class _SearchScreenState extends State<SearchScreen> {
   List<AudioModel> _songs = [];
   List<ArtistCategory> _playlists = [];
   
+  // Recent Searches
+  List<String> _recentSearches = [];
+  
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    _loadRecentSearches();
+  }
+
+  Future<void> _loadRecentSearches() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final recent = prefs.getStringList('recent_searches') ?? [];
+      if (mounted) {
+        setState(() {
+          _recentSearches = recent;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error loading recent searches: $e');
+    }
+  }
+
+  Future<void> _saveRecentSearch(String query) async {
+    final trimmed = query.trim();
+    if (trimmed.isEmpty) return;
+    
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final current = prefs.getStringList('recent_searches') ?? [];
+      
+      // Remove if it already exists to put it at the top
+      current.remove(trimmed);
+      
+      // Add to top
+      current.insert(0, trimmed);
+      
+      // Keep only last 10
+      if (current.length > 10) {
+        current.removeLast();
+      }
+      
+      await prefs.setStringList('recent_searches', current);
+      
+      if (mounted) {
+        setState(() {
+          _recentSearches = current;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error saving recent search: $e');
+    }
+  }
+
+  Future<void> _removeRecentSearch(String query) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final current = prefs.getStringList('recent_searches') ?? [];
+      current.remove(query);
+      await prefs.setStringList('recent_searches', current);
+      
+      if (mounted) {
+        setState(() {
+          _recentSearches = current;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error removing recent search: $e');
+    }
   }
 
   @override
@@ -80,6 +148,8 @@ class _SearchScreenState extends State<SearchScreen> {
       _songs = [];
       _playlists = [];
     });
+
+    _saveRecentSearch(query);
 
     final result = await DatabaseService().searchApi(query, page: _currentPage);
 
@@ -152,7 +222,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _buildUnifiedList() {
     if (_currentQuery.isEmpty) {
-      return _buildEmptyState("Search for your favorite songs and playlists");
+      return _buildRecentSearches();
     }
 
     if (_isLoading && _currentPage == 1) {
@@ -198,6 +268,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ? SafeNetworkImage(
                   url: song.imageUrl!,
                   fit: BoxFit.cover,
+                  memCacheWidth: 150,
                 )
               : Container(
                   color: const Color(0xFF2B2B2B),
@@ -287,6 +358,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ? SafeNetworkImage(
                   url: playlist.categoryImage!,
                   fit: BoxFit.cover,
+                  memCacheWidth: 150,
                 )
               : Container(
                   color: const Color(0xFF2B2B2B),
@@ -330,11 +402,69 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  Widget _buildRecentSearches() {
+    if (_recentSearches.isEmpty) {
+      return _buildEmptyState("Search for your favorite songs and playlists");
+    }
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 20, 16, 8),
+          child: Text(
+            "Recent searches",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _recentSearches.length,
+            itemBuilder: (context, index) {
+              final query = _recentSearches[index];
+              return ListTile(
+                leading: const Icon(Icons.history, color: Colors.white54),
+                title: Text(
+                  query,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                trailing: IconButton(
+                  icon: const Icon(Icons.close, color: Colors.white54, size: 20),
+                  onPressed: () {
+                    _removeRecentSearch(query);
+                  },
+                ),
+                onTap: () {
+                  _searchController.text = query;
+                  _onSearchChanged(query);
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildEmptyState(String message) {
     return Center(
-      child: Text(
-        message,
-        style: TextStyle(color: Colors.white.withValues(alpha: 0.5), fontSize: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.search, size: 64, color: Colors.white.withValues(alpha: 0.2)),
+          const SizedBox(height: 16),
+          Text(
+            message,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.5),
+              fontSize: 16,
+            ),
+          ),
+        ],
       ),
     );
   }

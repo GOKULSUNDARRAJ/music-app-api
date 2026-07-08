@@ -55,6 +55,9 @@ class DownloadService extends ChangeNotifier {
         // Check if already downloaded
         final isDownloaded = await DatabaseService().isDownloaded(song.songId!);
         if (isDownloaded) {
+          // If already downloaded, update its category to associate it with THIS playlist
+          await DatabaseService().updateDownloadCategory(song.songId!, categoryId, categoryName);
+          
           completed++;
           _downloadProgress[categoryId] = completed / songs.length;
           notifyListeners();
@@ -68,8 +71,9 @@ class DownloadService extends ChangeNotifier {
           final response = await http.get(uri);
           
           if (response.statusCode == 200) {
-            // Force the category name so it saves correctly in DB
+            // Force the category name and ID so it saves and groups correctly in DB
             song.categoryName = categoryName;
+            song.categoryId = categoryId;
 
             final file = File('${dir.path}/song_${song.songId}.mp3');
             await file.writeAsBytes(response.bodyBytes);

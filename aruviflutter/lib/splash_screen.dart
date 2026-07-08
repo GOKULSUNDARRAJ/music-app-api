@@ -78,18 +78,13 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FractionallySizedBox(
-              widthFactor: 0.6,
-              child: AspectRatio(
-                aspectRatio: 1.0,
-                child: Image.asset(
-                  'assets/images/arivumusiclogo.png',
-                  fit: BoxFit.contain,
-                ),
+            SizedBox(
+              width: 166.66,
+              child: Image.asset(
+                'assets/images/arivumusiclogo.png',
+                fit: BoxFit.contain,
               ),
             ),
-            const SizedBox(height: 20),
-            const CircularProgressIndicator(color: Color(0xFFEB1C24)),
           ],
         ),
       ),

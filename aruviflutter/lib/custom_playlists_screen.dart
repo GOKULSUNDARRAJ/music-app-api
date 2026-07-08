@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'services/database_service.dart';
 import 'playlist_screen.dart';
 import 'widgets/create_playlist_dialog.dart';
+import 'select_songs_screen.dart';
 
 class CustomPlaylistsScreen extends StatefulWidget {
   const CustomPlaylistsScreen({super.key});
@@ -39,9 +40,11 @@ class _CustomPlaylistsScreenState extends State<CustomPlaylistsScreen> {
           builder: (context) => PlaylistScreen(
             categoryId: id,
             title: name,
-            subtitle: '\${songs.length} Songs',
+            subtitle: '${songs.length} Songs',
             imageUrl: imageUrl ?? '',
             songs: songs,
+            isLocal: true,
+            isCustomPlaylist: true,
           ),
         ),
       ).then((_) => _loadPlaylists()); // Refresh if they changed it
@@ -72,7 +75,20 @@ class _CustomPlaylistsScreenState extends State<CustomPlaylistsScreen> {
                 builder: (context) => const CreatePlaylistDialog(),
               );
               if (name != null && name.isNotEmpty) {
-                await DatabaseService().createCustomPlaylist(name);
+                final playlistId = await DatabaseService().createCustomPlaylist(name);
+                
+                if (mounted) {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SelectSongsScreen(
+                        playlistId: playlistId,
+                        playlistName: name,
+                      ),
+                    ),
+                  );
+                }
+                
                 _loadPlaylists(); // Refresh
               }
             },

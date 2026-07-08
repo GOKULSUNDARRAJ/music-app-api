@@ -15,6 +15,10 @@ import 'home_screen.dart';
 import 'search_screen.dart';
 import 'library_screen.dart';
 import 'podcast_screen.dart';
+import 'widgets/create_playlist_dialog.dart';
+import 'select_songs_screen.dart';
+import 'custom_playlists_screen.dart';
+import 'services/database_service.dart';
 
 class MainActivity extends StatefulWidget {
   const MainActivity({super.key});
@@ -31,8 +35,7 @@ class _MainActivityState extends State<MainActivity> {
   List<dynamic> _bottomNavItems = [
     {"bottommenuName": "Home"},
     {"bottommenuName": "Search"},
-    {"bottommenuName": "Library"},
-    {"bottommenuName": "Podcast"}
+    {"bottommenuName": "Library"}
   ];
   bool _isLoadingNav = false;
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
@@ -93,8 +96,7 @@ class _MainActivityState extends State<MainActivity> {
       _bottomNavItems = [
         {"bottommenuName": "Home"},
         {"bottommenuName": "Search"},
-        {"bottommenuName": "Library"},
-        {"bottommenuName": "Podcast"}
+        {"bottommenuName": "Library"}
       ];
       _navigatorKeys.clear();
       for (int i = 0; i < _bottomNavItems.length; i++) {
@@ -141,8 +143,135 @@ class _MainActivityState extends State<MainActivity> {
       case 'library': return Icons.library_music;
       case 'podcast':
       case 'potcast': return Icons.podcasts;
+      case 'create': return Icons.add_circle_outline;
       default: return Icons.circle;
     }
+  }
+
+  void _showCreateBottomSheet(BuildContext parentContext) {
+    showModalBottomSheet(
+      context: parentContext,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      useRootNavigator: true,
+      builder: (BuildContext sheetContext) {
+        return AnimatedBuilder(
+          animation: AudioService(),
+          builder: (context, child) {
+            final bool hasMiniPlayer = AudioService().currentSong != null;
+            // Standard bottom nav is ~60px, mini player is ~70px.
+            // If mini player is active, we add extra padding.
+            final double bottomPadding = hasMiniPlayer ? 130.0 : 64.0;
+            
+            // Calculate exactly where the 'create' tab is (4th out of 4 tabs)
+            final double screenWidth = MediaQuery.of(context).size.width;
+            final double cancelRightPadding = (screenWidth / 8) - 18; // 18 is half the button width
+
+            return SafeArea(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  // The Menu, with dynamic bottom padding
+                  Padding(
+                    padding: EdgeInsets.only(left: 12, right: 12, bottom: bottomPadding),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF242424),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 12),
+                          ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.white.withOpacity(0.1),
+                              radius: 24,
+                              child: const Icon(Icons.music_note, color: Colors.white70, size: 26),
+                            ),
+                            title: const Text('Playlist', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                            subtitle: const Text('Create a playlist with songs', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                            onTap: () async {
+                              Navigator.pop(sheetContext);
+                              final name = await showDialog<String>(
+                                context: parentContext,
+                                builder: (context) => const CreatePlaylistDialog(),
+                              );
+                              if (name != null && name.isNotEmpty) {
+                                final playlistId = await DatabaseService().createCustomPlaylist(name);
+                                if (parentContext.mounted) {
+                                  _navigatorKeys[_currentIndex].currentState?.push(
+                                    MaterialPageRoute(
+                                      builder: (context) => SelectSongsScreen(
+                                        playlistId: playlistId,
+                                        playlistName: name,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                          ),
+                          ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.white.withOpacity(0.1),
+                              radius: 24,
+                              child: const Icon(Icons.queue_music, color: Colors.white70, size: 26),
+                            ),
+                            title: const Text('View your playlists', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                            subtitle: const Text('See all your created playlists', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                            onTap: () {
+                              Navigator.pop(sheetContext);
+                              _navigatorKeys[_currentIndex].currentState?.push(
+                                MaterialPageRoute(
+                                  builder: (context) => const CustomPlaylistsScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.white.withOpacity(0.1),
+                              radius: 24,
+                              child: const Icon(Icons.merge_type, color: Colors.white70, size: 26),
+                            ),
+                            title: const Text('Blend', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                            subtitle: const Text('Combine your friends\' tastes into a playlist', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                            onTap: () {
+                              Navigator.pop(sheetContext);
+                              ScaffoldMessenger.of(parentContext).showSnackBar(const SnackBar(content: Text('Coming soon!')));
+                            },
+                          ),
+                          const SizedBox(height: 12),
+                        ],
+                      ),
+                    ),
+                  ),
+                  
+                  // The Cancel Button, pinned perfectly over the Create tab
+                  Positioned(
+                    bottom: 12, // Moved slightly up so it's perfectly centered on the nav bar
+                    right: cancelRightPadding,
+                    child: GestureDetector(
+                      onTap: () => Navigator.pop(sheetContext),
+                      child: Container(
+                        width: 36,
+                        height: 36,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.close, color: Colors.black, size: 16),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -267,6 +396,12 @@ class _MainActivityState extends State<MainActivity> {
         selectedItemColor: const Color(0xFFEB1C24), // Active color
         unselectedItemColor: Colors.grey, // Inactive color
         onTap: (index) {
+          String name = _bottomNavItems[index]['bottommenuName'].toString().toLowerCase().trim();
+          if (name == 'create') {
+            _showCreateBottomSheet(context);
+            return;
+          }
+
           if (_currentIndex == index) {
             // If already on this tab, pop to root of the tab
             _navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);

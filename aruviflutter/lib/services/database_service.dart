@@ -178,6 +178,20 @@ class DatabaseService {
     await db.delete('downloads', where: 'songId = ?', whereArgs: [songId]);
   }
 
+  Future<void> updateDownloadCategory(String songId, String categoryId, String categoryName) async {
+    final db = await database;
+    await db.update(
+      'downloads',
+      {
+        'categoryId': categoryId,
+        'categoryName': categoryName,
+        'isPlaylist': 1,
+      },
+      where: 'songId = ?',
+      whereArgs: [songId],
+    );
+  }
+
   Future<bool> isDownloaded(String songId) async {
     final db = await database;
     final maps = await db.query(
@@ -187,6 +201,12 @@ class DatabaseService {
       whereArgs: [songId],
     );
     return maps.isNotEmpty;
+  }
+
+  Future<Set<String>> getAllDownloadedSongIds() async {
+    final db = await database;
+    final maps = await db.query('downloads', columns: ['songId']);
+    return maps.map((e) => e['songId'] as String).toSet();
   }
 
   Future<bool> isSingleDownloaded(String songId) async {
@@ -367,6 +387,42 @@ class DatabaseService {
         }
       }
     }
+  }
+
+  Future<void> addMultipleSongsToCustomPlaylist(String playlistId, List<AudioModel> songs) async {
+    final db = await database;
+    final batch = db.batch();
+    bool hasSetImage = false;
+    
+    final existingMap = await db.query(
+      'custom_playlist_songs',
+      columns: ['songId'],
+      where: 'playlistId = ?',
+      whereArgs: [playlistId],
+    );
+    final existingIds = existingMap.map((e) => e['songId'] as String).toSet();
+
+    for (var song in songs) {
+      if (!existingIds.contains(song.songId)) {
+        batch.insert('custom_playlist_songs', {
+          'playlistId': playlistId,
+          'songId': song.songId,
+          'audioModelJson': jsonEncode(song.toJson()),
+        });
+        
+        if (!hasSetImage && song.imageUrl != null && song.imageUrl!.isNotEmpty) {
+          batch.update(
+            'custom_playlists', 
+            {'imageUrl': song.imageUrl}, 
+            where: 'playlistId = ? AND (imageUrl IS NULL OR imageUrl = "")', 
+            whereArgs: [playlistId]
+          );
+          hasSetImage = true;
+        }
+      }
+    }
+    
+    await batch.commit(noResult: true);
   }
   
   Future<List<AudioModel>> getCustomPlaylistSongs(String playlistId) async {

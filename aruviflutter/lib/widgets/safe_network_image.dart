@@ -12,6 +12,8 @@ class SafeNetworkImage extends StatelessWidget {
   final BoxFit fit;
   final Widget? placeholder;
   final BorderRadius? borderRadius;
+  final int? memCacheWidth;
+  final int? memCacheHeight;
 
   const SafeNetworkImage({
     Key? key,
@@ -21,6 +23,8 @@ class SafeNetworkImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.placeholder,
     this.borderRadius,
+    this.memCacheWidth,
+    this.memCacheHeight,
   }) : super(key: key);
 
   @override
@@ -40,6 +44,8 @@ class SafeNetworkImage extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
+      memCacheWidth: memCacheWidth,
+      memCacheHeight: memCacheHeight,
       placeholder: (context, url) => _wrap(
         Container(
           width: width,

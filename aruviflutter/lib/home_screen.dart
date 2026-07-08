@@ -18,13 +18,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   TabController? _tabController;
 
-  List<TopNavItem> _tabs = [];
+  List<TopNavItem> _tabs = [
+    TopNavItem(topmenuId: 1, topmenuName: 'ALL'),
+    TopNavItem(topmenuId: 3, topmenuName: 'ARTIST'),
+    TopNavItem(topmenuId: 4, topmenuName: 'DIVOTIONAL'),
+  ];
   int _selectedIndex = 0;
-  bool _isLoading = true;
+  bool _isLoading = false; // We can set this to false initially since we have default tabs, but let's keep it true if we want to show loading indicator for the body.
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: _tabs.length, vsync: this);
+    _tabController!.addListener(() {
+      if (!_tabController!.indexIsChanging) {
+        setState(() {
+          _selectedIndex = _tabController!.index;
+        });
+      }
+    });
     _loadTabs();
   }
 
@@ -35,34 +47,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       
       if (topNavJson != null && topNavJson.isNotEmpty) {
         final List<dynamic> parsed = json.decode(topNavJson);
-        _tabs = parsed.map((e) => TopNavItem.fromJson(e)).toList();
+        final loadedTabs = parsed.map((e) => TopNavItem.fromJson(e)).toList();
+        if (loadedTabs.isNotEmpty) {
+          setState(() {
+            _tabs = loadedTabs;
+            // Only reinitialize tab controller if length changed or we want to be safe
+            if (_tabController?.length != _tabs.length) {
+              _tabController?.dispose();
+              _tabController = TabController(length: _tabs.length, vsync: this);
+              _tabController!.addListener(() {
+                if (!_tabController!.indexIsChanging) {
+                  setState(() {
+                    _selectedIndex = _tabController!.index;
+                  });
+                }
+              });
+            }
+          });
+        }
       }
     } catch (e) {
       debugPrint('Error loading tabs: $e');
     }
-    
-    // Fallback if empty
-    if (_tabs.isEmpty) {
-      _tabs = [
-        TopNavItem(topmenuId: 1, topmenuName: 'ALL'),
-        TopNavItem(topmenuId: 2, topmenuName: 'MUSIC'),
-        TopNavItem(topmenuId: 3, topmenuName: 'ARTIST'),
-        TopNavItem(topmenuId: 4, topmenuName: 'DIVOTIONAL'),
-      ];
-    }
-
-    _tabController = TabController(length: _tabs.length, vsync: this);
-    _tabController!.addListener(() {
-      if (!_tabController!.indexIsChanging) {
-        setState(() {
-          _selectedIndex = _tabController!.index;
-        });
-      }
-    });
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
