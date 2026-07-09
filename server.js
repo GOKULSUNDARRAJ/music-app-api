@@ -35,15 +35,20 @@ app.get('/api', (req, res) => {
 });
 
 app.use('/api/admin', adminRoutes);
+
+// Mount home routes FIRST so exact matches like /api/artist are handled
+// by homeRoutes (which has no strict user auth) before falling through
+// to artistRoutes which has strict requireUserAuth middleware.
+app.use('/api', homeRoutes);
+app.use('/api', userRoutes);
+app.use('/api', likeRoutes);
+app.use('/api', playlistRoutes);
+
 app.use('/api/artist', artistRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/likes', likeRoutes);
 app.use('/api/playlist', playlistRoutes);
-app.use('/api', homeRoutes);
-app.use('/api', userRoutes);
-app.use('/api', likeRoutes);
-app.use('/api', playlistRoutes);
 
 
 // Serve Static Frontend in Production
