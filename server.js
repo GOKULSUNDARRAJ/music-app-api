@@ -10,6 +10,7 @@ const searchRoutes = require('./routes/searchRoutes');
 const playlistRoutes = require('./routes/playlistRoutes');
 const likeRoutes = require('./routes/likeRoutes');
 const artistRoutes = require('./routes/artistRoutes');
+const adRoutes = require('./routes/adRoutes');
 const { notFound, errorHandler } = require('./controllers/errorController');
 
 const app = express();
@@ -46,6 +47,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/likes', likeRoutes);
 app.use('/api/playlist', playlistRoutes);
+app.use('/api/ad', adRoutes);
 
 // Fallback for root /api mounts for specific routes that rely on it
 app.use('/api', userRoutes);

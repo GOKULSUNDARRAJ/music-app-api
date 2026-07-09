@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import api, { setAuthToken } from './api';
 
-const TABS = ['Dashboard', 'Sections', 'Categories', 'Songs', 'Bulk Songs', 'Lyrics', 'Menu', 'Users'];
+const TABS = ['Dashboard', 'Sections', 'Categories', 'Songs', 'Bulk Songs', 'Lyrics', 'Menu', 'Users', 'Ads'];
 const formatEntityId = (prefix, id) => `${prefix}_${String(id).padStart(3, '0')}`;
 const CONTENT_TYPES = [
   { value: '', label: 'All' },
@@ -123,6 +123,7 @@ function App() {
         {activeTab === 'Lyrics' && <LyricsManager onDataChange={onDataChange} />}
         {activeTab === 'Menu' && <MenuManager onDataChange={onDataChange} />}
         {activeTab === 'Users' && <Users onDataChange={onDataChange} />}
+        {activeTab === 'Ads' && <AdsManager />}
 
       </main>
     </div>
@@ -1377,6 +1378,132 @@ function LyricsManager() {
             )}
           </>
         )}
+      </div>
+    </div>
+  );
+}
+
+function AdsManager() {
+  const [ads, setAds] = useState([]);
+  const [form, setForm] = useState({ adTitle: '', adType: 'audio', redirectUrl: '', mediaFile: null, imageFile: null });
+  const [isUploading, setIsUploading] = useState(false);
+
+  const loadAds = async () => {
+    try {
+      const { data } = await api.get('/admin/ad');
+      setAds(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => { loadAds(); }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.mediaFile) return alert('Please select a media file (Audio/Video).');
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('adTitle', form.adTitle);
+    formData.append('adType', form.adType);
+    if (form.redirectUrl) formData.append('redirectUrl', form.redirectUrl);
+    formData.append('media', form.mediaFile);
+    if (form.imageFile) formData.append('image', form.imageFile);
+
+    try {
+      await api.post('/admin/ad', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      setForm({ adTitle: '', adType: 'audio', redirectUrl: '', mediaFile: null, imageFile: null });
+      await loadAds();
+      alert('Ad uploaded successfully!');
+    } catch (err) {
+      alert(err.response?.data?.message || 'Error uploading ad');
+    }
+    setIsUploading(false);
+  };
+
+  const deleteAd = async (id) => {
+    if (!window.confirm('Delete this ad?')) return;
+    await api.delete(`/admin/ad/${id}`);
+    await loadAds();
+  };
+
+  return (
+    <div>
+      <h2>Advertisements</h2>
+      <div className="card form">
+        <form onSubmit={handleSubmit} className="inline">
+          <div>
+            <label>Ad Title</label>
+            <input type="text" value={form.adTitle} onChange={(e) => setForm(p => ({...p, adTitle: e.target.value}))} required />
+          </div>
+          <div>
+            <label>Ad Type</label>
+            <select value={form.adType} onChange={(e) => setForm(p => ({...p, adType: e.target.value}))}>
+              <option value="audio">Audio Ad (MP3)</option>
+              <option value="video">Video Ad (MP4)</option>
+            </select>
+          </div>
+          <div>
+            <label>Redirect URL (Optional)</label>
+            <input type="text" value={form.redirectUrl} onChange={(e) => setForm(p => ({...p, redirectUrl: e.target.value}))} />
+          </div>
+          <div>
+            <label>{form.adType === 'video' ? 'Video File' : 'Audio File'}</label>
+            <input type="file" accept={form.adType === 'video' ? "video/*" : "audio/*"} onChange={(e) => setForm(p => ({...p, mediaFile: e.target.files[0]}))} required />
+          </div>
+          {form.adType === 'audio' && (
+            <div>
+              <label>Cover Image (Optional)</label>
+              <input type="file" accept="image/*" onChange={(e) => setForm(p => ({...p, imageFile: e.target.files[0]}))} />
+            </div>
+          )}
+          <div className="actions" style={{ alignItems: 'flex-end', display: 'flex' }}>
+            <button type="submit" disabled={isUploading}>{isUploading ? 'Uploading...' : 'Upload Ad'}</button>
+          </div>
+        </form>
+      </div>
+
+      <div className="table-container" style={{ marginTop: '20px' }}>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Preview</th>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Media Link</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ads.map(ad => (
+              <tr key={ad.id}>
+                <td><span className="id-badge">ad_{String(ad.id).padStart(3, '0')}</span></td>
+                <td>
+                  {ad.imageUrl ? (
+                    <img src={ad.imageUrl} alt="Ad" style={{width: 50, height: 50, objectFit: 'cover', borderRadius: 4}} />
+                  ) : ad.adType === 'video' ? (
+                    <div style={{width: 50, height: 50, background: '#222', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, borderRadius: 4}}>VIDEO</div>
+                  ) : (
+                    <div style={{width: 50, height: 50, background: '#222', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, borderRadius: 4}}>AUDIO</div>
+                  )}
+                </td>
+                <td>{ad.adTitle}</td>
+                <td><span className="id-badge" style={{background: ad.adType === 'video' ? '#e11d48' : '#7c3aed'}}>{ad.adType.toUpperCase()}</span></td>
+                <td>
+                  <a href={ad.mediaUrl} target="_blank" rel="noreferrer" style={{color: '#a78bfa'}}>View Media</a>
+                </td>
+                <td>
+                  <button className="btn-danger" onClick={() => deleteAd(ad.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+            {ads.length === 0 && (
+              <tr><td colSpan="6" style={{textAlign: 'center', padding: '20px'}}>No advertisements found</td></tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

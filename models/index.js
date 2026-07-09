@@ -7,6 +7,7 @@ const User = require('./User');
 const RecentlyPlayed = require('./RecentlyPlayed');
 const Like = require('./Like');
 const Follow = require('./Follow');
+const Advertisement = require('./Advertisement');
 const Playlist = require('./Playlist')(sequelize);
 const PlaylistItem = require('./PlaylistItem')(sequelize);
 
@@ -73,6 +74,4 @@ PlaylistItem.belongsTo(Song, { foreignKey: 'songId', as: 'song' });
 
 
 
-module.exports = { sequelize, Section, Category, Song, MenuItem, User, RecentlyPlayed, Like, Follow, Playlist, PlaylistItem };
-
-
+module.exports = { sequelize, Section, Category, Song, MenuItem, User, RecentlyPlayed, Like, Follow, Playlist, PlaylistItem, Advertisement };
