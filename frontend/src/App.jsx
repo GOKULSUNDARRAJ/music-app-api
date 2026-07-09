@@ -1390,7 +1390,7 @@ function AdsManager() {
 
   const loadAds = async () => {
     try {
-      const { data } = await api.get('/admin/ad');
+      const { data } = await api.get('/ad/admin');
       setAds(data);
     } catch (err) {
       console.error(err);
@@ -1412,7 +1412,7 @@ function AdsManager() {
     if (form.imageFile) formData.append('image', form.imageFile);
 
     try {
-      await api.post('/admin/ad', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      await api.post('/ad/admin', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       setForm({ adTitle: '', adType: 'audio', redirectUrl: '', mediaFile: null, imageFile: null });
       await loadAds();
       alert('Ad uploaded successfully!');
@@ -1424,7 +1424,7 @@ function AdsManager() {
 
   const deleteAd = async (id) => {
     if (!window.confirm('Delete this ad?')) return;
-    await api.delete(`/admin/ad/${id}`);
+    await api.delete(`/ad/admin/${id}`);
     await loadAds();
   };
 
