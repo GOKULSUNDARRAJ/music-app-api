@@ -20,7 +20,7 @@ const Song = sequelize.define('Song', {
   },
   categoryId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
       model: 'categories',
       key: 'id'

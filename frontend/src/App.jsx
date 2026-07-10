@@ -1657,7 +1657,6 @@ function AdvancedBulkSongs({ onDataChange, contentType, onEditRequest }) {
   }, [smartAudioFiles, smartImageFiles]);
 
   const handleSmartUpload = async () => {
-    if (!smartCategoryId) return alert('Select a category');
     if (matchedPairs.length === 0) return alert('No matched pairs to upload');
 
     setIsUploading(true);
@@ -1666,7 +1665,7 @@ function AdvancedBulkSongs({ onDataChange, contentType, onEditRequest }) {
 
     for (const pair of matchedPairs) {
       const formData = new FormData();
-      formData.append('categoryId', smartCategoryId);
+      if (smartCategoryId) formData.append('categoryId', smartCategoryId);
       formData.append('audioName', pair.name);
       formData.append('files', pair.audio);
       if (pair.image) formData.append('files', pair.image);
@@ -1709,20 +1708,13 @@ function AdvancedBulkSongs({ onDataChange, contentType, onEditRequest }) {
             <p className="muted">Upload bulk files and assign actors, singers, etc., to all of them.</p>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
             <div>
-              <label>1. Target Category</label>
-              <select value={smartCategoryId} onChange={e => setSmartCategoryId(e.target.value)} style={{ width: '100%', padding: '10px' }}>
-                <option value="">Select Category</option>
-                {categories.map(c => <option key={c.id} value={c.id}>{c.categoryName}</option>)}
-              </select>
-            </div>
-            <div>
-              <label>2. Select Audio Files</label>
+              <label>1. Select Audio Files</label>
               <input type="file" multiple accept="audio/*" onChange={e => setSmartAudioFiles(e.target.files)} style={{ width: '100%' }} />
             </div>
             <div>
-              <label>3. Select Image Files</label>
+              <label>2. Select Image Files</label>
               <input type="file" multiple accept="image/*" onChange={e => setSmartImageFiles(e.target.files)} style={{ width: '100%' }} />
             </div>
           </div>

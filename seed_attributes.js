@@ -77,6 +77,7 @@ const data = [
 
 async function seedAttributes() {
   try {
+    await SongAttribute.sync({ alter: true }); // Ensure table exists
     console.log('Seeding attributes...');
     for (const item of data) {
       await SongAttribute.findOrCreate({
