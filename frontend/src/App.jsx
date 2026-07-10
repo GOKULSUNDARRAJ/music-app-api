@@ -337,46 +337,78 @@ function Categories({ onDataChange, contentType }) {
           ))}
         </select>
       </div>
-      <EntityPage
-        title={null}
-        form={form}
-        setForm={setForm}
-        editingId={editingId}
-        setEditingId={setEditingId}
-        onSubmit={submit}
-        items={items}
-        onEdit={(item) => {
-          setEditingId(item.id);
-          setForm({
-            categoryName: item.categoryName,
-            categoryImage: item.categoryImage || '',
-            adapterType: item.adapterType,
-            sectionId: String(item.sectionId)
-          });
-        }}
-        onDelete={async (id) => {
-          await api.delete(`/admin/category/${id}`);
-          await load();
-          onDataChange();
-        }}
-        fields={[
-          { key: 'categoryName', label: 'Category Name' },
-          { key: 'categoryImage', label: 'Category Image URL', allowUpload: true },
-          { key: 'adapterType', label: 'Adapter Type', type: 'number' },
-          {
-            key: 'sectionId',
-            label: 'Section',
-            type: 'select',
-            options: sections.map((s) => ({ value: String(s.id), label: s.sectionTitle }))
-          }
-        ]}
-        columns={['categoryId', 'categoryName', 'categoryImage', 'adapterType', 'sectionIdFormatted']}
-        rowTransform={(item) => ({
-          ...item,
-          categoryId: item.categoryId || formatEntityId('cat', item.id),
-          sectionIdFormatted: item.sectionIdFormatted || formatEntityId('sec', item.sectionId)
-        })}
-      />
+      {/* Form Section */}
+      <div className="card form" style={{ marginBottom: '30px' }}>
+        <form className="inline" onSubmit={submit}>
+          <div>
+            <label>Category Name</label>
+            <input type="text" value={form.categoryName} onChange={(e) => setForm(p => ({ ...p, categoryName: e.target.value }))} required />
+          </div>
+          <div>
+            <label>Category Image URL</label>
+            <input type="text" value={form.categoryImage} onChange={(e) => setForm(p => ({ ...p, categoryImage: e.target.value }))} />
+          </div>
+          <div>
+            <label>Adapter Type</label>
+            <input type="number" value={form.adapterType} onChange={(e) => setForm(p => ({ ...p, adapterType: Number(e.target.value) }))} required />
+          </div>
+          <div>
+            <label>Section</label>
+            <select value={form.sectionId} onChange={(e) => setForm(p => ({ ...p, sectionId: e.target.value }))} required>
+              <option value="">Select</option>
+              {sections.map((s) => (
+                <option key={s.id} value={String(s.id)}>{s.sectionTitle}</option>
+              ))}
+            </select>
+          </div>
+          <div className="actions" style={{ alignItems: 'flex-end', display: 'flex', gap: '10px' }}>
+            <button type="submit">{editingId ? 'Update' : 'Add'}</button>
+            {editingId && <button type="button" onClick={() => { setEditingId(null); setForm({ categoryName: '', categoryImage: '', adapterType: 1, sectionId: '' }); }}>Cancel</button>}
+          </div>
+        </form>
+      </div>
+
+      {/* Grid Section */}
+      {items.length === 0 ? (
+        <p className="muted" style={{ textAlign: 'center', marginTop: '40px' }}>No categories found.</p>
+      ) : (
+        <div className="media-grid">
+          {items.map((item) => {
+            const section = sections.find(s => s.id === item.sectionId);
+            return (
+              <div className="media-card" key={item.id}>
+                <div className="media-card-img-wrapper">
+                  <img src={item.categoryImage || 'https://via.placeholder.com/300?text=No+Image'} alt={item.categoryName} className="media-card-img" />
+                  <div className="media-card-overlay">
+                    <button onClick={() => {
+                      setEditingId(item.id);
+                      setForm({
+                        categoryName: item.categoryName,
+                        categoryImage: item.categoryImage || '',
+                        adapterType: item.adapterType,
+                        sectionId: String(item.sectionId)
+                      });
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}>Edit</button>
+                    <button className="danger-btn" onClick={async (e) => {
+                      e.stopPropagation();
+                      if (window.confirm('Delete category?')) {
+                        await api.delete(`/admin/category/${item.id}`);
+                        await load();
+                        onDataChange();
+                      }
+                    }}>Delete</button>
+                  </div>
+                </div>
+                <div className="media-card-info">
+                  <h3 className="media-card-title">{item.categoryName}</h3>
+                  <p className="media-card-subtitle">{section ? section.sectionTitle : 'Unknown Section'}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
