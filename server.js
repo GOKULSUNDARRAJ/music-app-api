@@ -75,13 +75,17 @@ app.listen(PORT, () => {
   
   // Sync database in the background - alter:true adds new columns without dropping data
   sequelize.sync({ alter: true })
-    .then(async () => {
+    .then(() => {
       console.log('Database connected and synced (alter mode)');
-      const seedAttributes = require('./seed_attributes');
-      await seedAttributes();
     })
     .catch((err) => {
       console.error('Failed to sync database:', err);
       console.log('API is still running, but database-dependent routes will fail.');
     });
+
+  // Always attempt to seed attributes, ensuring the table exists even if global sync fails
+  setTimeout(async () => {
+    const seedAttributes = require('./seed_attributes');
+    await seedAttributes();
+  }, 2000);
 });
