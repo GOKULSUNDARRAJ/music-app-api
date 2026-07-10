@@ -380,20 +380,19 @@ exports.uploadSongs = async (req, res, next) => {
     const { categoryId, imageUrl } = req.body;
     const files = req.files;
 
-    if (!categoryId) {
-      return res.status(400).json({ message: 'Category ID is required' });
-    }
     if (!files || files.length === 0) {
       return res.status(400).json({ message: 'No files uploaded' });
     }
 
     const { Song, Category } = require('../models');
     
-    // Verify category exists
-    const category = await Category.findByPk(categoryId);
-    if (!category) {
-      await transaction.rollback();
-      return res.status(404).json({ message: `Category ${categoryId} not found` });
+    let category = null;
+    if (categoryId) {
+      category = await Category.findByPk(categoryId);
+      if (!category) {
+        await transaction.rollback();
+        return res.status(404).json({ message: `Category ${categoryId} not found` });
+      }
     }
 
     const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
@@ -425,7 +424,7 @@ exports.uploadSongs = async (req, res, next) => {
       audioName: req.body.audioName || audioFile.originalname.replace(/\.[^/.]+$/, ""),
       audioUrl: audioUrl,
       imageUrl: finalImageUrl,
-      categoryId: Number(categoryId),
+      categoryId: categoryId ? Number(categoryId) : null,
       actorName: req.body.actorName || null,
       heroineName: req.body.heroineName || null,
       singerName: req.body.singerName || null,
