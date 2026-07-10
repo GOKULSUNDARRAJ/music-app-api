@@ -1,4 +1,4 @@
-const { Section, Category, Song } = require('../models');
+const { Section, Category, Song, SongAttribute, User } = require('../models');
 const crypto = require('crypto');
 
 const adminUser = process.env.ADMIN_USER || 'admin';
@@ -262,7 +262,7 @@ exports.deleteCategory = async (req, res, next) => {
 
 exports.createSong = async (req, res, next) => {
   try {
-    const { audioName, audioUrl, imageUrl = '', categoryId } = req.body;
+    const { audioName, audioUrl, imageUrl = '', categoryId, actorName, heroineName, singerName, movieName, musicDirector, releaseYear, genre } = req.body;
 
     if (!audioName || !audioUrl || !categoryId) {
       return res.status(400).json({ message: 'audioName, audioUrl and categoryId are required' });
@@ -273,7 +273,7 @@ exports.createSong = async (req, res, next) => {
       return res.status(400).json({ message: 'Invalid categoryId: category does not exist' });
     }
 
-    const song = await Song.create({ audioName, audioUrl, imageUrl, categoryId });
+    const song = await Song.create({ audioName, audioUrl, imageUrl, categoryId, actorName, heroineName, singerName, movieName, musicDirector, releaseYear, genre });
 
 
     return res.status(201).json(songDto(song));
@@ -328,7 +328,7 @@ exports.updateSong = async (req, res, next) => {
       return res.status(404).json({ message: 'Song not found' });
     }
 
-    const { audioName, audioUrl, imageUrl, categoryId } = req.body;
+    const { audioName, audioUrl, imageUrl, categoryId, actorName, heroineName, singerName, movieName, musicDirector, releaseYear, genre } = req.body;
 
     if (categoryId) {
       const category = await Category.findByPk(categoryId);
@@ -341,7 +341,14 @@ exports.updateSong = async (req, res, next) => {
       audioName: audioName ?? song.audioName,
       audioUrl: audioUrl ?? song.audioUrl,
       imageUrl: imageUrl ?? song.imageUrl,
-      categoryId: categoryId ?? song.categoryId
+      categoryId: categoryId ?? song.categoryId,
+      actorName: actorName !== undefined ? actorName : song.actorName,
+      heroineName: heroineName !== undefined ? heroineName : song.heroineName,
+      singerName: singerName !== undefined ? singerName : song.singerName,
+      movieName: movieName !== undefined ? movieName : song.movieName,
+      musicDirector: musicDirector !== undefined ? musicDirector : song.musicDirector,
+      releaseYear: releaseYear !== undefined ? releaseYear : song.releaseYear,
+      genre: genre !== undefined ? genre : song.genre
     });
 
 
@@ -565,6 +572,43 @@ exports.updateLyrics = async (req, res, next) => {
     });
   } catch (error) {
     return next(error);
+  }
+};
+
+exports.getAttributes = async (req, res, next) => {
+  try {
+    const { type } = req.query;
+    const where = type ? { type } : {};
+    const attributes = await SongAttribute.findAll({ where, order: [['name', 'ASC']] });
+    res.json(attributes);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.createAttribute = async (req, res, next) => {
+  try {
+    const { type, name } = req.body;
+    if (!type || !name) return res.status(400).json({ message: 'Type and name are required' });
+    const attribute = await SongAttribute.create({ type, name });
+    res.status(201).json(attribute);
+  } catch (error) {
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(400).json({ message: 'Attribute already exists' });
+    }
+    next(error);
+  }
+};
+
+exports.deleteAttribute = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const attribute = await SongAttribute.findByPk(id);
+    if (!attribute) return res.status(404).json({ message: 'Attribute not found' });
+    await attribute.destroy();
+    res.json({ message: 'Attribute deleted successfully' });
+  } catch (error) {
+    next(error);
   }
 };
 

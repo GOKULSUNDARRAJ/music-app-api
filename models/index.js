@@ -10,6 +10,7 @@ const Follow = require('./Follow');
 const Advertisement = require('./Advertisement');
 const Playlist = require('./Playlist')(sequelize);
 const PlaylistItem = require('./PlaylistItem')(sequelize);
+const SongAttribute = require('./SongAttribute');
 
 // Define Relationships
 // One section has many categories
@@ -74,4 +75,4 @@ PlaylistItem.belongsTo(Song, { foreignKey: 'songId', as: 'song' });
 
 
 
-module.exports = { sequelize, Section, Category, Song, MenuItem, User, RecentlyPlayed, Like, Follow, Playlist, PlaylistItem, Advertisement };
+module.exports = { sequelize, Section, Category, Song, MenuItem, User, RecentlyPlayed, Like, Follow, Playlist, PlaylistItem, Advertisement, SongAttribute };

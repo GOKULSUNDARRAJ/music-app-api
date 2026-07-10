@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import api, { setAuthToken } from './api';
 
-const TABS = ['Dashboard', 'Sections', 'Categories', 'Songs', 'Bulk Songs', 'Lyrics', 'Menu', 'Users', 'Ads'];
+const TABS = ['Dashboard', 'Sections', 'Categories', 'Songs', 'Bulk Songs', 'Lyrics', 'Attributes', 'Menu', 'Users', 'Ads'];
 const formatEntityId = (prefix, id) => `${prefix}_${String(id).padStart(3, '0')}`;
 const CONTENT_TYPES = [
   { value: '', label: 'All' },
@@ -83,6 +83,7 @@ function App() {
               {tab === 'Songs' && '🎵'}
               {tab === 'Bulk Songs' && '🚀'}
               {tab === 'Lyrics' && '🎤'}
+              {tab === 'Attributes' && '🏷️'}
               {tab === 'Menu' && '🍔'}
               {tab === 'Users' && '👥'}
             </span>
@@ -121,6 +122,7 @@ function App() {
         {activeTab === 'Songs' && <Songs onDataChange={onDataChange} contentType={contentType} initialEditSong={songToEdit} clearEditSong={() => setSongToEdit(null)} />}
         {activeTab === 'Bulk Songs' && <BulkSongs onDataChange={onDataChange} contentType={contentType} onEditRequest={(s) => { setSongToEdit(s); setActiveTab('Songs'); }} />}
         {activeTab === 'Lyrics' && <LyricsManager onDataChange={onDataChange} />}
+        {activeTab === 'Attributes' && <AttributesManager onDataChange={onDataChange} />}
         {activeTab === 'Menu' && <MenuManager onDataChange={onDataChange} />}
         {activeTab === 'Users' && <Users onDataChange={onDataChange} />}
         {activeTab === 'Ads' && <AdsManager />}
@@ -400,15 +402,18 @@ function Songs({ onDataChange, contentType, initialEditSong, clearEditSong }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [attributes, setAttributes] = useState([]);
 
   const load = async () => {
     try {
-      const [{ data: songs }, { data: cats }] = await Promise.all([
+      const [{ data: songs }, { data: cats }, { data: attrs }] = await Promise.all([
         api.get(`/admin/songs?contentType=${contentType}${categoryFilter ? `&categoryId=${categoryFilter}` : ''}`),
-        api.get(`/admin/categories?contentType=${contentType}`)
+        api.get(`/admin/categories?contentType=${contentType}`),
+        api.get(`/admin/attributes`)
       ]);
       setItems(songs);
       setCategories(cats);
+      setAttributes(attrs);
     } catch (err) {
       console.error('Failed to load songs/categories:', err);
       alert('Failed to load data. Check console for details.');
@@ -421,7 +426,7 @@ function Songs({ onDataChange, contentType, initialEditSong, clearEditSong }) {
 
   useEffect(() => {
     setCategoryFilter('');
-    setForm((prev) => ({ ...prev, categoryId: '' }));
+    setForm((prev) => ({ ...prev, categoryId: '', actorName: '', heroineName: '', singerName: '', movieName: '', musicDirector: '', releaseYear: '', genre: '' }));
     setEditingId(null);
   }, [contentType]);
 
@@ -434,7 +439,7 @@ function Songs({ onDataChange, contentType, initialEditSong, clearEditSong }) {
       } else {
         await api.post('/admin/song', payload);
       }
-      setForm({ audioName: '', audioUrl: '', imageUrl: '', categoryId: '' });
+      setForm({ audioName: '', audioUrl: '', imageUrl: '', categoryId: '', actorName: '', heroineName: '', singerName: '', movieName: '', musicDirector: '', releaseYear: '', genre: '' });
       setEditingId(null);
       await load();
       onDataChange();
@@ -472,7 +477,14 @@ function Songs({ onDataChange, contentType, initialEditSong, clearEditSong }) {
       audioName: song.audioName,
       audioUrl: song.audioUrl,
       imageUrl: song.imageUrl || '',
-      categoryId: form.categoryId // Keep current category
+      categoryId: form.categoryId,
+      actorName: song.actorName || '',
+      heroineName: song.heroineName || '',
+      singerName: song.singerName || '',
+      movieName: song.movieName || '',
+      musicDirector: song.musicDirector || '',
+      releaseYear: song.releaseYear || '',
+      genre: song.genre || ''
     });
     setIsSearchOpen(false);
   };
@@ -513,9 +525,55 @@ function Songs({ onDataChange, contentType, initialEditSong, clearEditSong }) {
               ))}
             </select>
           </div>
+          <div>
+            <label>Actor</label>
+            <select value={form.actorName || ''} onChange={(e) => setForm((p) => ({ ...p, actorName: e.target.value }))}>
+              <option value="">Select</option>
+              {attributes.filter(a => a.type === 'Actor').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label>Heroine</label>
+            <select value={form.heroineName || ''} onChange={(e) => setForm((p) => ({ ...p, heroineName: e.target.value }))}>
+              <option value="">Select</option>
+              {attributes.filter(a => a.type === 'Heroine').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label>Singer</label>
+            <select value={form.singerName || ''} onChange={(e) => setForm((p) => ({ ...p, singerName: e.target.value }))}>
+              <option value="">Select</option>
+              {attributes.filter(a => a.type === 'Singer').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label>Movie</label>
+            <select value={form.movieName || ''} onChange={(e) => setForm((p) => ({ ...p, movieName: e.target.value }))}>
+              <option value="">Select</option>
+              {attributes.filter(a => a.type === 'Movie').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label>Music Director</label>
+            <select value={form.musicDirector || ''} onChange={(e) => setForm((p) => ({ ...p, musicDirector: e.target.value }))}>
+              <option value="">Select</option>
+              {attributes.filter(a => a.type === 'MusicDirector').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label>Release Year</label>
+            <input type="number" value={form.releaseYear || ''} onChange={(e) => setForm((p) => ({ ...p, releaseYear: e.target.value }))} />
+          </div>
+          <div>
+            <label>Genre</label>
+            <select value={form.genre || ''} onChange={(e) => setForm((p) => ({ ...p, genre: e.target.value }))}>
+              <option value="">Select</option>
+              {attributes.filter(a => a.type === 'Genre').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
           <div className="actions" style={{ alignItems: 'flex-end', display: 'flex', gap: '10px' }}>
             <button type="submit">{editingId ? 'Update' : 'Add'}</button>
-            {editingId && <button type="button" onClick={() => { setEditingId(null); setForm({ audioName: '', audioUrl: '', imageUrl: '', categoryId: '' }); }}>Cancel</button>}
+            {editingId && <button type="button" onClick={() => { setEditingId(null); setForm({ audioName: '', audioUrl: '', imageUrl: '', categoryId: '', actorName: '', heroineName: '', singerName: '', movieName: '', musicDirector: '', releaseYear: '', genre: '' }); }}>Cancel</button>}
           </div>
         </form>
       </div>
@@ -549,7 +607,14 @@ function Songs({ onDataChange, contentType, initialEditSong, clearEditSong }) {
                         audioName: item.audioName,
                         audioUrl: item.audioUrl,
                         imageUrl: item.imageUrl || '',
-                        categoryId: String(item.categoryId)
+                        categoryId: String(item.categoryId),
+                        actorName: item.actorName || '',
+                        heroineName: item.heroineName || '',
+                        singerName: item.singerName || '',
+                        movieName: item.movieName || '',
+                        musicDirector: item.musicDirector || '',
+                        releaseYear: item.releaseYear || '',
+                        genre: item.genre || ''
                       });
                     }}>Edit</button>
                     <button className="danger" onClick={async () => {
@@ -595,6 +660,11 @@ function BulkSongs({ onDataChange, contentType, onEditRequest }) {
   const [smartMusicDirector, setSmartMusicDirector] = useState('');
   const [smartReleaseYear, setSmartReleaseYear] = useState('');
   const [smartGenre, setSmartGenre] = useState('');
+  const [attributes, setAttributes] = useState([]);
+
+  useEffect(() => {
+    api.get('/admin/attributes').then(res => setAttributes(res.data)).catch(console.error);
+  }, []);
 
   const loadExisting = async (catId) => {
     if (!catId) return setExistingSongs([]);
@@ -802,26 +872,41 @@ function BulkSongs({ onDataChange, contentType, onEditRequest }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginBottom: '20px' }}>
             <div>
               <label>Actor Name (Optional)</label>
-              <input type="text" value={smartActorName} onChange={e => setSmartActorName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. Vijay" />
+              <select value={smartActorName} onChange={e => setSmartActorName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}>
+                <option value="">Select Actor</option>
+                {attributes.filter(a => a.type === 'Actor').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+              </select>
             </div>
             <div>
               <label>Heroine Name (Optional)</label>
-              <input type="text" value={smartHeroineName} onChange={e => setSmartHeroineName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. Samantha" />
+              <select value={smartHeroineName} onChange={e => setSmartHeroineName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}>
+                <option value="">Select Heroine</option>
+                {attributes.filter(a => a.type === 'Heroine').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+              </select>
             </div>
             <div>
               <label>Singer Name (Optional)</label>
-              <input type="text" value={smartSingerName} onChange={e => setSmartSingerName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. Anirudh" />
+              <select value={smartSingerName} onChange={e => setSmartSingerName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}>
+                <option value="">Select Singer</option>
+                {attributes.filter(a => a.type === 'Singer').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+              </select>
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '20px', marginBottom: '20px' }}>
             <div>
               <label>Movie Name (Optional)</label>
-              <input type="text" value={smartMovieName} onChange={e => setSmartMovieName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. Aashiqui 2" />
+              <select value={smartMovieName} onChange={e => setSmartMovieName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}>
+                <option value="">Select Movie</option>
+                {attributes.filter(a => a.type === 'Movie').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+              </select>
             </div>
             <div>
               <label>Music Director (Optional)</label>
-              <input type="text" value={smartMusicDirector} onChange={e => setSmartMusicDirector(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. A.R. Rahman" />
+              <select value={smartMusicDirector} onChange={e => setSmartMusicDirector(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}>
+                <option value="">Select Director</option>
+                {attributes.filter(a => a.type === 'MusicDirector').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+              </select>
             </div>
             <div>
               <label>Release Year (Optional)</label>
@@ -829,7 +914,10 @@ function BulkSongs({ onDataChange, contentType, onEditRequest }) {
             </div>
             <div>
               <label>Genre (Optional)</label>
-              <input type="text" value={smartGenre} onChange={e => setSmartGenre(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. Melody" />
+              <select value={smartGenre} onChange={e => setSmartGenre(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}>
+                <option value="">Select Genre</option>
+                {attributes.filter(a => a.type === 'Genre').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+              </select>
             </div>
           </div>
 
@@ -1558,3 +1646,101 @@ function AdsManager() {
 }
 
 export default App;
+
+function AttributesManager({ onDataChange }) {
+  const [items, setItems] = useState([]);
+  const [form, setForm] = useState({ type: 'Actor', name: '' });
+  
+  const types = ['Actor', 'Heroine', 'Singer', 'Movie', 'MusicDirector', 'Genre'];
+
+  const load = async () => {
+    try {
+      const { data } = await api.get('/admin/attributes');
+      setItems(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    try {
+      await api.post('/admin/attribute', form);
+      setForm({ ...form, name: '' });
+      await load();
+      onDataChange();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to add attribute');
+    }
+  };
+
+  const remove = async (id) => {
+    try {
+      await api.delete(`/admin/attribute/${id}`);
+      await load();
+      onDataChange();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Manage Predefined Song Attributes</h2>
+      <p className="muted">Add predefined names that will show up as dropdowns when uploading songs.</p>
+      
+      <form className="card form inline" onSubmit={submit} style={{ display: 'flex', gap: '10px', alignItems: 'flex-end', maxWidth: '600px' }}>
+        <div style={{ flex: 1 }}>
+          <label>Type</label>
+          <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} style={{ width: '100%', padding: '10px' }}>
+            {types.map(t => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </div>
+        <div style={{ flex: 2 }}>
+          <label>Name</label>
+          <input 
+            type="text" 
+            value={form.name} 
+            onChange={(e) => setForm({ ...form, name: e.target.value })} 
+            placeholder="e.g. Vijay"
+            style={{ width: '100%', padding: '10px' }}
+            required
+          />
+        </div>
+        <button type="submit" style={{ padding: '10px 20px', height: '40px' }}>Add</button>
+      </form>
+
+      <div className="table-container" style={{ marginTop: '30px' }}>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item) => (
+              <tr key={item.id}>
+                <td>{item.id}</td>
+                <td><span className="id-badge">{item.type}</span></td>
+                <td>{item.name}</td>
+                <td>
+                  <button className="danger small" onClick={() => remove(item.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+            {items.length === 0 && (
+              <tr><td colSpan="4" style={{ textAlign: 'center' }}>No attributes added yet.</td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

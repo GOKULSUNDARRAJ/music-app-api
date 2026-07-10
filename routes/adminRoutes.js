@@ -97,6 +97,10 @@ router.put('/song/:id', requireAdminAuth, adminController.updateSong);
 router.delete('/song/:id', requireAdminAuth, adminController.deleteSong);
 router.put('/song/:id/lyrics', requireAdminAuth, adminController.updateLyrics);
 
+router.post('/attribute', requireAdminAuth, adminController.createAttribute);
+router.get('/attributes', requireAdminAuth, adminController.getAttributes);
+router.delete('/attribute/:id', requireAdminAuth, adminController.deleteAttribute);
+
 router.get('/fetch-metadata', requireAdminAuth, adminController.fetchUrlMetadata);
 
 router.post('/menu', requireAdminAuth, menuController.createMenuItem);
