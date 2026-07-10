@@ -85,6 +85,17 @@ app.listen(PORT, () => {
 
   // Always attempt to seed attributes, ensuring the table exists even if global sync fails
   setTimeout(async () => {
+    try {
+      const { DataTypes } = require('sequelize');
+      await sequelize.getQueryInterface().changeColumn('songs', 'categoryId', {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      });
+      console.log('Successfully altered categoryId to allow null');
+    } catch (err) {
+      console.error('Failed to alter categoryId:', err);
+    }
+    
     const seedAttributes = require('./seed_attributes');
     await seedAttributes();
   }, 2000);
