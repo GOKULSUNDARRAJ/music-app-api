@@ -485,13 +485,13 @@ function CategorySongsManager({ category, onBack, contentType, onDataChange }) {
 
   const filteredSongs = songs.filter(s => {
     if (searchQuery && !s.audioName.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-    if (filterActor && s.actorName !== filterActor) return false;
-    if (filterHeroine && s.heroineName !== filterHeroine) return false;
-    if (filterSinger && s.singerName !== filterSinger) return false;
-    if (filterMovie && s.movieName !== filterMovie) return false;
-    if (filterMusicDirector && s.musicDirector !== filterMusicDirector) return false;
-    if (filterReleaseYear && s.releaseYear !== filterReleaseYear) return false;
-    if (filterGenre && s.genre !== filterGenre) return false;
+    if (filterActor && String(s.actorName || '') !== filterActor) return false;
+    if (filterHeroine && String(s.heroineName || '') !== filterHeroine) return false;
+    if (filterSinger && String(s.singerName || '') !== filterSinger) return false;
+    if (filterMovie && String(s.movieName || '') !== filterMovie) return false;
+    if (filterMusicDirector && String(s.musicDirector || '') !== filterMusicDirector) return false;
+    if (filterReleaseYear && String(s.releaseYear || '') !== filterReleaseYear) return false;
+    if (filterGenre && String(s.genre || '') !== filterGenre) return false;
     return true;
   });
 
