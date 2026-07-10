@@ -588,13 +588,6 @@ function BulkSongs({ onDataChange, contentType, onEditRequest }) {
   const [smartImageFiles, setSmartImageFiles] = useState([]);
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [smartCategoryId, setSmartCategoryId] = useState('');
-  const [smartActorName, setSmartActorName] = useState('');
-  const [smartHeroineName, setSmartHeroineName] = useState('');
-  const [smartSingerName, setSmartSingerName] = useState('');
-  const [smartMovieName, setSmartMovieName] = useState('');
-  const [smartMusicDirector, setSmartMusicDirector] = useState('');
-  const [smartReleaseYear, setSmartReleaseYear] = useState('');
-  const [smartGenre, setSmartGenre] = useState('');
 
   const loadExisting = async (catId) => {
     if (!catId) return setExistingSongs([]);
@@ -712,13 +705,6 @@ function BulkSongs({ onDataChange, contentType, onEditRequest }) {
       formData.append('audioName', pair.name);
       formData.append('files', pair.audio);
       if (pair.image) formData.append('files', pair.image);
-      if (smartActorName) formData.append('actorName', smartActorName);
-      if (smartHeroineName) formData.append('heroineName', smartHeroineName);
-      if (smartSingerName) formData.append('singerName', smartSingerName);
-      if (smartMovieName) formData.append('movieName', smartMovieName);
-      if (smartMusicDirector) formData.append('musicDirector', smartMusicDirector);
-      if (smartReleaseYear) formData.append('releaseYear', smartReleaseYear);
-      if (smartGenre) formData.append('genre', smartGenre);
 
       try {
         await api.post('/admin/song/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
@@ -796,40 +782,6 @@ function BulkSongs({ onDataChange, contentType, onEditRequest }) {
             <div>
               <label>3. Select Image Files</label>
               <input type="file" multiple accept="image/*" onChange={e => setSmartImageFiles(e.target.files)} style={{ width: '100%' }} />
-            </div>
-          </div>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginBottom: '20px' }}>
-            <div>
-              <label>Actor Name (Optional)</label>
-              <input type="text" value={smartActorName} onChange={e => setSmartActorName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. Vijay" />
-            </div>
-            <div>
-              <label>Heroine Name (Optional)</label>
-              <input type="text" value={smartHeroineName} onChange={e => setSmartHeroineName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. Samantha" />
-            </div>
-            <div>
-              <label>Singer Name (Optional)</label>
-              <input type="text" value={smartSingerName} onChange={e => setSmartSingerName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. Anirudh" />
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '20px', marginBottom: '20px' }}>
-            <div>
-              <label>Movie Name (Optional)</label>
-              <input type="text" value={smartMovieName} onChange={e => setSmartMovieName(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. Aashiqui 2" />
-            </div>
-            <div>
-              <label>Music Director (Optional)</label>
-              <input type="text" value={smartMusicDirector} onChange={e => setSmartMusicDirector(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. A.R. Rahman" />
-            </div>
-            <div>
-              <label>Release Year (Optional)</label>
-              <input type="number" value={smartReleaseYear} onChange={e => setSmartReleaseYear(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. 2024" />
-            </div>
-            <div>
-              <label>Genre (Optional)</label>
-              <input type="text" value={smartGenre} onChange={e => setSmartGenre(e.target.value)} style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} placeholder="e.g. Melody" />
             </div>
           </div>
 
