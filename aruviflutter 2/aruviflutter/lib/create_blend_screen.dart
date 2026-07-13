@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:share_plus/share_plus.dart';
 
 class CreateBlendScreen extends StatefulWidget {
   final VoidCallback onBlendCreated;
@@ -64,12 +65,20 @@ class _CreateBlendScreenState extends State<CreateBlendScreen> {
     }
   }
 
+  void _shareCode() {
+    if (_inviteCode.isNotEmpty) {
+      final text = '$_userName has invited you to join a Blend on this App. Use this invite code to join: $_inviteCode';
+      Share.share(text);
+    }
+  }
+
   void _copyCode() {
     if (_inviteCode.isNotEmpty) {
       Clipboard.setData(ClipboardData(text: _inviteCode));
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Code copied to clipboard!')));
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -185,87 +194,20 @@ class _CreateBlendScreenState extends State<CreateBlendScreen> {
                           ),
                         ),
                         const SizedBox(height: 24),
-                        const Divider(color: Colors.white24, height: 1),
-                        const SizedBox(height: 24),
-                        // Contacts Row
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              _buildShareContact('Deepika\nAkka💕', 'https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_1280.jpg'),
-                              const SizedBox(width: 20),
-                              _buildShareContact('My Akka💕', 'https://cdn.pixabay.com/photo/2016/11/29/13/14/attractive-1869761_1280.jpg'),
-                              const SizedBox(width: 20),
-                              _buildShareContact('vasanth\nAnna', null, initials: 'VA'),
-                              const SizedBox(width: 20),
-                              _buildShareContact('Mom', 'https://cdn.pixabay.com/photo/2015/03/03/08/55/portrait-657116_1280.jpg'),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        // Apps Row
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildShareApp(
-                                'Quick\nShare',
-                                Container(
-                                  width: 54,
-                                  height: 54,
-                                  decoration: const BoxDecoration(color: Color(0xFF1A73E8), shape: BoxShape.circle),
-                                  child: const Icon(Icons.sync_alt, color: Colors.white, size: 28),
-                                ),
-                              ),
-                              const SizedBox(width: 24),
-                              _buildShareApp(
-                                'WhatsApp',
-                                Container(
-                                  width: 54,
-                                  height: 54,
-                                  decoration: const BoxDecoration(color: Color(0xFF25D366), shape: BoxShape.circle),
-                                  child: const Icon(Icons.chat_bubble, color: Colors.white, size: 28),
-                                ),
-                              ),
-                              const SizedBox(width: 24),
-                              _buildShareApp(
-                                'Gmail',
-                                Container(
-                                  width: 54,
-                                  height: 54,
-                                  decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                                  child: const Icon(Icons.mail, color: Color(0xFFD44638), size: 28),
-                                ),
-                              ),
-                              const SizedBox(width: 24),
-                              _buildShareApp(
-                                'Instagram',
-                                Container(
-                                  width: 54,
-                                  height: 54,
-                                  decoration: const BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [Color(0xFF833AB4), Color(0xFFFD1D1D), Color(0xFFF56040)],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(Icons.camera_alt, color: Colors.white, size: 28),
-                                ),
-                              ),
-                              const SizedBox(width: 24),
-                              _buildShareApp(
-                                'Drive',
-                                Container(
-                                  width: 54,
-                                  height: 54,
-                                  decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                                  child: const Icon(Icons.add_to_drive, color: Color(0xFF1FA463), size: 28),
-                                ),
-                              ),
-                            ],
+                        // Share button (native)
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: _shareCode,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                            ),
+                            child: const Text(
+                              'Share Link',
+                              style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ],
@@ -274,74 +216,6 @@ class _CreateBlendScreenState extends State<CreateBlendScreen> {
                 ],
               ),
             ),
-    );
-  }
-
-  Widget _buildShareContact(String name, String? imageUrl, {String? initials}) {
-    return GestureDetector(
-      onTap: _copyCode,
-      child: SizedBox(
-        width: 70,
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: 28,
-                  backgroundColor: const Color(0xFF3E3E3E),
-                  backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : null,
-                  child: imageUrl == null && initials != null
-                      ? Text(initials, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))
-                      : null,
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF25D366),
-                      shape: BoxShape.circle,
-                      border: Border.all(color: const Color(0xFF282828), width: 2),
-                    ),
-                    padding: const EdgeInsets.all(2),
-                    child: const Icon(Icons.chat_bubble, color: Colors.white, size: 10),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Text(
-              name,
-              style: const TextStyle(color: Colors.white, fontSize: 12),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildShareApp(String name, Widget iconWidget) {
-    return GestureDetector(
-      onTap: _copyCode,
-      child: SizedBox(
-        width: 65,
-        child: Column(
-          children: [
-            iconWidget,
-            const SizedBox(height: 8),
-            Text(
-              name,
-              style: const TextStyle(color: Colors.white, fontSize: 12),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
