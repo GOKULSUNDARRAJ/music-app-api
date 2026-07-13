@@ -8,6 +8,7 @@ import '../models/home_response.dart';
 import '../models/playlist_section.dart';
 import '../models/artist_category.dart';
 import '../playlist_screen.dart';
+import '../collaborative_playlist_details_screen.dart';
 import '../section_see_all_screen.dart';
 import '../services/audio_service.dart';
 import 'package:shimmer/shimmer.dart';
@@ -144,19 +145,33 @@ class _HomeAllTabState extends State<HomeAllTab> {
   Widget _buildGridCardItem(ArtistCategory category) {
     return GestureDetector(
       onTap: () async {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PlaylistScreen(
-              title: category.categoryName ?? 'Unknown',
-              subtitle: category.songs.isNotEmpty ? '${category.songs.length} Songs' : 'Artist',
-              imageUrl: category.categoryImage ?? '',
-              categoryId: category.categoryId?.toString() ?? '',
-              songs: category.songs,
-              isArtist: category.adapterType == 2,
+        if (category.adapterType == 3 || category.adapterType == 4) {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CollaborativePlaylistDetailsScreen(
+                playlistId: category.categoryId ?? '',
+                playlistName: category.categoryName ?? 'Unknown',
+                isOwner: category.adapterType == 3,
+                inviteCode: '', // Not required for just viewing
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PlaylistScreen(
+                title: category.categoryName ?? 'Unknown',
+                subtitle: category.songs.isNotEmpty ? '${category.songs.length} Songs' : 'Artist',
+                imageUrl: category.categoryImage ?? '',
+                categoryId: category.categoryId?.toString() ?? '',
+                songs: category.songs,
+                isArtist: category.adapterType == 2,
+              ),
+            ),
+          );
+        }
         _fetchHomeData();
       },
       child: Container(

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:share_plus/share_plus.dart';
 import 'services/audio_service.dart';
 import 'models/audio_model.dart';
+import 'models/artist_category.dart';
 import 'select_songs_screen.dart';
 import 'widgets/members_bottom_sheet.dart';
 
@@ -89,16 +90,52 @@ class _CollaborativePlaylistDetailsScreenState extends State<CollaborativePlayli
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        if (data['status'] == true) {
+        if (data['status'] == true && mounted) {
           setState(() {
-            _songs = data['songs'];
+            _songs = data['songs'] ?? [];
+            _isLoading = false;
           });
+          _saveToRecentPlaylistsLocal();
         }
       }
     } catch (e) {
       debugPrint('Error fetching songs: $e');
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
+      setState(() {
+        _errorMessage = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _saveToRecentPlaylistsLocal() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      final category = ArtistCategory(
+        categoryId: widget.playlistId,
+        categoryName: widget.playlistName,
+        categoryImage: _songs.isNotEmpty ? _songs.first['imageUrl'] : null,
+        songs: _songs.map((s) => AudioModel.fromJson(s)).toList(),
+        adapterType: widget.isOwner ? 3 : 4,
+      );
+
+      final cachedListJson = prefs.getString('offline_recent_playlists');
+      List<ArtistCategory> recentList = [];
+      if (cachedListJson != null && cachedListJson.isNotEmpty) {
+        final decoded = json.decode(cachedListJson) as List;
+        recentList = decoded.map((c) => ArtistCategory.fromJson(c)).toList();
+      }
+
+      recentList.removeWhere((c) => c.categoryId == widget.playlistId);
+      recentList.insert(0, category);
+
+      if (recentList.length > 50) {
+        recentList = recentList.sublist(0, 50);
+      }
+
+      await prefs.setString('offline_recent_playlists', json.encode(recentList.map((c) => c.toJson()).toList()));
+    } catch (e) {
+      debugPrint('Failed to save recent play locally: $e');
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'models/artist_category.dart';
 import 'playlist_screen.dart';
+import 'collaborative_playlist_details_screen.dart';
 
 class RecentlyPlayedPlaylistsScreen extends StatefulWidget {
   const RecentlyPlayedPlaylistsScreen({Key? key}) : super(key: key);
@@ -109,19 +110,33 @@ class _RecentlyPlayedPlaylistsScreenState extends State<RecentlyPlayedPlaylistsS
                         ),
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PlaylistScreen(
-                              title: playlist.categoryName ?? 'Unknown',
-                              subtitle: playlist.songs.isNotEmpty ? '${playlist.songs.length} Songs' : 'Playlist',
-                              imageUrl: playlist.categoryImage ?? '',
-                              categoryId: playlist.categoryId?.toString() ?? '',
-                              songs: playlist.songs,
-                              isArtist: playlist.adapterType == 2,
+                        if (playlist.adapterType == 3 || playlist.adapterType == 4) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CollaborativePlaylistDetailsScreen(
+                                playlistId: playlist.categoryId ?? '',
+                                playlistName: playlist.categoryName ?? 'Unknown',
+                                isOwner: playlist.adapterType == 3,
+                                inviteCode: '', // Not required for just viewing
+                              ),
                             ),
-                          ),
-                        ).then((_) => _loadPlaylists());
+                          ).then((_) => _loadPlaylists());
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PlaylistScreen(
+                                title: playlist.categoryName ?? 'Unknown',
+                                subtitle: playlist.songs.isNotEmpty ? '${playlist.songs.length} Songs' : 'Playlist',
+                                imageUrl: playlist.categoryImage ?? '',
+                                categoryId: playlist.categoryId?.toString() ?? '',
+                                songs: playlist.songs,
+                                isArtist: playlist.adapterType == 2,
+                              ),
+                            ),
+                          ).then((_) => _loadPlaylists());
+                        }
                       },
                     );
                   },
