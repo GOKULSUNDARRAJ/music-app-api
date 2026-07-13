@@ -86,7 +86,7 @@ exports.list = async (req, res, next) => {
       }]
     });
 
-    const checkSongId = req.query.checkSongId;
+    const checkAudioUrl = req.query.checkAudioUrl;
 
     const results = await Promise.all(memberships.map(async (m) => {
       const p = m.playlist;
@@ -94,11 +94,14 @@ exports.list = async (req, res, next) => {
       const songCount = await CollaborativePlaylistSong.count({ where: { playlistId: p.id } });
       
       let hasSong = false;
-      if (checkSongId) {
-        const existing = await CollaborativePlaylistSong.findOne({
-          where: { playlistId: p.id, songId: checkSongId }
-        });
-        hasSong = !!existing;
+      if (checkAudioUrl) {
+        const song = await Song.findOne({ where: { audioUrl: checkAudioUrl } });
+        if (song) {
+          const existing = await CollaborativePlaylistSong.findOne({
+            where: { playlistId: p.id, songId: song.id }
+          });
+          hasSong = !!existing;
+        }
       }
       
       return {
@@ -177,15 +180,33 @@ exports.getSongs = async (req, res, next) => {
 exports.addSong = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { songId } = req.body;
+    const { audioUrl, audioName, imageUrl, songId } = req.body;
     const playlistId = parseInt(id.replace('cpl_', ''), 10);
-    const parsedSongId = parseInt(songId.replace('song_', ''), 10);
 
     const membership = await CollaborativePlaylistUser.findOne({
       where: { playlistId, userId: req.userId }
     });
 
     if (!membership) return res.status(403).json({ status: false, message: 'Not a member of this playlist' });
+
+    let parsedSongId = null;
+    if (audioUrl) {
+      let song = await Song.findOne({ where: { audioUrl } });
+      if (!song) {
+        song = await Song.create({
+          audioName: audioName || 'Unknown',
+          audioUrl: audioUrl,
+          imageUrl: imageUrl || '',
+        });
+      }
+      parsedSongId = song.id;
+    } else if (songId) {
+      parsedSongId = parseInt(String(songId).replace('song_', ''), 10);
+    }
+
+    if (!parsedSongId) {
+      return res.status(400).json({ status: false, message: 'Invalid song data' });
+    }
 
     // Check if song already exists
     const existing = await CollaborativePlaylistSong.findOne({

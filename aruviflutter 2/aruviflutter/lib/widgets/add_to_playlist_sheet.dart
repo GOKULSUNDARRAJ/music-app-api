@@ -57,8 +57,11 @@ class _AddToPlaylistSheetState extends State<AddToPlaylistSheet> {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('access_token');
       if (token != null) {
+        final uri = widget.song.audioUrl != null && widget.song.audioUrl!.isNotEmpty 
+            ? 'https://music-app-api-1.onrender.com/api/user/collaborative-playlists?checkAudioUrl=${Uri.encodeComponent(widget.song.audioUrl!)}'
+            : 'https://music-app-api-1.onrender.com/api/user/collaborative-playlists';
         final response = await http.get(
-          Uri.parse('https://music-app-api-1.onrender.com/api/user/collaborative-playlists?checkSongId=${widget.song.songId}'),
+          Uri.parse(uri),
           headers: {'Authorization': 'Bearer $token'},
         );
         if (response.statusCode == 200) {
@@ -134,7 +137,13 @@ class _AddToPlaylistSheetState extends State<AddToPlaylistSheet> {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        body: json.encode({'songId': widget.song.songId}),
+        body: json.encode({
+          'songId': widget.song.songId,
+          'audioUrl': widget.song.audioUrl,
+          'audioName': widget.song.audioName,
+          'imageUrl': widget.song.imageUrl,
+          'categoryName': widget.song.categoryName,
+        }),
       );
 
       if (response.statusCode == 201) {
