@@ -59,6 +59,7 @@ function App() {
   const [contentType, setContentType] = useState('home');
   const [refreshKey, setRefreshKey] = useState(0);
   const [songToEdit, setSongToEdit] = useState(null);
+  const [initialSectionFilter, setInitialSectionFilter] = useState('');
 
   const onDataChange = () => setRefreshKey((p) => p + 1);
 
@@ -118,8 +119,8 @@ function App() {
           </div>
         )}
         {activeTab === 'Dashboard' && <Dashboard refreshKey={refreshKey} contentType={contentType} />}
-        {activeTab === 'Sections' && <Sections onDataChange={onDataChange} contentType={contentType} />}
-        {activeTab === 'Categories' && <Categories onDataChange={onDataChange} contentType={contentType} />}
+        {activeTab === 'Sections' && <Sections onDataChange={onDataChange} contentType={contentType} onViewCategories={(sid) => { setInitialSectionFilter(sid); setActiveTab('Categories'); }} />}
+        {activeTab === 'Categories' && <Categories onDataChange={onDataChange} contentType={contentType} initialSectionFilter={initialSectionFilter} clearInitialSectionFilter={() => setInitialSectionFilter('')} />}
         {activeTab === 'Songs' && <Songs onDataChange={onDataChange} contentType={contentType} initialEditSong={songToEdit} clearEditSong={() => setSongToEdit(null)} />}
         {activeTab === 'Bulk Songs' && <BulkSongs onDataChange={onDataChange} contentType={contentType} onEditRequest={(s) => { setSongToEdit(s); setActiveTab('Songs'); }} />}
         {activeTab === 'Advanced Bulk' && <AdvancedBulkSongs onDataChange={onDataChange} contentType={contentType} onEditRequest={(s) => { setSongToEdit(s); setActiveTab('Songs'); }} />}
@@ -204,7 +205,7 @@ function Dashboard({ refreshKey, contentType }) {
   );
 }
 
-function Sections({ onDataChange, contentType }) {
+function Sections({ onDataChange, contentType, onViewCategories }) {
   const [items, setItems] = useState([]);
   const [form, setForm] = useState({ sectionTitle: '', layoutType: 1, spanCount: 1, contentType });
   const [editingId, setEditingId] = useState(null);
@@ -265,6 +266,13 @@ function Sections({ onDataChange, contentType }) {
           });
         }}
         onDelete={remove}
+        customActions={[
+          {
+            label: 'Categories',
+            style: { background: '#4bc0c0', color: 'white' },
+            onClick: (item) => onViewCategories(String(item.id))
+          }
+        ]}
         fields={[
           { key: 'sectionTitle', label: 'Section Title' },
           { key: 'layoutType', label: 'Layout Type', type: 'number' },
@@ -280,7 +288,7 @@ function Sections({ onDataChange, contentType }) {
   );
 }
 
-function Categories({ onDataChange, contentType }) {
+function Categories({ onDataChange, contentType, initialSectionFilter, clearInitialSectionFilter }) {
   const [items, setItems] = useState([]);
   const [sections, setSections] = useState([]);
   const [sectionFilter, setSectionFilter] = useState('');
@@ -307,7 +315,14 @@ function Categories({ onDataChange, contentType }) {
   }, [sectionFilter, contentType]);
 
   useEffect(() => {
-    setSectionFilter('');
+    if (initialSectionFilter && initialSectionFilter !== sectionFilter) {
+      setSectionFilter(initialSectionFilter);
+      if (clearInitialSectionFilter) clearInitialSectionFilter();
+    }
+  }, [initialSectionFilter]);
+
+  useEffect(() => {
+    if (!initialSectionFilter) setSectionFilter('');
     setForm((prev) => ({ ...prev, sectionId: '' }));
     setEditingId(null);
   }, [contentType]);
@@ -1272,7 +1287,8 @@ function EntityPage({
   onDelete,
   fields,
   columns,
-  rowTransform
+  rowTransform,
+  customActions
 }) {
   const titleText = useMemo(() => (editingId ? 'Update' : 'Add'), [editingId]);
   const isIdColumn = (columnName) => columnName.endsWith('Id') || columnName.endsWith('Formatted');
@@ -1382,6 +1398,11 @@ function EntityPage({
                 ))}
                 <td>
                   <div style={{ display: 'flex', gap: '8px' }}>
+                    {customActions && customActions.map((action, i) => (
+                      <button key={i} className={action.className || ''} style={action.style || {}} onClick={() => action.onClick(item)}>
+                        {action.label}
+                      </button>
+                    ))}
                     <button onClick={() => onEdit(item)}>Edit</button>
                     <button className="danger" onClick={() => onDelete(item.id)}>Delete</button>
                   </div>
