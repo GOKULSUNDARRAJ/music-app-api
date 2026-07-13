@@ -4,7 +4,7 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_background/just_audio_background.dart';
+import 'package:audio_service/audio_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -20,6 +20,7 @@ class AudioService extends ChangeNotifier {
   }
 
   final AudioPlayer _player = AudioPlayer();
+  AudioPlayer get player => _player;
   VideoPlayerController? _adPlayer; // Secondary player for ads
   ConcatenatingAudioSource? _audioSource;
   

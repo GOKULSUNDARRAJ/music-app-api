@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio_background/just_audio_background.dart';
+import 'package:audio_service/audio_service.dart';
+import 'services/carplay_audio_handler.dart';
+import 'services/audio_service.dart' as app_audio;
 import 'package:firebase_core/firebase_core.dart';
 import 'splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.saalai.salaimusicapp.channel.audio',
-    androidNotificationChannelName: 'Audio playback',
-    androidNotificationOngoing: true,
+  await AudioService.init(
+    builder: () => CarPlayAudioHandler(app_audio.AudioService()),
+    config: const AudioServiceConfig(
+      androidNotificationChannelId: 'com.saalai.salaimusicapp.channel.audio',
+      androidNotificationChannelName: 'Audio playback',
+      androidNotificationOngoing: true,
+    ),
   );
   runApp(const MyApp());
 }
