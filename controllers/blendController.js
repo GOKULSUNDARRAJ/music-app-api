@@ -153,21 +153,7 @@ exports.getPlaylist = async (req, res, next) => {
       i++;
     }
 
-    // Fallback if users have no liked songs
-    if (finalSongs.length === 0) {
-      try {
-        const fallbackSongs = await Song.findAll({
-          limit: 20,
-          order: [['createdAt', 'DESC']],
-          include: [{
-            model: Category, as: 'category', include: [{ model: Section, as: 'section' }]
-          }]
-        });
-        finalSongs = fallbackSongs;
-      } catch (err) {
-        console.error('Error fetching fallback songs:', err);
-      }
-    }
+    // Removed fallback songs per user request
     
     // Final safety filter for nulls
     finalSongs = finalSongs.filter(s => s != null);
