@@ -48,6 +48,45 @@ exports.toggleCategoryLike = async (req, res, next) => {
 };
 
 /**
+ * Toggle like for a song
+ * POST /api/likes/song/toggle
+ */
+exports.toggleSongLike = async (req, res, next) => {
+  try {
+    let { songId } = req.body;
+    const userId = req.userId;
+
+    if (!songId) {
+      return res.status(400).json({ status: false, message: 'songId is required' });
+    }
+
+    if (typeof songId === 'string' && songId.startsWith('song_')) {
+      songId = parseInt(songId.split('_')[1], 10);
+    }
+
+    const existing = await Like.findOne({ where: { userId, songId } });
+
+    if (existing) {
+      await existing.destroy();
+      return res.json({ 
+        status: true, 
+        message: 'Song unliked successfully', 
+        isLiked: false 
+      });
+    } else {
+      await Like.create({ userId, songId });
+      return res.json({ 
+        status: true, 
+        message: 'Song liked successfully', 
+        isLiked: true 
+      });
+    }
+  } catch (err) {
+    return next(err);
+  }
+};
+
+/**
  * Get liked categories for the library screen
  * GET /api/likes/categories
  */

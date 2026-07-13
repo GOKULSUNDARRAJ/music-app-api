@@ -511,6 +511,8 @@ class DatabaseService {
 
   Future<void> likeSong(AudioModel song) async {
     if (song.songId == null) return;
+    
+    // Save locally
     final db = await database;
     await db.insert(
       'liked_songs',
@@ -521,15 +523,42 @@ class DatabaseService {
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    // Sync with backend
+    await _toggleBackendLike(song.songId!);
   }
 
   Future<void> unlikeSong(String songId) async {
+    // Delete locally
     final db = await database;
     await db.delete(
       'liked_songs',
       where: 'songId = ?',
       whereArgs: [songId],
     );
+
+    // Sync with backend
+    await _toggleBackendLike(songId);
+  }
+
+  Future<void> _toggleBackendLike(String songId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token');
+      if (token == null) return;
+
+      final url = Uri.parse('https://music-app-api-1.onrender.com/api/likes/song/toggle');
+      await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'songId': songId}),
+      );
+    } catch (e) {
+      print('Failed to sync song like to backend: $e');
+    }
   }
 
   Future<bool> isSongLiked(String songId) async {

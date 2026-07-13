@@ -22,4 +22,7 @@ router.post('/category/toggle', smartParser, likeController.toggleCategoryLike);
 router.get('/categories', likeController.getLikedCategories);
 router.get('/category/status/:id', likeController.checkCategoryStatus);
 
+// Song Like Routes
+router.post('/song/toggle', smartParser, likeController.toggleSongLike);
+
 module.exports = router;
