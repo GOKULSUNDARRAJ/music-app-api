@@ -53,7 +53,7 @@ exports.toggleCategoryLike = async (req, res, next) => {
  */
 exports.toggleSongLike = async (req, res, next) => {
   try {
-    let { songId } = req.body;
+    let { songId, action } = req.body;
     const userId = req.userId;
 
     if (!songId) {
@@ -66,20 +66,13 @@ exports.toggleSongLike = async (req, res, next) => {
 
     const existing = await Like.findOne({ where: { userId, songId } });
 
-    if (existing) {
-      await existing.destroy();
-      return res.json({ 
-        status: true, 
-        message: 'Song unliked successfully', 
-        isLiked: false 
-      });
+    if (action === 'unlike') {
+      if (existing) await existing.destroy();
+      return res.json({ status: true, message: 'Song unliked successfully', isLiked: false });
     } else {
-      await Like.create({ userId, songId });
-      return res.json({ 
-        status: true, 
-        message: 'Song liked successfully', 
-        isLiked: true 
-      });
+      // action === 'like' or default toggle behavior
+      if (!existing) await Like.create({ userId, songId });
+      return res.json({ status: true, message: 'Song liked successfully', isLiked: true });
     }
   } catch (err) {
     return next(err);

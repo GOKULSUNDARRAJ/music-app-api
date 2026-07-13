@@ -525,7 +525,7 @@ class DatabaseService {
     );
 
     // Sync with backend
-    await _toggleBackendLike(song.songId!);
+    await _toggleBackendLike(song.songId!, 'like');
   }
 
   Future<void> unlikeSong(String songId) async {
@@ -538,10 +538,10 @@ class DatabaseService {
     );
 
     // Sync with backend
-    await _toggleBackendLike(songId);
+    await _toggleBackendLike(songId, 'unlike');
   }
 
-  Future<void> _toggleBackendLike(String songId) async {
+  Future<void> _toggleBackendLike(String songId, String action) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('auth_token');
@@ -554,7 +554,7 @@ class DatabaseService {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        body: jsonEncode({'songId': songId}),
+        body: jsonEncode({'songId': songId, 'action': action}),
       );
     } catch (e) {
       print('Failed to sync song like to backend: $e');
