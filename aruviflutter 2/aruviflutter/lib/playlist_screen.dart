@@ -131,14 +131,49 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               _songs = latestSongs;
             });
             // Update the cached version in Library
-            if (_isLiked || _isAddedToPlaylist) {
-              _refreshStorageWithNewSongs();
-            }
+            _forceRefreshStorageIfCached();
           }
         }
       }
     } catch (e) {
       debugPrint('Failed to fetch latest blend songs: $e');
+    }
+  }
+
+  Future<void> _forceRefreshStorageIfCached() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      final category = ArtistCategory(
+        categoryId: widget.categoryId,
+        categoryName: widget.title,
+        categoryImage: widget.imageUrl,
+        songs: _songs,
+        adapterType: (widget.isArtist || widget.subtitle.toLowerCase() == 'artist') ? 2 : 1,
+      );
+      final categoryJson = json.encode(category.toJson());
+
+      // Check liked
+      final likedListStr = prefs.getStringList('local_liked_playlists_data') ?? [];
+      final likedIndex = likedListStr.indexWhere((item) {
+        try { return json.decode(item)['categoryId'] == widget.categoryId; } catch (_) { return false; }
+      });
+      if (likedIndex != -1) {
+        likedListStr[likedIndex] = categoryJson;
+        await prefs.setStringList('local_liked_playlists_data', likedListStr);
+      }
+
+      // Check added
+      final addedListStr = prefs.getStringList('local_added_playlists_data') ?? [];
+      final addedIndex = addedListStr.indexWhere((item) {
+        try { return json.decode(item)['categoryId'] == widget.categoryId; } catch (_) { return false; }
+      });
+      if (addedIndex != -1) {
+        addedListStr[addedIndex] = categoryJson;
+        await prefs.setStringList('local_added_playlists_data', addedListStr);
+      }
+    } catch (e) {
+      debugPrint('Failed to force refresh storage: $e');
     }
   }
 
