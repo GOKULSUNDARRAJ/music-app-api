@@ -161,16 +161,17 @@ class _AddToPlaylistSheetState extends State<AddToPlaylistSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: const BoxDecoration(
         color: Color(0xFF1E1E1E),
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.only(top: 20, bottom: 90),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Text(
               'Save in',
@@ -296,6 +297,7 @@ class _AddToPlaylistSheetState extends State<AddToPlaylistSheet> {
             ),
           ],
         ],
+      ),
       ),
     );
   }
