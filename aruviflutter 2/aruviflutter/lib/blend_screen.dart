@@ -181,7 +181,7 @@ class _BlendScreenState extends State<BlendScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error joining blend')));
               }
             },
-            child: const Text('Join', style: TextStyle(color: Color(0xFF1DB954))),
+            child: const Text('Join', style: TextStyle(color: Color(0xFFEB1C24))),
           ),
         ],
       ),
@@ -236,11 +236,12 @@ class _BlendScreenState extends State<BlendScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Blends', style: TextStyle(fontWeight: FontWeight.bold)),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Blends', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         centerTitle: true,
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: Color(0xFF1DB954)))
+          ? const Center(child: CircularProgressIndicator(color: Color(0xFFEB1C24)))
           : Column(
               children: [
                 Padding(
@@ -250,10 +251,10 @@ class _BlendScreenState extends State<BlendScreen> {
                       Expanded(
                         child: ElevatedButton.icon(
                           onPressed: _createBlend,
-                          icon: const Icon(Icons.add, color: Colors.black),
-                          label: const Text('Create', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                          icon: const Icon(Icons.add, color: Colors.white),
+                          label: const Text('Create', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF1DB954),
+                            backgroundColor: const Color(0xFFEB1C24),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
