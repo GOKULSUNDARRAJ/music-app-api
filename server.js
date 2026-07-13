@@ -97,9 +97,12 @@ app.listen(PORT, () => {
       });
       console.log('Successfully altered categoryId and sectionId to allow null');
       
-      const { Blend } = require('./models');
+      const { Blend, CollaborativePlaylist, CollaborativePlaylistUser, CollaborativePlaylistSong } = require('./models');
       await Blend.sync({ alter: true });
-      console.log('Successfully synced blends table explicitly');
+      await CollaborativePlaylist.sync({ alter: true });
+      await CollaborativePlaylistUser.sync({ alter: true });
+      await CollaborativePlaylistSong.sync({ alter: true });
+      console.log('Blend and CollaborativePlaylist tables ensured');
     } catch (err) {
       console.error('Failed to alter columns:', err);
     }

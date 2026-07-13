@@ -69,13 +69,15 @@ class _CreateCollaborativePlaylistScreenState extends State<CreateCollaborativeP
           widget.onCreated();
         }
       } else {
-        throw Exception('Failed to create playlist');
+        final errorData = json.decode(response.body);
+        throw Exception(errorData['message'] ?? 'Failed to create playlist: ${response.statusCode}');
       }
     } catch (e) {
       debugPrint('Error creating playlist: $e');
       if (mounted) {
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to create playlist')));
+        String errorMsg = e.toString().replaceAll('Exception: ', '');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMsg), backgroundColor: Colors.red));
       }
     }
   }
