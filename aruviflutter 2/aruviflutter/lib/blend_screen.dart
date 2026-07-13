@@ -18,6 +18,7 @@ class BlendScreen extends StatefulWidget {
 class _BlendScreenState extends State<BlendScreen> {
   bool _isLoading = true;
   List<dynamic> _blends = [];
+  String _currentUserInitial = 'U';
 
   @override
   void initState() {
@@ -27,6 +28,12 @@ class _BlendScreenState extends State<BlendScreen> {
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
+    final name = prefs.getString('username') ?? 'User';
+    if (mounted && _currentUserInitial != name[0].toUpperCase()) {
+      setState(() {
+        _currentUserInitial = name[0].toUpperCase();
+      });
+    }
     return prefs.getString('access_token');
   }
 
@@ -231,6 +238,12 @@ class _BlendScreenState extends State<BlendScreen> {
               decoration: const BoxDecoration(
                 color: Color(0xFF282828),
                 shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  _currentUserInitial,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white70),
+                ),
               ),
             ),
           ),

@@ -312,6 +312,8 @@ class _MainActivityState extends State<MainActivity> {
 
   @override
   Widget build(BuildContext context) {
+    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -391,7 +393,6 @@ class _MainActivityState extends State<MainActivity> {
                   animation: AudioService(),
                   builder: (context, child) {
                     final audioService = AudioService();
-                    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
                     if (audioService.currentSong == null || isKeyboardOpen) return const SizedBox.shrink();
 
                     double progress = 0.0;
