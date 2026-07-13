@@ -77,58 +77,60 @@ class _JoinCollaborativePlaylistScreenState extends State<JoinCollaborativePlayl
         title: const Text('Join Collaborative Playlist', style: TextStyle(color: Colors.white, fontSize: 16)),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Icon(Icons.people_alt, size: 80, color: Colors.white54),
-            const SizedBox(height: 24),
-            const Text(
-              'Enter Invite Code',
-              style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Paste the invite code from your friend to join their collaborative playlist.',
-              style: TextStyle(color: Colors.white54, fontSize: 14),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 40),
-            TextField(
-              controller: _codeController,
-              autofocus: true,
-              style: const TextStyle(color: Colors.white, fontSize: 24, letterSpacing: 4, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: 'A1B2C3D4',
-                hintStyle: const TextStyle(color: Colors.white24, letterSpacing: 4),
-                filled: true,
-                fillColor: const Color(0xFF282828),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: const EdgeInsets.symmetric(vertical: 20),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Icon(Icons.people_alt, size: 80, color: Colors.white54),
+              const SizedBox(height: 24),
+              const Text(
+                'Enter Invite Code',
+                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              onSubmitted: (_) => _joinPlaylist(),
-            ),
-            const SizedBox(height: 40),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: _isLoading ? null : _joinPlaylist,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFEB1C24),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                ),
-                child: _isLoading
-                    ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                    : const Text('Join', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 12),
+              const Text(
+                'Paste the invite code from your friend to join their collaborative playlist.',
+                style: TextStyle(color: Colors.white54, fontSize: 14),
+                textAlign: TextAlign.center,
               ),
-            ),
-          ],
+              const SizedBox(height: 40),
+              TextField(
+                controller: _codeController,
+                autofocus: true,
+                style: const TextStyle(color: Colors.white, fontSize: 24, letterSpacing: 4, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  hintText: 'A1B2C3D4',
+                  hintStyle: const TextStyle(color: Colors.white24, letterSpacing: 4),
+                  filled: true,
+                  fillColor: const Color(0xFF282828),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                ),
+                onSubmitted: (_) => _joinPlaylist(),
+              ),
+              const SizedBox(height: 40),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _joinPlaylist,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFEB1C24),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                  ),
+                  child: _isLoading
+                      ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                      : const Text('Join', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

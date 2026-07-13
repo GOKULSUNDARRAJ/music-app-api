@@ -101,58 +101,60 @@ class _CreateCollaborativePlaylistScreenState extends State<CreateCollaborativeP
         centerTitle: true,
       ),
       body: _inviteCode.isEmpty
-          ? Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Icon(Icons.group_add, size: 80, color: Colors.white54),
-                  const SizedBox(height: 24),
-                  const Text(
-                    'Name your shared playlist',
-                    style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Create a playlist and invite friends to build it together.',
-                    style: TextStyle(color: Colors.white54, fontSize: 14),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 40),
-                  TextField(
-                    controller: _nameController,
-                    autofocus: true,
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      hintText: 'My Awesome Playlist',
-                      hintStyle: const TextStyle(color: Colors.white24),
-                      filled: true,
-                      fillColor: const Color(0xFF282828),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 20),
+          ? SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.group_add, size: 80, color: Colors.white54),
+                    const SizedBox(height: 24),
+                    const Text(
+                      'Name your shared playlist',
+                      style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    onSubmitted: (_) => _createPlaylist(),
-                  ),
-                  const SizedBox(height: 40),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: _isLoading ? null : _createPlaylist,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFEB1C24),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                      ),
-                      child: _isLoading
-                          ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                          : const Text('Create', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Create a playlist and invite friends to build it together.',
+                      style: TextStyle(color: Colors.white54, fontSize: 14),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 40),
+                    TextField(
+                      controller: _nameController,
+                      autofocus: true,
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        hintText: 'My Awesome Playlist',
+                        hintStyle: const TextStyle(color: Colors.white24),
+                        filled: true,
+                        fillColor: const Color(0xFF282828),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                      ),
+                      onSubmitted: (_) => _createPlaylist(),
+                    ),
+                    const SizedBox(height: 40),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: _isLoading ? null : _createPlaylist,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFEB1C24),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                        ),
+                        child: _isLoading
+                            ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                            : const Text('Create', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             )
           : Center(
