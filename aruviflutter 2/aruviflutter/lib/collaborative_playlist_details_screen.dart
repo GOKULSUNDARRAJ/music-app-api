@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:share_plus/share_plus.dart';
 import 'services/audio_service.dart';
-import 'mini_player.dart';
+import 'models/audio_model.dart';
 
 class CollaborativePlaylistDetailsScreen extends StatefulWidget {
   final String playlistId;
@@ -103,18 +103,9 @@ class _CollaborativePlaylistDetailsScreenState extends State<CollaborativePlayli
     if (_songs.isEmpty) return;
     
     final audioService = AudioService();
-    final queue = _songs.map((s) => s as Map<String, dynamic>).toList();
+    final List<AudioModel> audioModels = _songs.map((s) => AudioModel.fromJson(s)).toList();
     
-    // Play first song and set queue
-    audioService.playSong(
-      songId: queue[0]['songId'],
-      audioUrl: queue[0]['audioUrl'],
-      audioName: queue[0]['audioName'],
-      imageUrl: queue[0]['imageUrl'],
-      categoryName: queue[0]['categoryName'] ?? 'Playlist',
-    );
-    
-    audioService.setQueue(queue);
+    audioService.playSongs(audioModels, initialIndex: 0, playlistName: widget.playlistName);
   }
 
   @override
@@ -271,7 +262,7 @@ class _CollaborativePlaylistDetailsScreenState extends State<CollaborativePlayli
                                       const SizedBox(width: 6),
                                       Expanded(
                                         child: Text(
-                                          'Added by \${song['addedByUserName']}',
+                                          'Added by ${song['addedByUserName']}',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(color: Colors.white54, fontSize: 12),
@@ -281,13 +272,8 @@ class _CollaborativePlaylistDetailsScreenState extends State<CollaborativePlayli
                                   ),
                                   onTap: () {
                                     final audioService = AudioService();
-                                    audioService.playSong(
-                                      songId: song['songId'],
-                                      audioUrl: song['audioUrl'],
-                                      audioName: song['audioName'],
-                                      imageUrl: song['imageUrl'],
-                                      categoryName: song['categoryName'] ?? 'Playlist',
-                                    );
+                                    final audioModel = AudioModel.fromJson(song);
+                                    audioService.playSongs([audioModel], initialIndex: 0, playlistName: widget.playlistName);
                                   },
                                 );
 
@@ -316,12 +302,6 @@ class _CollaborativePlaylistDetailsScreenState extends State<CollaborativePlayli
             ),
           ),
           
-          const Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: MiniPlayer(),
-          ),
         ],
       ),
     );
