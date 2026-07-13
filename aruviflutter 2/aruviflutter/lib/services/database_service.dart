@@ -544,7 +544,7 @@ class DatabaseService {
   Future<void> _toggleBackendLike(String songId, String action) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('auth_token');
+      final token = prefs.getString('access_token');
       if (token == null) return;
 
       final url = Uri.parse('https://music-app-api-1.onrender.com/api/likes/song/toggle');
@@ -588,7 +588,7 @@ class DatabaseService {
   Future<Map<String, dynamic>> searchApi(String query, {int page = 1, int limit = 20}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('auth_token');
+      final token = prefs.getString('access_token');
 
       final url = Uri.parse('https://music-app-api-1.onrender.com/api/search?q=$query&page=$page&limit=$limit');
       
@@ -628,7 +628,7 @@ class DatabaseService {
   Future<List<AudioModel>> getCategorySongs(String categoryId) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('auth_token');
+      final token = prefs.getString('access_token');
 
       final url = Uri.parse('https://music-app-api-1.onrender.com/api/search/category/$categoryId/songs');
       
