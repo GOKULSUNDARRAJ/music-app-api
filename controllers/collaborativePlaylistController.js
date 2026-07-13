@@ -86,10 +86,20 @@ exports.list = async (req, res, next) => {
       }]
     });
 
+    const checkSongId = req.query.checkSongId;
+
     const results = await Promise.all(memberships.map(async (m) => {
       const p = m.playlist;
       const memberCount = await CollaborativePlaylistUser.count({ where: { playlistId: p.id } });
       const songCount = await CollaborativePlaylistSong.count({ where: { playlistId: p.id } });
+      
+      let hasSong = false;
+      if (checkSongId) {
+        const existing = await CollaborativePlaylistSong.findOne({
+          where: { playlistId: p.id, songId: checkSongId }
+        });
+        hasSong = !!existing;
+      }
       
       return {
         id: formatEntityId('cpl', p.id),
@@ -101,7 +111,8 @@ exports.list = async (req, res, next) => {
         memberCount,
         songCount,
         isOwner: p.ownerId === req.userId,
-        adminOnlyRemove: p.adminOnlyRemove
+        adminOnlyRemove: p.adminOnlyRemove,
+        hasSong
       };
     }));
 

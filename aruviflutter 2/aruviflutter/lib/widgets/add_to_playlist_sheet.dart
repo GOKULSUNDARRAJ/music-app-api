@@ -58,16 +58,18 @@ class _AddToPlaylistSheetState extends State<AddToPlaylistSheet> {
       final token = prefs.getString('access_token');
       if (token != null) {
         final response = await http.get(
-          Uri.parse('https://music-app-api-1.onrender.com/api/user/collaborative-playlists'),
+          Uri.parse('https://music-app-api-1.onrender.com/api/user/collaborative-playlists?checkSongId=${widget.song.songId}'),
           headers: {'Authorization': 'Bearer $token'},
         );
         if (response.statusCode == 200) {
           final data = json.decode(response.body);
           if (data['status'] == true) {
             collabPlaylists = data['playlists'];
-            // To figure out if it's already added, we would ideally need a getSongs endpoint for each,
-            // or just assume not added and the backend will reject duplicates.
-            // For simplicity, we assume not added initially.
+            for (var p in collabPlaylists) {
+              if (p['hasSong'] == true) {
+                addedCollabIds.add(p['id'].toString());
+              }
+            }
           }
         }
       }
