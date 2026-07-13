@@ -79,6 +79,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
     _initScrollCache();
     _fetchRecommendedPlaylists();
     
+    // Automatically fetch latest songs if this is a blend playlist
+    if (widget.categoryId.startsWith('blend_')) {
+      _fetchBlendSongs();
+    }
+    
     _scrollController.addListener(() {
       // Toggle app bar title at 300px
       if (_scrollController.offset > 300 && !_showTitleInAppBar) {
@@ -100,6 +105,41 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> _fetchBlendSongs() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token') ?? '';
+      if (token.isEmpty) return;
+
+      final blendId = widget.categoryId.replaceAll('blend_', '');
+      final url = Uri.parse('https://music-app-api-1.onrender.com/api/user/blend/$blendId');
+      
+      final response = await http.get(url, headers: {
+        'Authorization': 'Bearer $token',
+      });
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['status'] == true) {
+          final List<dynamic> songsData = data['data'] ?? [];
+          final latestSongs = songsData.map((s) => AudioModel.fromJson(s)).toList();
+          
+          if (mounted) {
+            setState(() {
+              _songs = latestSongs;
+            });
+            // Update the cached version in Library
+            if (_isLiked || _isAddedToPlaylist) {
+              _refreshStorageWithNewSongs();
+            }
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Failed to fetch latest blend songs: $e');
+    }
   }
 
   Future<void> _initScrollCache() async {
