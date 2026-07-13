@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'playlist_screen.dart';
-import 'models/artist_category.dart';
+import 'models/audio_model.dart';
 
 class BlendScreen extends StatefulWidget {
   const BlendScreen({super.key});
@@ -174,25 +174,45 @@ class _BlendScreenState extends State<BlendScreen> {
     );
   }
 
-  void _openBlend(dynamic blend) {
-    // Create a mock category object to pass to PlaylistScreen
-    final fakeCategory = ArtistCategory(
-      id: blend['blendId'],
-      categoryName: blend['blendName'],
-      categoryImage: 'https://cdn.pixabay.com/photo/2016/11/23/15/48/audience-1853662_1280.jpg', // Placeholder blend image
-      adapterType: 1,
-    );
+  Future<void> _openBlend(dynamic blend) async {
+    setState(() => _isLoading = true);
+    try {
+      final token = await _getToken();
+      if (token == null) return;
+      
+      final response = await http.get(
+        Uri.parse('https://music-app-api-1.onrender.com/api/user/blend/${blend['blendId']}'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PlaylistScreen(
-          category: fakeCategory,
-          isBlend: true, // We'll pass a flag if needed, or we can just fetch internally if we modify PlaylistScreen
-          blendId: blend['blendId'].toString(),
-        ),
-      ),
-    );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['status'] == true) {
+          final List<dynamic> songsJson = data['songs'] ?? [];
+          final songs = songsJson.map((s) => AudioModel.fromJson(s)).toList();
+
+          if (mounted) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PlaylistScreen(
+                  title: blend['blendName'],
+                  subtitle: 'A mixed playlist for you both',
+                  imageUrl: 'https://cdn.pixabay.com/photo/2016/11/23/15/48/audience-1853662_1280.jpg',
+                  categoryId: blend['blendId'].toString(),
+                  songs: songs,
+                ),
+              ),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Error fetching blend playlist: $e');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to load blend playlist')));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override
