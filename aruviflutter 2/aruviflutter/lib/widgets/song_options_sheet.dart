@@ -82,9 +82,11 @@ class _SongOptionsSheetState extends State<SongOptionsSheet> {
         color: Color(0xFF1E1E1E),
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 90),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
           // Header without Cover Art
           Padding(
             padding: const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
@@ -220,6 +222,7 @@ class _SongOptionsSheetState extends State<SongOptionsSheet> {
           
           const SizedBox(height: 10),
         ],
+      ),
       ),
     );
   }
