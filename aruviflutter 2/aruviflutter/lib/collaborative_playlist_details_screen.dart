@@ -100,10 +100,9 @@ class _CollaborativePlaylistDetailsScreenState extends State<CollaborativePlayli
       }
     } catch (e) {
       debugPrint('Error fetching songs: $e');
-      setState(() {
-        _errorMessage = e.toString();
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
