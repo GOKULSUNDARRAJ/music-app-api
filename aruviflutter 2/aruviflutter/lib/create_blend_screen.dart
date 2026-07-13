@@ -97,7 +97,7 @@ class _CreateBlendScreenState extends State<CreateBlendScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator(color: Color(0xFFEB1C24)))
           : SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 20, bottom: 140),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
