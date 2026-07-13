@@ -887,9 +887,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                             animation: AudioService(),
                             builder: (context, child) {
                               final audioService = AudioService();
-                              final isThisPlaylistActive = widget.songs.isNotEmpty &&
+                              final isThisPlaylistActive = _songs.isNotEmpty &&
                                   audioService.currentSong != null &&
-                                  widget.songs.any((s) => s.audioUrl == audioService.currentSong!.audioUrl);
+                                  _songs.any((s) => s.audioUrl == audioService.currentSong!.audioUrl);
                               final isPlaying = isThisPlaylistActive && audioService.isPlaying;
 
                               return Container(
@@ -1250,9 +1250,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   animation: AudioService(),
                   builder: (context, child) {
                     final audioService = AudioService();
-                    final isThisPlaylistActive = widget.songs.isNotEmpty &&
+                    final isThisPlaylistActive = _songs.isNotEmpty &&
                         audioService.currentSong != null &&
-                        widget.songs.any((s) => s.audioUrl == audioService.currentSong!.audioUrl);
+                        _songs.any((s) => s.audioUrl == audioService.currentSong!.audioUrl);
                     final isPlaying = isThisPlaylistActive && audioService.isPlaying;
 
                     return Container(
@@ -1272,11 +1272,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       child: IconButton(
                         icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, color: Colors.white, size: 32),
                         onPressed: () {
-                          if (widget.songs.isNotEmpty) {
+                          if (_songs.isNotEmpty) {
                             if (isThisPlaylistActive) {
                               audioService.togglePlayPause();
                             } else {
-                              audioService.playSongs(widget.songs);
+                              audioService.playSongs(_songs);
                             }
                           }
                         },

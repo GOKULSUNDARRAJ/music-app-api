@@ -9,11 +9,13 @@ import 'services/database_service.dart';
 class SelectSongsScreen extends StatefulWidget {
   final String playlistId;
   final String playlistName;
+  final bool isCollaborative;
 
   const SelectSongsScreen({
     super.key,
     required this.playlistId,
     required this.playlistName,
+    this.isCollaborative = false,
   });
 
   @override
@@ -125,7 +127,30 @@ class _SelectSongsScreenState extends State<SelectSongsScreen> {
     final selectedSongs = _allSongs.where((s) => _selectedSongIds.contains(s.songId)).toList();
     
     if (selectedSongs.isNotEmpty) {
-      await DatabaseService().addMultipleSongsToCustomPlaylist(widget.playlistId, selectedSongs);
+      if (widget.isCollaborative) {
+        final prefs = await SharedPreferences.getInstance();
+        final token = prefs.getString('access_token');
+        if (token != null) {
+          final url = Uri.parse('https://music-app-api-1.onrender.com/api/user/collaborative-playlist/${widget.playlistId}/song');
+          // Add sequentially to avoid overwhelming the server or getting rate limited
+          for (var song in selectedSongs) {
+            try {
+              await http.post(
+                url,
+                headers: {
+                  'Authorization': 'Bearer $token',
+                  'Content-Type': 'application/json',
+                },
+                body: json.encode({'songId': song.songId}),
+              );
+            } catch (e) {
+              debugPrint('Error adding song to collaborative playlist: $e');
+            }
+          }
+        }
+      } else {
+        await DatabaseService().addMultipleSongsToCustomPlaylist(widget.playlistId, selectedSongs);
+      }
     }
     
     if (mounted) {
