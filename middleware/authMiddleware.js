@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { User } = require('../models');
 
 const adminUser = process.env.ADMIN_USER || 'admin';
 const adminPass = process.env.ADMIN_PASS || 'admin123';
@@ -23,7 +24,7 @@ exports.requireAdminAuth = (req, res, next) => {
 };
 
 // ─── User JWT Middleware ───────────────────────────────────────────────────────
-exports.requireUserAuth = (req, res, next) => {
+exports.requireUserAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization || '';
 
   // Accept both:  "Bearer <token>"  OR  raw "<token>"
@@ -45,6 +46,17 @@ exports.requireUserAuth = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.userId = parseInt(decoded.sub, 10);
+    
+    // Verify user actually exists in database to prevent foreign key errors with stale tokens
+    const user = await User.findByPk(req.userId);
+    if (!user) {
+      return res.status(401).json({
+        status: false,
+        error_type: '401',
+        message: 'User account no longer exists. Please log in again.'
+      });
+    }
+    
     return next();
   } catch (err) {
     return res.status(401).json({
