@@ -436,8 +436,8 @@ class _CollaborativePlaylistDetailsScreenState extends State<CollaborativePlayli
                                   ),
                                   onTap: () {
                                     final audioService = AudioService();
-                                    final audioModel = AudioModel.fromJson(song);
-                                    audioService.playSongs([audioModel], initialIndex: 0, playlistName: widget.playlistName);
+                                    final allAudioModels = _songs.map((s) => AudioModel.fromJson(s)).toList();
+                                    audioService.playSongs(allAudioModels, initialIndex: index, playlistName: widget.playlistName);
                                   },
                                 );
 
