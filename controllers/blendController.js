@@ -69,8 +69,8 @@ exports.list = async (req, res, next) => {
         status: 'accepted'
       },
       include: [
-        { model: User, as: 'user1', attributes: ['id', 'username'] },
-        { model: User, as: 'user2', attributes: ['id', 'username'] }
+        { model: User, as: 'user1', attributes: ['id', 'userName'] },
+        { model: User, as: 'user2', attributes: ['id', 'userName'] }
       ]
     });
 
@@ -79,8 +79,8 @@ exports.list = async (req, res, next) => {
       return {
         blendId: b.id,
         otherUserId: otherUser.id,
-        otherUsername: otherUser.username,
-        blendName: `Blend with ${otherUser.username}`,
+        otherUsername: otherUser.userName || 'Unknown User',
+        blendName: `Blend with ${otherUser.userName || 'Unknown User'}`,
         createdAt: b.createdAt
       };
     });
@@ -151,6 +151,18 @@ exports.getPlaylist = async (req, res, next) => {
       if (i < uniqueUser1Songs.length) finalSongs.push(uniqueUser1Songs[i]);
       if (i < uniqueUser2Songs.length) finalSongs.push(uniqueUser2Songs[i]);
       i++;
+    }
+
+    // Fallback if users have no liked songs
+    if (finalSongs.length === 0) {
+      const fallbackSongs = await Song.findAll({
+        limit: 20,
+        order: [['createdAt', 'DESC']],
+        include: [{
+          model: Category, as: 'category', include: [{ model: Section, as: 'section' }]
+        }]
+      });
+      finalSongs = fallbackSongs;
     }
 
     const songResults = finalSongs.map(song => ({
