@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const userController = require('../controllers/userController');
 const menuController = require('../controllers/menuController');
+const blendController = require('../controllers/blendController');
 const { requireUserAuth } = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -42,6 +43,10 @@ router.get('/playlist-songs', requireUserAuth, require('../controllers/playlistC
 router.get('/following', requireUserAuth, require('../controllers/artistController').getFollowedArtists);
 router.get('/playlist-status/:playlistId', requireUserAuth, require('../controllers/playlistController').checkPlaylistStatus);
 
-
+// Blend routes
+router.post('/blend/invite', requireUserAuth, blendController.invite);
+router.post('/blend/join', requireUserAuth, smartParser, blendController.join);
+router.get('/blends', requireUserAuth, blendController.list);
+router.get('/blend/:blendId', requireUserAuth, blendController.getPlaylist);
 
 module.exports = router;

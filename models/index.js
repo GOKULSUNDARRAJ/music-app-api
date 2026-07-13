@@ -11,6 +11,7 @@ const Advertisement = require('./Advertisement');
 const Playlist = require('./Playlist')(sequelize);
 const PlaylistItem = require('./PlaylistItem')(sequelize);
 const SongAttribute = require('./SongAttribute');
+const Blend = require('./Blend');
 
 // Define Relationships
 // One section has many categories
@@ -75,4 +76,11 @@ PlaylistItem.belongsTo(Song, { foreignKey: 'songId', as: 'song' });
 
 
 
-module.exports = { sequelize, Section, Category, Song, MenuItem, User, RecentlyPlayed, Like, Follow, Playlist, PlaylistItem, Advertisement, SongAttribute };
+// Blend Associations
+User.hasMany(Blend, { foreignKey: 'user1Id', as: 'blendsInitiated' });
+Blend.belongsTo(User, { foreignKey: 'user1Id', as: 'user1' });
+
+User.hasMany(Blend, { foreignKey: 'user2Id', as: 'blendsAccepted' });
+Blend.belongsTo(User, { foreignKey: 'user2Id', as: 'user2' });
+
+module.exports = { sequelize, Section, Category, Song, MenuItem, User, RecentlyPlayed, Like, Follow, Playlist, PlaylistItem, Advertisement, SongAttribute, Blend };
