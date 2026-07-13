@@ -174,20 +174,24 @@ exports.createCategory = async (req, res, next) => {
       }
     }
 
-    if (!categoryName || !sectionId) {
-      return res.status(400).json({ message: 'categoryName and sectionId are required' });
+    let parsedSectionId = sectionId ? Number(sectionId) : null;
+
+    if (!categoryName) {
+      return res.status(400).json({ message: 'categoryName is required' });
     }
 
-    const section = await Section.findByPk(sectionId);
-    if (!section) {
-      return res.status(400).json({ message: 'Invalid sectionId: section does not exist' });
+    if (parsedSectionId) {
+      const section = await Section.findByPk(parsedSectionId);
+      if (!section) {
+        return res.status(400).json({ message: 'Invalid sectionId: section does not exist' });
+      }
     }
 
     const category = await Category.create({
       categoryName,
       categoryImage,
       adapterType,
-      sectionId
+      sectionId: parsedSectionId
     });
 
     return res.status(201).json(categoryDto(category));
@@ -198,6 +202,7 @@ exports.createCategory = async (req, res, next) => {
 
 exports.getCategories = async (req, res, next) => {
   try {
+    const { Op } = require('sequelize');
     const where = {};
     const include = [];
     if (req.query.sectionId) {
@@ -207,9 +212,13 @@ exports.getCategories = async (req, res, next) => {
       include.push({
         model: Section,
         as: 'section',
-        where: { contentType: req.query.contentType },
+        required: false,
         attributes: []
       });
+      where[Op.or] = [
+        { sectionId: null },
+        { '$section.contentType$': req.query.contentType }
+      ];
     }
 
     const categories = await Category.findAll({
@@ -233,6 +242,7 @@ exports.updateCategory = async (req, res, next) => {
 
     const { categoryName, adapterType, sectionId } = req.body;
     let categoryImage = req.body.categoryImage;
+    let parsedSectionId = sectionId ? Number(sectionId) : null;
 
     if (req.file) {
       categoryImage = req.file.fileUrl || req.file.publicUrl;
@@ -242,8 +252,8 @@ exports.updateCategory = async (req, res, next) => {
       }
     }
 
-    if (sectionId) {
-      const section = await Section.findByPk(sectionId);
+    if (parsedSectionId) {
+      const section = await Section.findByPk(parsedSectionId);
       if (!section) {
         return res.status(400).json({ message: 'Invalid sectionId: section does not exist' });
       }
@@ -253,7 +263,7 @@ exports.updateCategory = async (req, res, next) => {
       categoryName: categoryName ?? category.categoryName,
       categoryImage: categoryImage !== undefined ? categoryImage : category.categoryImage,
       adapterType: adapterType ?? category.adapterType,
-      sectionId: sectionId ?? category.sectionId
+      sectionId: sectionId !== undefined ? parsedSectionId : category.sectionId
     });
 
     return res.status(200).json(categoryDto(category));

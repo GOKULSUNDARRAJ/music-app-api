@@ -381,8 +381,8 @@ function Categories({ onDataChange, contentType }) {
           </div>
           <div>
             <label>Section</label>
-            <select value={form.sectionId} onChange={(e) => setForm(p => ({ ...p, sectionId: e.target.value }))} required>
-              <option value="">Select</option>
+            <select value={form.sectionId || ''} onChange={(e) => setForm(p => ({ ...p, sectionId: e.target.value }))}>
+              <option value="">Unassigned (None)</option>
               {sections.map((s) => (
                 <option key={s.id} value={String(s.id)}>{s.sectionTitle}</option>
               ))}
@@ -415,7 +415,7 @@ function Categories({ onDataChange, contentType }) {
                         categoryImage: item.categoryImage || '',
                         imageFile: null,
                         adapterType: item.adapterType,
-                        sectionId: String(item.sectionId)
+                        sectionId: item.sectionId ? String(item.sectionId) : ''
                       });
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}>Edit</button>
@@ -431,7 +431,7 @@ function Categories({ onDataChange, contentType }) {
                 </div>
                 <div className="media-card-info">
                   <h3 className="media-card-title">{item.categoryName}</h3>
-                  <p className="media-card-subtitle">{section ? section.sectionTitle : 'Unknown Section'}</p>
+                  <p className="media-card-subtitle">{section ? section.sectionTitle : 'Unassigned (No Section)'}</p>
                 </div>
               </div>
             );

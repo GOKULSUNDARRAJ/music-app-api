@@ -23,7 +23,7 @@ const Category = sequelize.define('Category', {
   },
   sectionId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
       model: 'sections',
       key: 'id'

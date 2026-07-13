@@ -91,9 +91,13 @@ app.listen(PORT, () => {
         type: DataTypes.INTEGER,
         allowNull: true
       });
-      console.log('Successfully altered categoryId to allow null');
+      await sequelize.getQueryInterface().changeColumn('categories', 'sectionId', {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      });
+      console.log('Successfully altered categoryId and sectionId to allow null');
     } catch (err) {
-      console.error('Failed to alter categoryId:', err);
+      console.error('Failed to alter columns:', err);
     }
     
     const seedAttributes = require('./seed_attributes');
