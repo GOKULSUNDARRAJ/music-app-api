@@ -100,7 +100,8 @@ exports.list = async (req, res, next) => {
         imageUrl: p.imageUrl,
         memberCount,
         songCount,
-        isOwner: p.ownerId === req.userId
+        isOwner: p.ownerId === req.userId,
+        adminOnlyRemove: p.adminOnlyRemove
       };
     }));
 
@@ -218,13 +219,81 @@ exports.removeSong = async (req, res, next) => {
 
     const playlist = await CollaborativePlaylist.findByPk(playlistId);
 
-    // Can only delete if user is the one who added it, OR user is the owner of the playlist
-    if (entry.addedById !== req.userId && playlist.ownerId !== req.userId) {
-      return res.status(403).json({ status: false, message: 'Cannot remove songs added by other members unless you are the admin' });
+    if (playlist.adminOnlyRemove) {
+      if (playlist.ownerId !== req.userId) {
+        return res.status(403).json({ status: false, message: 'Only the admin can remove songs' });
+      }
+    } else {
+      // Can only delete if user is the one who added it, OR user is the owner of the playlist
+      if (entry.addedById !== req.userId && playlist.ownerId !== req.userId) {
+        return res.status(403).json({ status: false, message: 'Cannot remove songs added by other members unless you are the admin' });
+      }
     }
 
     await entry.destroy();
     return res.status(200).json({ status: true, message: 'Song removed' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Get members of a collaborative playlist
+exports.getMembers = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const playlistId = parseInt(id.replace('cpl_', ''), 10);
+    
+    const membership = await CollaborativePlaylistUser.findOne({
+      where: { playlistId, userId: req.userId }
+    });
+
+    if (!membership) return res.status(403).json({ status: false, message: 'Not a member of this playlist' });
+
+    const playlist = await CollaborativePlaylist.findByPk(playlistId);
+    if (!playlist) return res.status(404).json({ status: false, message: 'Playlist not found' });
+
+    const members = await CollaborativePlaylistUser.findAll({
+      where: { playlistId },
+      include: [{ model: User, as: 'user', attributes: ['id', 'userName'] }]
+    });
+
+    const results = members.map(m => ({
+      id: m.userId,
+      userName: m.user ? m.user.userName : 'Unknown User',
+      isOwner: m.userId === playlist.ownerId
+    }));
+
+    return res.status(200).json({
+      status: true,
+      adminOnlyRemove: playlist.adminOnlyRemove,
+      members: results
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Update settings
+exports.updateSettings = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { adminOnlyRemove } = req.body;
+    const playlistId = parseInt(id.replace('cpl_', ''), 10);
+
+    const playlist = await CollaborativePlaylist.findByPk(playlistId);
+    if (!playlist) return res.status(404).json({ status: false, message: 'Playlist not found' });
+
+    if (playlist.ownerId !== req.userId) {
+      return res.status(403).json({ status: false, message: 'Only admin can change settings' });
+    }
+
+    if (typeof adminOnlyRemove !== 'undefined') {
+      playlist.adminOnlyRemove = adminOnlyRemove;
+    }
+
+    await playlist.save();
+
+    return res.status(200).json({ status: true, message: 'Settings updated successfully' });
   } catch (err) {
     next(err);
   }

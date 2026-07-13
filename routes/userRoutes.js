@@ -57,5 +57,7 @@ router.get('/collaborative-playlists', requireUserAuth, collaborativePlaylistCon
 router.get('/collaborative-playlist/:id', requireUserAuth, collaborativePlaylistController.getSongs);
 router.post('/collaborative-playlist/:id/song', requireUserAuth, smartParser, collaborativePlaylistController.addSong);
 router.delete('/collaborative-playlist/:id/song/:entryId', requireUserAuth, collaborativePlaylistController.removeSong);
+router.get('/collaborative-playlist/:id/members', requireUserAuth, collaborativePlaylistController.getMembers);
+router.put('/collaborative-playlist/:id/settings', requireUserAuth, smartParser, collaborativePlaylistController.updateSettings);
 
 module.exports = router;

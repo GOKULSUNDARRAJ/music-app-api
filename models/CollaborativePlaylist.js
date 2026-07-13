@@ -23,6 +23,10 @@ const CollaborativePlaylist = sequelize.define('CollaborativePlaylist', {
   imageUrl: {
     type: DataTypes.STRING,
     allowNull: true
+  },
+  adminOnlyRemove: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 }, {
   tableName: 'collaborative_playlists',

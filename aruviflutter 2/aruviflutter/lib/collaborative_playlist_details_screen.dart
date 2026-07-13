@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'services/audio_service.dart';
 import 'models/audio_model.dart';
 import 'select_songs_screen.dart';
+import 'widgets/members_bottom_sheet.dart';
 
 class CollaborativePlaylistDetailsScreen extends StatefulWidget {
   final String playlistId;
@@ -29,12 +30,40 @@ class _CollaborativePlaylistDetailsScreenState extends State<CollaborativePlayli
   bool _isLoading = true;
   List<dynamic> _songs = [];
   int? _currentUserId;
+  List<dynamic> _members = [];
+  bool _adminOnlyRemove = false;
 
   @override
   void initState() {
     super.initState();
     _loadUser();
     _fetchSongs();
+    _fetchMembers();
+  }
+
+  Future<void> _fetchMembers() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
+      if (token == null) return;
+      
+      final response = await http.get(
+        Uri.parse('https://music-app-api-1.onrender.com/api/user/collaborative-playlist/${widget.playlistId}/members'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['status'] == true && mounted) {
+          setState(() {
+            _members = data['members'] ?? [];
+            _adminOnlyRemove = data['adminOnlyRemove'] ?? false;
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint('Failed to fetch members: $e');
+    }
   }
 
   Future<void> _loadUser() async {
@@ -188,26 +217,82 @@ class _CollaborativePlaylistDetailsScreenState extends State<CollaborativePlayli
                               style: const TextStyle(color: Colors.white70, fontSize: 14),
                             ),
                             const SizedBox(height: 16),
-                            AnimatedBuilder(
-                              animation: AudioService(),
-                              builder: (context, child) {
-                                final isPlayingThis = AudioService().currentPlaylistName == widget.playlistName && AudioService().isPlaying;
-                                return ElevatedButton.icon(
-                                  onPressed: _songs.isEmpty ? null : () {
-                                    if (AudioService().currentPlaylistName == widget.playlistName) {
-                                      AudioService().togglePlayPause();
-                                    } else {
-                                      _playAll();
-                                    }
+                            Row(
+                              children: [
+                                AnimatedBuilder(
+                                  animation: AudioService(),
+                                  builder: (context, child) {
+                                    final isPlayingThis = AudioService().currentPlaylistName == widget.playlistName && AudioService().isPlaying;
+                                    return ElevatedButton.icon(
+                                      onPressed: _songs.isEmpty ? null : () {
+                                        if (AudioService().currentPlaylistName == widget.playlistName) {
+                                          AudioService().togglePlayPause();
+                                        } else {
+                                          _playAll();
+                                        }
+                                      },
+                                      icon: Icon(isPlayingThis ? Icons.pause : Icons.play_arrow, color: Colors.white),
+                                      label: Text(isPlayingThis ? 'Pause' : 'Play All', style: const TextStyle(color: Colors.white)),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xFFEB1C24),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                      ),
+                                    );
                                   },
-                                  icon: Icon(isPlayingThis ? Icons.pause : Icons.play_arrow, color: Colors.white),
-                                  label: Text(isPlayingThis ? 'Pause' : 'Play All', style: const TextStyle(color: Colors.white)),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFFEB1C24),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                ),
+                                const SizedBox(width: 16),
+                                if (_members.isNotEmpty)
+                                  GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) => MembersBottomSheet(
+                                          playlistId: widget.playlistId,
+                                          isOwner: widget.isOwner,
+                                          initialAdminOnlyRemove: _adminOnlyRemove,
+                                          onAdminSettingChanged: (val) {
+                                            if (mounted) setState(() => _adminOnlyRemove = val);
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      height: 36,
+                                      width: 36.0 + (_members.length > 1 ? (_members.length > 4 ? 3 : _members.length - 1) * 20.0 : 0),
+                                      child: Stack(
+                                        children: List.generate(
+                                          _members.length > 4 ? 4 : _members.length,
+                                          (index) {
+                                            final isLast = index == 3 && _members.length > 4;
+                                            final member = _members[index];
+                                            final initial = isLast ? '+${_members.length - 3}' : (member['userName'] as String).substring(0, 1).toUpperCase();
+                                            
+                                            return Positioned(
+                                              left: index * 20.0,
+                                              child: Container(
+                                                width: 36,
+                                                height: 36,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: isLast ? Colors.grey[700] : (member['isOwner'] == true ? const Color(0xFFEB1C24) : Colors.grey[800]),
+                                                  border: Border.all(color: const Color(0xFF121212), width: 2),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    initial,
+                                                    style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ).reversed.toList(),
+                                      ),
+                                    ),
                                   ),
-                                );
-                              },
+                              ],
                             )
                           ],
                         ),
@@ -283,7 +368,7 @@ class _CollaborativePlaylistDetailsScreenState extends State<CollaborativePlayli
                                   );
                                 }
                                 final song = _songs[index];
-                                final bool canDelete = widget.isOwner || (_currentUserId != null && song['addedById'] == _currentUserId);
+                                final bool canDelete = widget.isOwner || (!_adminOnlyRemove && _currentUserId != null && song['addedById'] == _currentUserId);
 
                                 final listItem = ListTile(
                                   contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
