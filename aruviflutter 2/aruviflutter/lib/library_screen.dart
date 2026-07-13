@@ -15,6 +15,7 @@ import 'models/artist_category.dart';
 import 'services/audio_service.dart';
 import 'settings_screen.dart';
 import 'scanner_screen.dart';
+import 'blend_screen.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -225,8 +226,11 @@ class _LibraryScreenState extends State<LibraryScreen> {
           _buildListItem(Icons.queue_music, 'Add to Playlist', () {
             Navigator.push(context, MaterialPageRoute(builder: (_) => const MyPlaylistsScreen())).then((_) => _loadArtists());
           }),
-          _buildListItem(Icons.download_outlined, 'Downloaded', () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const DownloadedScreen())).then((_) => _loadArtists());
+          _buildListItem(Icons.cloud_download, 'Downloaded Songs', () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const DownloadedScreen()));
+          }),
+          _buildListItem(Icons.merge_type, 'My Blends', () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const BlendScreen()));
           }),
           _buildListItem(Icons.auto_awesome, 'Recently Played', () {
             Navigator.push(context, MaterialPageRoute(builder: (_) => const RecentlyPlayedPlaylistsScreen())).then((_) => _loadArtists());

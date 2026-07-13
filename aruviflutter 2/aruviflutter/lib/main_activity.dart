@@ -19,6 +19,7 @@ import 'widgets/create_playlist_dialog.dart';
 import 'select_songs_screen.dart';
 import 'custom_playlists_screen.dart';
 import 'services/database_service.dart';
+import 'blend_screen.dart';
 
 class MainActivity extends StatefulWidget {
   const MainActivity({super.key});
@@ -270,7 +271,11 @@ class _MainActivityState extends State<MainActivity> {
                             subtitle: const Text('Combine your friends\' tastes into a playlist', style: TextStyle(color: Colors.white70, fontSize: 13)),
                             onTap: () {
                               Navigator.pop(sheetContext);
-                              ScaffoldMessenger.of(parentContext).showSnackBar(const SnackBar(content: Text('Coming soon!')));
+                              _navigatorKeys[_currentIndex].currentState?.push(
+                                MaterialPageRoute(
+                                  builder: (context) => const BlendScreen(),
+                                ),
+                              );
                             },
                           ),
                           const SizedBox(height: 12),
