@@ -209,7 +209,7 @@ class _BlendScreenState extends State<BlendScreen> {
   Widget _buildOverlappingCircles(String name) {
     String initial = 'B';
     if (name.toLowerCase().contains('with ')) {
-      final parts = name.split(RegExp(r'(?i)with '));
+      final parts = name.split(RegExp(r'with ', caseSensitive: false));
       if (parts.length > 1 && parts.last.trim().isNotEmpty) {
         initial = parts.last.trim()[0].toUpperCase();
       }
