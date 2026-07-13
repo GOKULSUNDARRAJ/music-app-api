@@ -55,16 +55,26 @@ class _BlendScreenState extends State<BlendScreen> {
   }
 
   Future<void> _createBlend() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => const Center(child: CircularProgressIndicator(color: Color(0xFF1DB954))),
+    );
     try {
       final token = await _getToken();
-      if (token == null) return;
+      if (token == null) {
+        Navigator.pop(context); // close loading
+        return;
+      }
       
       final response = await http.post(
         Uri.parse('https://music-app-api-1.onrender.com/api/user/blend/invite'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
-      if (response.statusCode == 201) {
+      Navigator.pop(context); // close loading
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
         final data = json.decode(response.body);
         final inviteCode = data['inviteCode'];
         if (mounted) {
@@ -108,8 +118,12 @@ class _BlendScreenState extends State<BlendScreen> {
             ),
           );
         }
+      } else {
+        final data = json.decode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(data['message'] ?? 'Failed to create blend')));
       }
     } catch (e) {
+      Navigator.pop(context); // close loading
       debugPrint('Error creating blend: $e');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to create blend')));
     }
