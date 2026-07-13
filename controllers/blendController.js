@@ -133,8 +133,8 @@ exports.getPlaylist = async (req, res, next) => {
       }]
     });
 
-    const user1Songs = user1Likes.map(l => l.song);
-    const user2Songs = user2Likes.map(l => l.song);
+    const user1Songs = user1Likes.map(l => l.song).filter(s => s != null);
+    const user2Songs = user2Likes.map(l => l.song).filter(s => s != null);
 
     // Identify shared songs
     const user1SongIds = new Set(user1Songs.map(s => s.id));
@@ -155,15 +155,22 @@ exports.getPlaylist = async (req, res, next) => {
 
     // Fallback if users have no liked songs
     if (finalSongs.length === 0) {
-      const fallbackSongs = await Song.findAll({
-        limit: 20,
-        order: [['createdAt', 'DESC']],
-        include: [{
-          model: Category, as: 'category', include: [{ model: Section, as: 'section' }]
-        }]
-      });
-      finalSongs = fallbackSongs;
+      try {
+        const fallbackSongs = await Song.findAll({
+          limit: 20,
+          order: [['createdAt', 'DESC']],
+          include: [{
+            model: Category, as: 'category', include: [{ model: Section, as: 'section' }]
+          }]
+        });
+        finalSongs = fallbackSongs;
+      } catch (err) {
+        console.error('Error fetching fallback songs:', err);
+      }
     }
+    
+    // Final safety filter for nulls
+    finalSongs = finalSongs.filter(s => s != null);
 
     const songResults = finalSongs.map(song => ({
       songId: formatEntityId('song', song.id),
