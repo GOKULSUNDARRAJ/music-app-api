@@ -58,6 +58,7 @@ dependencies:
   share_plus: any
   firebase_core: 3.6.0
   firebase_auth: 5.3.1
+  flutter_carplay: ^1.6.4
 
 dev_dependencies:
   flutter_test:

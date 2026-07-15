@@ -150,52 +150,72 @@ function Dashboard({ refreshKey, contentType }) {
     api.get(endpoint).then((res) => setNestedData(res.data));
   }, [contentType, refreshKey]);
 
+  const statCards = [
+    { label: 'Sections', value: counts.sections, icon: '🗂️', color: '#6366f1' },
+    { label: 'Categories', value: counts.categories, icon: '📂', color: '#8b5cf6' },
+    { label: 'Songs', value: counts.songs, icon: '🎵', color: '#ec4899' },
+    { label: 'Users', value: counts.users || 0, icon: '👥', color: '#14b8a6' },
+  ];
 
   return (
     <div>
-      <h2>Dashboard</h2>
-      <div className="cards">
-        <div className="card">Sections: {counts.sections}</div>
-        <div className="card">Categories: {counts.categories}</div>
-        <div className="card">Songs: {counts.songs}</div>
-        <div className="card">Users: {counts.users || 0}</div>
+      <h2 style={{ fontWeight: 800, fontSize: '2rem', marginBottom: 28, background: 'linear-gradient(135deg,#6366f1,#a855f7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Dashboard</h2>
 
-
+      {/* Stat Cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 20, marginBottom: 40 }}>
+        {statCards.map(s => (
+          <div key={s.label} style={{
+            background: '#fff',
+            borderRadius: 16,
+            padding: '24px 28px',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 18,
+            border: `2px solid ${s.color}18`,
+            transition: 'transform 0.2s,box-shadow 0.2s',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = `0 12px 32px ${s.color}22`; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 24px rgba(0,0,0,0.07)'; }}
+          >
+            <div style={{ width: 52, height: 52, borderRadius: 14, background: `${s.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26 }}>{s.icon}</div>
+            <div>
+              <div style={{ fontSize: 32, fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.value}</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#64748b', marginTop: 4 }}>{s.label}</div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="dashboard-tree">
-        <h3>{contentType ? contentType.toUpperCase() : 'ALL'} Content Structure</h3>
+
+      {/* Content Structure Grid */}
+      <div>
+        <h3 style={{ fontWeight: 700, fontSize: '1.25rem', marginBottom: 8, color: '#1e293b' }}>
+          {contentType ? contentType.toUpperCase() : 'ALL'} Content Structure
+        </h3>
+
         {(nestedData.sections || []).length === 0 ? (
           <p className="muted">No sections found for this content type.</p>
         ) : (
           (nestedData.sections || []).map((section) => (
-            <div className="section-block" key={section.sectionId}>
-              <div className="node-title">
-                <span className="id-badge">{section.sectionId}</span>
-                <strong>{section.sectionTitle}</strong>
+            <div key={section.sectionId} style={{ marginBottom: 48 }}>
+              {/* Section header */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+                <div style={{ width: 4, height: 28, borderRadius: 4, background: 'linear-gradient(180deg,#6366f1,#a855f7)' }} />
+                <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 700, background: '#f1f5f9', color: '#475569', padding: '3px 8px', borderRadius: 6 }}>
+                  sec_{String(section.sectionId).padStart(3, '0')}
+                </span>
+                <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#1e293b' }}>{section.sectionTitle}</span>
               </div>
+
+              {/* Categories as media cards */}
               {(section.categories || []).length === 0 ? (
-                <p className="muted">No categories</p>
+                <p className="muted" style={{ marginLeft: 16 }}>No categories</p>
               ) : (
-                (section.categories || []).map((category) => (
-                  <div className="category-block" key={category.categoryId}>
-                    <div className="node-title">
-                      <span className="id-badge">{category.categoryId}</span>
-                      <span>{category.categoryName}</span>
-                    </div>
-                    {(category.songs || []).length === 0 ? (
-                      <p className="muted">No songs</p>
-                    ) : (
-                      <div className="songs-list">
-                        {(category.songs || []).map((song) => (
-                          <div className="song-row" key={song.songId}>
-                            <span className="id-badge">{song.songId}</span>
-                            <span>{song.audioName}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(180px,1fr))', gap: 24, paddingLeft: 16 }}>
+                  {(section.categories || []).map((category) => (
+                    <CategoryCard key={category.categoryId} category={category} />
+                  ))}
+                </div>
               )}
             </div>
           ))
@@ -204,6 +224,94 @@ function Dashboard({ refreshKey, contentType }) {
     </div>
   );
 }
+
+function CategoryCard({ category }) {
+  const [hovered, setHovered] = useState(false);
+  const songCount = (category.songs || []).length;
+  const imgSrc = category.categoryImage || (category.songs?.[0]?.imageUrl) || null;
+
+  // Badge label helpers
+  const getBadgeLabel = (cat) => {
+    if (cat.adapterType === 2) return { label: 'U1 Drug playlist', icon: '🎧', color: '#f59e0b' };
+    if (cat.adapterType === 3) return { label: 'Artist playlist', icon: '🎤', color: '#8b5cf6' };
+    return { label: 'Trending playlist', icon: '🔥', color: '#6366f1' };
+  };
+  const badge = getBadgeLabel(category);
+
+  return (
+    <div
+      style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* Square image */}
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        aspectRatio: '1/1',
+        borderRadius: 14,
+        overflow: 'hidden',
+        boxShadow: hovered ? '0 16px 40px rgba(0,0,0,0.28)' : '0 4px 12px rgba(0,0,0,0.12)',
+        background: '#1e293b',
+        transition: 'box-shadow 0.3s ease',
+      }}>
+        {imgSrc ? (
+          <img
+            src={imgSrc}
+            alt={category.categoryName}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', transform: hovered ? 'scale(1.07)' : 'scale(1)', transition: 'transform 0.4s ease' }}
+            onError={e => { e.target.style.display = 'none'; }}
+          />
+        ) : (
+          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48, background: 'linear-gradient(135deg,#312e81,#5b21b6)' }}>🎵</div>
+        )}
+
+        {/* Hover overlay showing song list */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)',
+          opacity: hovered ? 1 : 0,
+          transition: 'opacity 0.3s ease',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          padding: 12,
+        }}>
+          <div style={{ color: '#fff', fontSize: 11, fontWeight: 600, lineHeight: 1.8 }}>
+            {(category.songs || []).slice(0, 4).map(s => (
+              <div key={s.songId} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>▶ {s.audioName}</div>
+            ))}
+            {songCount > 4 && <div style={{ color: '#a5b4fc' }}>+{songCount - 4} more songs</div>}
+          </div>
+        </div>
+
+        {/* Song count pill */}
+        <div style={{
+          position: 'absolute', top: 10, right: 10,
+          background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(6px)',
+          color: '#fff', fontSize: 11, fontWeight: 700,
+          padding: '3px 8px', borderRadius: 20,
+        }}>
+          {songCount} songs
+        </div>
+      </div>
+
+      {/* Info below image */}
+      <div style={{ paddingTop: 10 }}>
+        <div style={{ fontWeight: 700, fontSize: 14, color: '#1e293b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: 4 }}>
+          {category.categoryName}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ fontSize: 11, fontWeight: 600, color: badge.color }}>{badge.label}</span>
+          <span style={{ fontSize: 13 }}>{badge.icon}</span>
+          {songCount > 0 && <span style={{ fontSize: 13 }}>⚡</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 
 function Sections({ onDataChange, contentType, onViewCategories }) {
   const [items, setItems] = useState([]);

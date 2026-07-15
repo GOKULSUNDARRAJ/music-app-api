@@ -4,11 +4,12 @@ import 'services/carplay_audio_handler.dart';
 import 'services/audio_service.dart' as app_audio;
 import 'package:firebase_core/firebase_core.dart';
 import 'splash_screen.dart';
+import 'services/carplay_template_handler.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await AudioService.init(
+  final audioHandler = await AudioService.init(
     builder: () => CarPlayAudioHandler(app_audio.AudioService()),
     config: const AudioServiceConfig(
       androidNotificationChannelId: 'com.saalai.salaimusicapp.channel.audio',
@@ -16,6 +17,10 @@ Future<void> main() async {
       androidNotificationOngoing: true,
     ),
   );
+  
+  final carplayHandler = CarPlayTemplateHandler(audioHandler);
+  carplayHandler.init();
+
   runApp(const MyApp());
 }
 
