@@ -227,10 +227,10 @@ function Dashboard({ refreshKey, contentType }) {
 
 function CategoryCard({ category }) {
   const [hovered, setHovered] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const songCount = (category.songs || []).length;
   const imgSrc = category.categoryImage || (category.songs?.[0]?.imageUrl) || null;
 
-  // Badge label helpers
   const getBadgeLabel = (cat) => {
     if (cat.adapterType === 2) return { label: 'U1 Drug playlist', icon: '🎧', color: '#f59e0b' };
     if (cat.adapterType === 3) return { label: 'Artist playlist', icon: '🎤', color: '#8b5cf6' };
@@ -239,75 +239,171 @@ function CategoryCard({ category }) {
   const badge = getBadgeLabel(category);
 
   return (
-    <div
-      style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {/* Square image */}
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        aspectRatio: '1/1',
-        borderRadius: 14,
-        overflow: 'hidden',
-        boxShadow: hovered ? '0 16px 40px rgba(0,0,0,0.28)' : '0 4px 12px rgba(0,0,0,0.12)',
-        background: '#1e293b',
-        transition: 'box-shadow 0.3s ease',
-      }}>
-        {imgSrc ? (
-          <img
-            src={imgSrc}
-            alt={category.categoryName}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', transform: hovered ? 'scale(1.07)' : 'scale(1)', transition: 'transform 0.4s ease' }}
-            onError={e => { e.target.style.display = 'none'; }}
-          />
-        ) : (
-          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48, background: 'linear-gradient(135deg,#312e81,#5b21b6)' }}>🎵</div>
-        )}
-
-        {/* Hover overlay showing song list */}
+    <>
+      {/* Card */}
+      <div
+        style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onClick={() => setShowModal(true)}
+      >
+        {/* Square image */}
         <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)',
-          opacity: hovered ? 1 : 0,
-          transition: 'opacity 0.3s ease',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          padding: 12,
+          position: 'relative', width: '100%', aspectRatio: '1/1',
+          borderRadius: 14, overflow: 'hidden',
+          boxShadow: hovered ? '0 16px 40px rgba(0,0,0,0.28)' : '0 4px 12px rgba(0,0,0,0.12)',
+          background: '#1e293b', transition: 'box-shadow 0.3s ease',
         }}>
-          <div style={{ color: '#fff', fontSize: 11, fontWeight: 600, lineHeight: 1.8 }}>
-            {(category.songs || []).slice(0, 4).map(s => (
-              <div key={s.songId} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>▶ {s.audioName}</div>
-            ))}
-            {songCount > 4 && <div style={{ color: '#a5b4fc' }}>+{songCount - 4} more songs</div>}
+          {imgSrc ? (
+            <img src={imgSrc} alt={category.categoryName}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', transform: hovered ? 'scale(1.07)' : 'scale(1)', transition: 'transform 0.4s ease' }}
+              onError={e => { e.target.style.display = 'none'; }}
+            />
+          ) : (
+            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48, background: 'linear-gradient(135deg,#312e81,#5b21b6)' }}>🎵</div>
+          )}
+
+          {/* Hover overlay */}
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)',
+            opacity: hovered ? 1 : 0, transition: 'opacity 0.3s ease',
+            display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 12,
+          }}>
+            <div style={{ color: '#fff', fontSize: 18, fontWeight: 700, textAlign: 'center', marginBottom: 6 }}>
+              👁️ View Songs
+            </div>
+          </div>
+
+          {/* Song count pill */}
+          <div style={{
+            position: 'absolute', top: 10, right: 10,
+            background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(6px)',
+            color: '#fff', fontSize: 11, fontWeight: 700,
+            padding: '3px 8px', borderRadius: 20,
+          }}>
+            {songCount} songs
           </div>
         </div>
 
-        {/* Song count pill */}
-        <div style={{
-          position: 'absolute', top: 10, right: 10,
-          background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(6px)',
-          color: '#fff', fontSize: 11, fontWeight: 700,
-          padding: '3px 8px', borderRadius: 20,
-        }}>
-          {songCount} songs
+        {/* Info below image */}
+        <div style={{ paddingTop: 10 }}>
+          <div style={{ fontWeight: 700, fontSize: 14, color: '#1e293b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: 4 }}>
+            {category.categoryName}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: badge.color }}>{badge.label}</span>
+            <span style={{ fontSize: 13 }}>{badge.icon}</span>
+            {songCount > 0 && <span style={{ fontSize: 13 }}>⚡</span>}
+          </div>
         </div>
       </div>
 
-      {/* Info below image */}
-      <div style={{ paddingTop: 10 }}>
-        <div style={{ fontWeight: 700, fontSize: 14, color: '#1e293b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: 4 }}>
-          {category.categoryName}
+      {/* Songs Modal */}
+      {showModal && (
+        <div
+          onClick={() => setShowModal(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 1000,
+            background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 24,
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: '#fff', borderRadius: 20,
+              width: '100%', maxWidth: 600,
+              maxHeight: '80vh', display: 'flex', flexDirection: 'column',
+              boxShadow: '0 32px 80px rgba(0,0,0,0.4)',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Modal Header */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 16,
+              padding: '20px 24px', borderBottom: '1px solid #f1f5f9',
+              background: 'linear-gradient(135deg,#0f172a,#1e1b4b)',
+            }}>
+              {imgSrc && (
+                <img src={imgSrc} alt={category.categoryName}
+                  style={{ width: 56, height: 56, borderRadius: 10, objectFit: 'cover', flexShrink: 0 }}
+                  onError={e => { e.target.style.display = 'none'; }}
+                />
+              )}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 800, fontSize: '1.2rem', color: '#fff', marginBottom: 4 }}>
+                  {category.categoryName}
+                </div>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: badge.color, background: `${badge.color}22`, padding: '2px 8px', borderRadius: 20 }}>
+                    {badge.icon} {badge.label}
+                  </span>
+                  <span style={{ fontSize: 12, color: '#94a3b8' }}>{songCount} songs</span>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowModal(false)}
+                style={{ background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', borderRadius: 10, padding: '8px 14px', fontWeight: 700, fontSize: 18, cursor: 'pointer', flexShrink: 0 }}
+              >✕</button>
+            </div>
+
+            {/* Song List */}
+            <div style={{ overflowY: 'auto', flex: 1 }}>
+              {(category.songs || []).length === 0 ? (
+                <div style={{ padding: 32, textAlign: 'center', color: '#94a3b8' }}>No songs found</div>
+              ) : (
+                (category.songs || []).map((song, idx) => (
+                  <div key={song.songId} style={{
+                    display: 'flex', alignItems: 'center', gap: 14,
+                    padding: '12px 20px',
+                    borderBottom: '1px solid #f8fafc',
+                    transition: 'background 0.15s',
+                    cursor: 'default',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    {/* Track number */}
+                    <div style={{ width: 28, textAlign: 'center', fontWeight: 700, fontSize: 13, color: '#cbd5e1', flexShrink: 0 }}>
+                      {idx + 1}
+                    </div>
+
+                    {/* Album art thumbnail */}
+                    <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', background: '#1e293b', flexShrink: 0 }}>
+                      {song.imageUrl ? (
+                        <img src={song.imageUrl} alt={song.audioName}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          onError={e => { e.target.style.display = 'none'; }}
+                        />
+                      ) : (
+                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>🎵</div>
+                      )}
+                    </div>
+
+                    {/* Song info */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 600, fontSize: 14, color: '#1e293b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {song.audioName}
+                      </div>
+                      <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>
+                        {song.duration || ''}
+                      </div>
+                    </div>
+
+                    {/* Song ID badge */}
+                    <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 700, background: '#f1f5f9', color: '#475569', padding: '3px 8px', borderRadius: 6, flexShrink: 0 }}>
+                      {song.songId}
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{ fontSize: 11, fontWeight: 600, color: badge.color }}>{badge.label}</span>
-          <span style={{ fontSize: 13 }}>{badge.icon}</span>
-          {songCount > 0 && <span style={{ fontSize: 13 }}>⚡</span>}
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 
