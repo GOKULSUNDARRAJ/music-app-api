@@ -60,6 +60,7 @@ function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [songToEdit, setSongToEdit] = useState(null);
   const [initialSectionFilter, setInitialSectionFilter] = useState('');
+  const [initialFormSection, setInitialFormSection] = useState('');
 
   const onDataChange = () => setRefreshKey((p) => p + 1);
 
@@ -118,9 +119,9 @@ function App() {
             <small>Working on {contentType.toUpperCase()} content</small>
           </div>
         )}
-        {activeTab === 'Dashboard' && <Dashboard refreshKey={refreshKey} contentType={contentType} onAddCategory={(sid) => { setInitialSectionFilter(sid); setActiveTab('Categories'); }} />}
-        {activeTab === 'Sections' && <Sections onDataChange={onDataChange} contentType={contentType} onViewCategories={(sid) => { setInitialSectionFilter(sid); setActiveTab('Categories'); }} />}
-        {activeTab === 'Categories' && <Categories onDataChange={onDataChange} contentType={contentType} initialSectionFilter={initialSectionFilter} clearInitialSectionFilter={() => setInitialSectionFilter('')} />}
+        {activeTab === 'Dashboard' && <Dashboard refreshKey={refreshKey} contentType={contentType} onAddCategory={(sid) => { setInitialSectionFilter('unassigned'); setInitialFormSection(sid); setActiveTab('Categories'); }} />}
+        {activeTab === 'Sections' && <Sections onDataChange={onDataChange} contentType={contentType} onViewCategories={(sid) => { setInitialSectionFilter(sid); setInitialFormSection(''); setActiveTab('Categories'); }} />}
+        {activeTab === 'Categories' && <Categories onDataChange={onDataChange} contentType={contentType} initialSectionFilter={initialSectionFilter} clearInitialSectionFilter={() => setInitialSectionFilter('')} initialFormSection={initialFormSection} />}
         {activeTab === 'Songs' && <Songs onDataChange={onDataChange} contentType={contentType} initialEditSong={songToEdit} clearEditSong={() => setSongToEdit(null)} />}
         {activeTab === 'Bulk Songs' && <BulkSongs onDataChange={onDataChange} contentType={contentType} onEditRequest={(s) => { setSongToEdit(s); setActiveTab('Songs'); }} />}
         {activeTab === 'Advanced Bulk' && <AdvancedBulkSongs onDataChange={onDataChange} contentType={contentType} onEditRequest={(s) => { setSongToEdit(s); setActiveTab('Songs'); }} />}
@@ -509,7 +510,7 @@ function Sections({ onDataChange, contentType, onViewCategories }) {
   );
 }
 
-function Categories({ onDataChange, contentType, initialSectionFilter, clearInitialSectionFilter }) {
+function Categories({ onDataChange, contentType, initialSectionFilter, clearInitialSectionFilter, initialFormSection }) {
   const [items, setItems] = useState([]);
   const [sections, setSections] = useState([]);
   const [sectionFilter, setSectionFilter] = useState('');
@@ -543,8 +544,14 @@ function Categories({ onDataChange, contentType, initialSectionFilter, clearInit
   }, [initialSectionFilter]);
 
   useEffect(() => {
+    if (initialFormSection) {
+      setForm(prev => ({ ...prev, sectionId: String(initialFormSection) }));
+    }
+  }, [initialFormSection]);
+
+  useEffect(() => {
     if (!initialSectionFilter) setSectionFilter('');
-    setForm((prev) => ({ ...prev, sectionId: '' }));
+    if (!initialFormSection) setForm((prev) => ({ ...prev, sectionId: '' }));
     setEditingId(null);
   }, [contentType]);
 
@@ -652,7 +659,7 @@ function Categories({ onDataChange, contentType, initialSectionFilter, clearInit
                         categoryImage: item.categoryImage || '',
                         imageFile: null,
                         adapterType: item.adapterType,
-                        sectionId: item.sectionId ? String(item.sectionId) : ''
+                        sectionId: item.sectionId ? String(item.sectionId) : (initialFormSection ? String(initialFormSection) : '')
                       });
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}>Edit</button>
