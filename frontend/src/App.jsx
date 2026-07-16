@@ -476,9 +476,11 @@ function AssignCategoryView({ sectionId, contentType, onBack, onAssigned }) {
     try {
       const rawSectionId = parseInt(String(sectionId).replace(/\D/g, ''), 10);
       await Promise.all(
-        Array.from(selectedIds).map(id => 
-          api.put(`/admin/category/${id}`, { sectionId: rawSectionId })
-        )
+        Array.from(selectedIds).map(id => {
+          const fd = new FormData();
+          fd.append('sectionId', rawSectionId);
+          return api.put(`/admin/category/${id}`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+        })
       );
       onAssigned();
     } catch (err) {
