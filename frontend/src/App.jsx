@@ -474,9 +474,10 @@ function AssignCategoryView({ sectionId, contentType, onBack, onAssigned }) {
     if (selectedIds.size === 0) return;
     setLoading(true);
     try {
+      const rawSectionId = parseInt(String(sectionId).replace(/\D/g, ''), 10);
       await Promise.all(
         Array.from(selectedIds).map(id => 
-          api.put(`/admin/category/${id}`, { sectionId })
+          api.put(`/admin/category/${id}`, { sectionId: rawSectionId })
         )
       );
       onAssigned();
@@ -571,9 +572,10 @@ function AssignSongView({ categoryId, contentType, onBack, onAssigned }) {
     if (selectedIds.size === 0) return;
     setLoading(true);
     try {
+      const rawCategoryId = parseInt(String(categoryId).replace(/\D/g, ''), 10);
       await Promise.all(
         Array.from(selectedIds).map(id => 
-          api.put(`/admin/song/${id}`, { categoryId })
+          api.put(`/admin/song/${id}`, { categoryId: rawCategoryId })
         )
       );
       onAssigned();
