@@ -141,6 +141,7 @@ function Dashboard({ refreshKey, contentType, onDataChange }) {
   const [nestedData, setNestedData] = useState({ sections: [] });
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [assignSectionId, setAssignSectionId] = useState(null);
+  const [assignSongCategoryId, setAssignSongCategoryId] = useState(null);
 
   useEffect(() => {
     api.get('/admin/dashboard').then((res) => setCounts(res.data));
@@ -169,8 +170,15 @@ function Dashboard({ refreshKey, contentType, onDataChange }) {
           onBack={() => setAssignSectionId(null)} 
           onAssigned={() => { setAssignSectionId(null); onDataChange(); }} 
         />
+      ) : assignSongCategoryId ? (
+        <AssignSongView 
+          categoryId={assignSongCategoryId} 
+          contentType={contentType} 
+          onBack={() => setAssignSongCategoryId(null)} 
+          onAssigned={() => { setAssignSongCategoryId(null); onDataChange(); }} 
+        />
       ) : selectedCategory ? (
-        <CategoryDetailView category={selectedCategory} onBack={() => setSelectedCategory(null)} />
+        <CategoryDetailView category={selectedCategory} onBack={() => setSelectedCategory(null)} onAddSong={() => setAssignSongCategoryId(selectedCategory.categoryId)} />
       ) : (
         <>
           <h2 style={{ fontWeight: 800, fontSize: '2rem', marginBottom: 28, background: 'linear-gradient(135deg,#6366f1,#a855f7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Dashboard</h2>
@@ -329,7 +337,7 @@ function CategoryCard({ category, onSelect }) {
   );
 }
 
-function CategoryDetailView({ category, onBack }) {
+function CategoryDetailView({ category, onBack, onAddSong }) {
   const songCount = (category.songs || []).length;
   const imgSrc = category.categoryImage || (category.songs?.[0]?.imageUrl) || null;
 
@@ -372,6 +380,16 @@ function CategoryDetailView({ category, onBack }) {
             </span>
             <span style={{ fontSize: 14, color: '#94a3b8', fontWeight: 600 }}>{songCount} songs</span>
           </div>
+        </div>
+        <div style={{ marginLeft: 'auto' }}>
+          <button 
+            onClick={onAddSong}
+            style={{ background: '#ec4899', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: 12, fontWeight: 800, cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 8px 24px rgba(236,72,153,0.4)', fontSize: '1.1rem' }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+          >
+            + Add Song
+          </button>
         </div>
       </div>
 
@@ -520,6 +538,110 @@ function AssignCategoryView({ sectionId, contentType, onBack, onAssigned }) {
                 </div>
                 {isSelected && (
                   <div style={{ position: 'absolute', top: 10, right: 10, background: '#6366f1', color: '#fff', width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', boxShadow: '0 4px 12px rgba(99,102,241,0.5)' }}>✓</div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AssignSongView({ categoryId, contentType, onBack, onAssigned }) {
+  const [songs, setSongs] = useState([]);
+  const [search, setSearch] = useState('');
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    api.get(`/admin/songs?contentType=${contentType}`)
+      .then(res => setSongs(res.data.filter(s => !s.categoryId)))
+      .catch(err => console.error(err));
+  }, [contentType]);
+
+  const toggleSelect = (id) => {
+    const newSet = new Set(selectedIds);
+    if (newSet.has(id)) newSet.delete(id);
+    else newSet.add(id);
+    setSelectedIds(newSet);
+  };
+
+  const handleAssign = async () => {
+    if (selectedIds.size === 0) return;
+    setLoading(true);
+    try {
+      await Promise.all(
+        Array.from(selectedIds).map(id => 
+          api.put(`/admin/song/${id}`, { categoryId })
+        )
+      );
+      onAssigned();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to assign some songs.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filtered = songs.filter(s => s.audioName.toLowerCase().includes(search.toLowerCase()) || (s.songId && s.songId.toLowerCase().includes(search.toLowerCase())));
+
+  return (
+    <div style={{ background: '#fff', borderRadius: 20, padding: 30, boxShadow: '0 4px 24px rgba(0,0,0,0.05)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 30 }}>
+        <button onClick={onBack} style={{ background: '#f1f5f9', border: 'none', padding: '10px 16px', borderRadius: 10, cursor: 'pointer', fontWeight: 600 }}>← Back</button>
+        <h2 style={{ margin: 0, fontSize: '1.8rem' }}>Assign Songs to Category</h2>
+        <div style={{ marginLeft: 'auto' }}>
+          <button 
+            onClick={handleAssign} 
+            disabled={selectedIds.size === 0 || loading}
+            style={{ background: '#ec4899', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: 10, fontWeight: 700, cursor: selectedIds.size > 0 ? 'pointer' : 'not-allowed', opacity: selectedIds.size > 0 ? 1 : 0.5, transition: 'all 0.2s' }}
+          >
+            {loading ? 'Assigning...' : `Assign Selected (${selectedIds.size})`}
+          </button>
+        </div>
+      </div>
+
+      <input 
+        type="text" 
+        placeholder="🔍 Search unassigned songs by name or ID..." 
+        value={search} 
+        onChange={e => setSearch(e.target.value)} 
+        style={{ width: '100%', padding: '14px 20px', fontSize: 16, borderRadius: 12, border: '2px solid #e2e8f0', marginBottom: 30, outline: 'none' }}
+      />
+
+      {songs.length === 0 ? (
+        <p className="muted" style={{ textAlign: 'center', marginTop: 40, fontSize: 18 }}>No unassigned songs available. Create some in the Songs tab first!</p>
+      ) : filtered.length === 0 ? (
+        <p className="muted" style={{ textAlign: 'center', marginTop: 40, fontSize: 16 }}>No songs match your search.</p>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
+          {filtered.map(song => {
+            const isSelected = selectedIds.has(song.id);
+            return (
+              <div 
+                key={song.id} 
+                onClick={() => toggleSelect(song.id)}
+                style={{
+                  cursor: 'pointer', borderRadius: 16, overflow: 'hidden', background: '#f8fafc',
+                  border: `3px solid ${isSelected ? '#ec4899' : 'transparent'}`,
+                  transition: 'all 0.2s', position: 'relative', display: 'flex', alignItems: 'center', padding: 12, gap: 12
+                }}
+              >
+                <div style={{ width: 48, height: 48, borderRadius: 8, background: '#1e293b', flexShrink: 0, overflow: 'hidden' }}>
+                  {song.imageUrl ? (
+                    <img src={song.imageUrl} alt={song.audioName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={e => { e.target.style.display = 'none'; }} />
+                  ) : (
+                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>🎵</div>
+                  )}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontWeight: 700, color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: 15 }}>{song.audioName}</div>
+                  <div style={{ fontSize: 12, color: '#64748b', marginTop: 4 }}>ID: {song.songId}</div>
+                </div>
+                {isSelected && (
+                  <div style={{ background: '#ec4899', color: '#fff', width: 24, height: 24, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', flexShrink: 0 }}>✓</div>
                 )}
               </div>
             );
