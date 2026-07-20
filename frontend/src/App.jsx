@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import api, { setAuthToken } from './api';
 
-const TABS = ['Dashboard', 'Sections', 'Categories', 'Advanced Bulk', 'Attributes', 'Lyrics', 'Menu', 'Users', 'Ads'];
+const TABS = ['Dashboard', 'Sections', 'Categories', 'All Songs', 'Advanced Bulk', 'Attributes', 'Lyrics', 'Menu', 'Users', 'Ads'];
 const formatEntityId = (prefix, id) => `${prefix}_${String(id).padStart(3, '0')}`;
 const CONTENT_TYPES = [
   { value: 'home', label: 'Home' },
@@ -82,6 +82,7 @@ function App() {
               {tab === 'Sections' && '🗂️'}
               {tab === 'Categories' && '📂'}
               {tab === 'Songs' && '🎵'}
+              {tab === 'All Songs' && '🎶'}
               {tab === 'Bulk Songs' && '🚀'}
               {tab === 'Advanced Bulk' && '🛸'}
               {tab === 'Attributes' && '🏷️'}
@@ -139,6 +140,7 @@ function App() {
         {activeTab === 'Categories' && <Categories onDataChange={onDataChange} contentType={contentType} initialSectionFilter={initialSectionFilter} clearInitialSectionFilter={() => setInitialSectionFilter('')} initialFormSection={initialFormSection} />}
         {activeTab === 'Songs' && <Songs onDataChange={onDataChange} contentType={contentType} initialEditSong={songToEdit} clearEditSong={() => setSongToEdit(null)} />}
         {activeTab === 'Bulk Songs' && <BulkSongs onDataChange={onDataChange} contentType={contentType} onEditRequest={(s) => { setSongToEdit(s); setActiveTab('Songs'); }} />}
+        {activeTab === 'All Songs' && <AllSongsTab onDataChange={onDataChange} contentType={contentType} />}
         {activeTab === 'Advanced Bulk' && <AdvancedBulkSongs onDataChange={onDataChange} contentType={contentType} onEditRequest={(s) => { setSongToEdit(s); setActiveTab('Songs'); }} />}
         {activeTab === 'Attributes' && <AttributesManager onDataChange={onDataChange} />}
         {activeTab === 'Lyrics' && <LyricsManager onDataChange={onDataChange} />}
@@ -2360,6 +2362,265 @@ function AdsManager() {
 
 export default App;
 
+function AllSongsTab({ onDataChange, contentType }) {
+  const [songs, setSongs] = useState([]);
+  const [attributes, setAttributes] = useState([]);
+  const [search, setSearch] = useState('');
+  const [editingSong, setEditingSong] = useState(null);
+
+  // Filter states
+  const [filterActorName, setFilterActorName] = useState('');
+  const [filterHeroineName, setFilterHeroineName] = useState('');
+  const [filterSingerName, setFilterSingerName] = useState('');
+  const [filterMovieName, setFilterMovieName] = useState('');
+  const [filterMusicDirector, setFilterMusicDirector] = useState('');
+  const [filterReleaseYear, setFilterReleaseYear] = useState('');
+  const [filterGenre, setFilterGenre] = useState('');
+
+  const loadSongs = async () => {
+    try {
+      const { data } = await api.get(`/admin/songs?contentType=${contentType}`);
+      setSongs(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    api.get('/admin/attributes').then(res => setAttributes(res.data)).catch(console.error);
+    loadSongs();
+  }, [contentType]);
+
+  const filtered = songs.filter(s => {
+    const matchesSearch = s.audioName.toLowerCase().includes(search.toLowerCase()) || (s.songId && s.songId.toLowerCase().includes(search.toLowerCase()));
+    if (!matchesSearch) return false;
+    if (filterActorName && s.actorName !== filterActorName) return false;
+    if (filterHeroineName && s.heroineName !== filterHeroineName) return false;
+    if (filterSingerName && s.singerName !== filterSingerName) return false;
+    if (filterMovieName && s.movieName !== filterMovieName) return false;
+    if (filterMusicDirector && s.musicDirector !== filterMusicDirector) return false;
+    if (filterReleaseYear && String(s.releaseYear || '') !== filterReleaseYear) return false;
+    if (filterGenre && s.genre !== filterGenre) return false;
+    return true;
+  });
+
+  return (
+    <div style={{ background: '#fff', borderRadius: 20, padding: 30, boxShadow: '0 4px 24px rgba(0,0,0,0.05)' }}>
+      <h2 style={{ marginBottom: 20 }}>All Songs Database</h2>
+      <input 
+        type="text" 
+        placeholder="🔍 Search available songs by name or ID..." 
+        value={search} 
+        onChange={e => setSearch(e.target.value)} 
+        style={{ width: '100%', padding: '14px 20px', fontSize: 16, borderRadius: 12, border: '2px solid #e2e8f0', marginBottom: 20, outline: 'none' }}
+      />
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 30 }}>
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Actor Name</label>
+          <select value={filterActorName} onChange={e => setFilterActorName(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
+            <option value="">All Actors</option>
+            {attributes.filter(a => a.type === 'Actor').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+          </select>
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Heroine Name</label>
+          <select value={filterHeroineName} onChange={e => setFilterHeroineName(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
+            <option value="">All Heroines</option>
+            {attributes.filter(a => a.type === 'Heroine').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+          </select>
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Singer Name</label>
+          <select value={filterSingerName} onChange={e => setFilterSingerName(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
+            <option value="">All Singers</option>
+            {attributes.filter(a => a.type === 'Singer').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+          </select>
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Movie Name</label>
+          <select value={filterMovieName} onChange={e => setFilterMovieName(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
+            <option value="">All Movies</option>
+            {attributes.filter(a => a.type === 'Movie').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+          </select>
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Music Director</label>
+          <select value={filterMusicDirector} onChange={e => setFilterMusicDirector(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
+            <option value="">All Directors</option>
+            {attributes.filter(a => a.type === 'MusicDirector').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+          </select>
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Release Year</label>
+          <select value={filterReleaseYear} onChange={e => setFilterReleaseYear(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
+            <option value="">All Years</option>
+            {Array.from({length: 40}, (_, i) => new Date().getFullYear() - i).map(year => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Genre</label>
+          <select value={filterGenre} onChange={e => setFilterGenre(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
+            <option value="">All Genres</option>
+            {attributes.filter(a => a.type === 'Genre').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+          </select>
+        </div>
+      </div>
+
+      <div className="table-container" style={{ maxHeight: '600px', overflowY: 'auto' }}>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>songId</th>
+              <th>audioName</th>
+              <th>Attributes</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.slice(0, 200).map(s => (
+              <tr key={s.id}>
+                <td><span className="id-badge">{s.songId || formatEntityId('song', s.id)}</span></td>
+                <td style={{ fontWeight: 600 }}>{s.audioName}</td>
+                <td style={{ fontSize: '0.85rem', color: '#64748b' }}>
+                  {[s.actorName, s.heroineName, s.singerName, s.movieName, s.musicDirector, s.releaseYear, s.genre].filter(Boolean).join(' • ')}
+                </td>
+                <td>
+                  <button className="small" onClick={() => setEditingSong(s)}>Edit</button>
+                </td>
+              </tr>
+            ))}
+            {filtered.length > 200 && (
+              <tr><td colSpan="4" style={{ textAlign: 'center', color: '#64748b' }}>Showing 200 of {filtered.length} matches. Use search or filters to narrow down.</td></tr>
+            )}
+            {filtered.length === 0 && (
+              <tr><td colSpan="4" style={{ textAlign: 'center', color: '#64748b' }}>No songs found matching criteria.</td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {editingSong && (
+        <EditSongModal 
+          song={editingSong} 
+          attributes={attributes} 
+          onClose={() => setEditingSong(null)} 
+          onSave={async (updatedData) => {
+            try {
+              await api.put(`/admin/song/${editingSong.id}`, updatedData);
+              setEditingSong(null);
+              loadSongs();
+              onDataChange();
+            } catch (err) {
+              alert('Failed to update song: ' + (err.response?.data?.message || err.message));
+            }
+          }} 
+        />
+      )}
+    </div>
+  );
+}
+
+function EditSongModal({ song, attributes, onClose, onSave }) {
+  const [form, setForm] = useState({
+    audioName: song.audioName || '',
+    audioUrl: song.audioUrl || '',
+    imageUrl: song.imageUrl || '',
+    categoryId: song.categoryId || '',
+    actorName: song.actorName || '',
+    heroineName: song.heroineName || '',
+    singerName: song.singerName || '',
+    movieName: song.movieName || '',
+    musicDirector: song.musicDirector || '',
+    releaseYear: song.releaseYear || '',
+    genre: song.genre || ''
+  });
+
+  return (
+    <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+      <div className="modal-content" style={{ background: '#fff', borderRadius: 16, padding: 30, width: '100%', maxWidth: 700, maxHeight: '90vh', overflowY: 'auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+          <h2 style={{ margin: 0 }}>Edit Song</h2>
+          <button onClick={onClose} style={{ background: 'transparent', border: 'none', fontSize: 24, cursor: 'pointer' }}>×</button>
+        </div>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div style={{ gridColumn: 'span 2' }}>
+            <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Audio Name</label>
+            <input value={form.audioName} onChange={e => setForm(p => ({...p, audioName: e.target.value}))} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }} />
+          </div>
+          <div style={{ gridColumn: 'span 2' }}>
+            <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Audio URL</label>
+            <input value={form.audioUrl} onChange={e => setForm(p => ({...p, audioUrl: e.target.value}))} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }} />
+          </div>
+          <div style={{ gridColumn: 'span 2' }}>
+            <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Image URL</label>
+            <input value={form.imageUrl} onChange={e => setForm(p => ({...p, imageUrl: e.target.value}))} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }} />
+          </div>
+          
+          <div>
+            <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Actor</label>
+            <select value={form.actorName} onChange={e => setForm(p => ({...p, actorName: e.target.value}))} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+              <option value="">None</option>
+              {attributes.filter(a => a.type === 'Actor').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Heroine</label>
+            <select value={form.heroineName} onChange={e => setForm(p => ({...p, heroineName: e.target.value}))} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+              <option value="">None</option>
+              {attributes.filter(a => a.type === 'Heroine').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Singer</label>
+            <select value={form.singerName} onChange={e => setForm(p => ({...p, singerName: e.target.value}))} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+              <option value="">None</option>
+              {attributes.filter(a => a.type === 'Singer').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Movie</label>
+            <select value={form.movieName} onChange={e => setForm(p => ({...p, movieName: e.target.value}))} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+              <option value="">None</option>
+              {attributes.filter(a => a.type === 'Movie').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Director</label>
+            <select value={form.musicDirector} onChange={e => setForm(p => ({...p, musicDirector: e.target.value}))} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+              <option value="">None</option>
+              {attributes.filter(a => a.type === 'MusicDirector').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Release Year</label>
+            <select value={form.releaseYear} onChange={e => setForm(p => ({...p, releaseYear: e.target.value}))} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+              <option value="">None</option>
+              {Array.from({length: 40}, (_, i) => new Date().getFullYear() - i).map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: 4, fontWeight: 600 }}>Genre</label>
+            <select value={form.genre} onChange={e => setForm(p => ({...p, genre: e.target.value}))} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+              <option value="">None</option>
+              {attributes.filter(a => a.type === 'Genre').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 30 }}>
+          <button onClick={onClose} style={{ background: '#f1f5f9', color: '#1e293b', border: 'none', padding: '10px 20px', borderRadius: 8, fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
+          <button onClick={() => onSave(form)} style={{ background: '#6366f1', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: 8, fontWeight: 600, cursor: 'pointer' }}>Save Changes</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function AttributesManager({ onDataChange }) {
   const [items, setItems] = useState([]);
   const [form, setForm] = useState({ type: 'Actor', name: '' });
@@ -2661,49 +2922,6 @@ function AdvancedBulkSongs({ onDataChange, contentType, onEditRequest }) {
             <button className="primary" onClick={handleSmartUpload} disabled={isUploading} style={{ width: '100%', padding: '15px', fontWeight: '600' }}>
               {isUploading ? 'Syncing...' : `Sync and Upload ${matchedPairs.length} Songs`}
             </button>
-          </div>
-        </section>
-
-        <section style={{ marginTop: '40px' }}>
-          <h3>Recently Added Songs</h3>
-          <div className="table-container" style={{ border: '1px solid #eee', borderRadius: '8px' }}>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>songId</th>
-                  <th>audioName</th>
-                  <th>audioUrl</th>
-                  <th>catId</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {existingSongs.length === 0 ? (
-                  <tr><td colSpan="5" className="muted" style={{ textAlign: 'center', padding: '20px' }}>No songs found</td></tr>
-                ) : (
-                  existingSongs.map(s => (
-                    <tr key={s.id}>
-                      <td><span className="id-badge">{s.songId || formatEntityId('song', s.id)}</span></td>
-                      <td>{s.audioName}</td>
-                      <td style={{ fontSize: '0.8rem', opacity: 0.7 }}>{s.audioUrl}</td>
-                      <td><span className="id-badge">{s.categoryIdFormatted || formatEntityId('cat', s.categoryId)}</span></td>
-                      <td>
-                        <div style={{ display: 'flex', gap: '8px' }}>
-                          <button className="small" onClick={() => onEditRequest(s)}>Edit</button>
-                          <button className="danger small" onClick={async () => {
-                            if (window.confirm(`Delete ${s.audioName}?`)) {
-                              await api.delete(`/admin/song/${s.id}`);
-                              await loadExisting();
-                              onDataChange();
-                            }
-                          }}>Delete</button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
           </div>
         </section>
       </div>
