@@ -62,7 +62,12 @@ if (process.env.NODE_ENV === 'production') {
   // For any non-API routes, serve the React app
   app.get(/^(?!\/api).*/, (req, res) => {
     const indexPath = path.resolve(__dirname, 'frontend', 'dist', 'index.html');
-    res.sendFile(indexPath);
+    const fs = require('fs');
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      res.status(200).json({ message: "Aruvi API is running successfully. Frontend UI is not yet deployed." });
+    }
   });
 }
 
