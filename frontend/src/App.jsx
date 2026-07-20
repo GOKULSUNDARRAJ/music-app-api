@@ -311,13 +311,6 @@ function CategoryCard({ category, onSelect }) {
   const songCount = (category.songs || []).length;
   const imgSrc = category.categoryImage || (category.songs?.[0]?.imageUrl) || null;
 
-  const getBadgeLabel = (cat) => {
-    if (cat.adapterType === 2) return { label: 'U1 Drug playlist', icon: '🎧', color: '#f59e0b' };
-    if (cat.adapterType === 3) return { label: 'Artist playlist', icon: '🎤', color: '#8b5cf6' };
-    return { label: 'Trending playlist', icon: '🔥', color: '#6366f1' };
-  };
-  const badge = getBadgeLabel(category);
-
   return (
     <>
       {/* Card */}
@@ -325,23 +318,11 @@ function CategoryCard({ category, onSelect }) {
         style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        onClick={() => onSelect && onSelect()}
+        onClick={onSelect}
       >
-        {/* Square image */}
-        <div style={{
-          position: 'relative', width: '100%', aspectRatio: '1/1',
-          borderRadius: 14, overflow: 'hidden',
-          boxShadow: hovered ? '0 16px 40px rgba(0,0,0,0.28)' : '0 4px 12px rgba(0,0,0,0.12)',
-          background: '#1e293b', transition: 'box-shadow 0.3s ease',
-        }}>
-          {imgSrc ? (
-            <img src={imgSrc} alt={category.categoryName}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', transform: hovered ? 'scale(1.07)' : 'scale(1)', transition: 'transform 0.4s ease' }}
-              onError={e => { e.target.style.display = 'none'; }}
-            />
-          ) : (
-            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48, background: 'linear-gradient(135deg,#312e81,#5b21b6)' }}>🎵</div>
-          )}
+        {/* Image wrapper */}
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '1/1', borderRadius: 14, overflow: 'hidden', boxShadow: hovered ? '0 12px 32px rgba(0,0,0,0.15)' : '0 4px 12px rgba(0,0,0,0.08)', transition: 'all 0.3s ease' }}>
+          <img src={imgSrc || 'https://via.placeholder.com/300?text=No+Image'} alt={category.categoryName} style={{ width: '100%', height: '100%', objectFit: 'cover', transform: hovered ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.5s ease' }} />
 
           {/* Hover overlay */}
           <div style={{
@@ -372,9 +353,7 @@ function CategoryCard({ category, onSelect }) {
             {category.categoryName}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            <span style={{ fontSize: 11, fontWeight: 600, color: badge.color }}>{badge.label}</span>
-            <span style={{ fontSize: 13 }}>{badge.icon}</span>
-            {songCount > 0 && <span style={{ fontSize: 13 }}>⚡</span>}
+            {songCount > 0 && <span style={{ fontSize: 13, color: '#f59e0b', fontWeight: 600 }}>⚡ Active</span>}
           </div>
         </div>
       </div>
@@ -413,9 +392,6 @@ function CategoryDetailView({ category, onBack, onAddSong }) {
             {category.categoryName}
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <span style={{ fontSize: 13, fontWeight: 700, color: badge.color, background: `${badge.color}22`, padding: '4px 12px', borderRadius: 20 }}>
-              {badge.icon} {badge.label}
-            </span>
             <span style={{ fontSize: 14, color: '#94a3b8', fontWeight: 600 }}>{songCount} songs</span>
           </div>
         </div>
