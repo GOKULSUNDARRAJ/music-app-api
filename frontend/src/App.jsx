@@ -104,15 +104,48 @@ function App() {
       </aside>
       <main className="content">
         {['Dashboard', 'Sections', 'Categories'].includes(activeTab) && (
-          <div className="toolbar content-type-toolbar">
-            <label>Manage content:</label>
-            <select value={contentType} onChange={(e) => setContentType(e.target.value)}>
+          <div className="toolbar content-type-toolbar" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <span style={{ fontWeight: 'bold', marginRight: '10px', color: 'var(--text-muted)' }}>MANAGE CONTENT:</span>
+            <div style={{ display: 'flex', gap: '8px', background: '#000', padding: '12px 16px', borderRadius: '30px' }}>
+              <button
+                key="all"
+                onClick={() => setContentType('')}
+                style={{
+                  background: contentType === '' ? '#ef4444' : '#333',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '20px',
+                  padding: '8px 24px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s',
+                  boxShadow: 'none',
+                  transform: 'none'
+                }}
+              >
+                All
+              </button>
               {CONTENT_TYPES.map((type) => (
-                <option key={type.value} value={type.value}>
+                <button
+                  key={type.value}
+                  onClick={() => setContentType(type.value)}
+                  style={{
+                    background: contentType === type.value ? '#ef4444' : '#333',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '20px',
+                    padding: '8px 24px',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s',
+                    boxShadow: 'none',
+                    transform: 'none'
+                  }}
+                >
                   {type.label}
-                </option>
+                </button>
               ))}
-            </select>
+            </div>
           </div>
         )}
         {['Sections', 'Categories'].includes(activeTab) && (
