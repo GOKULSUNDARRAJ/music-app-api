@@ -1953,8 +1953,6 @@ function Users({ onDataChange }) {
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Mobile</th>
-            <th>Country</th>
             <th>Verified</th>
             <th>Created Date</th>
             <th>Actions</th>
@@ -1966,8 +1964,6 @@ function Users({ onDataChange }) {
               <td><span className="id-badge">user_{String(user.id).padStart(3, '0')}</span></td>
               <td>{user.userName}</td>
               <td>{user.userEmail || <span className="muted">N/A</span>}</td>
-              <td>{user.userMobile}</td>
-              <td>{user.userCountry} ({user.userCountryCode})</td>
               <td>{user.isVerified ? '✅' : '❌'}</td>
               <td>{user.userCreatedDate ? new Date(user.userCreatedDate).toLocaleString() : 'N/A'}</td>
               <td>
