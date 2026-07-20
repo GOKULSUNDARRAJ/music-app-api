@@ -561,9 +561,10 @@ function AssignSongView({ categoryId, contentType, onBack, onAssigned }) {
     api.get(`/admin/songs`)
       .then(res => {
         const preSelected = new Set();
+        const rawCategoryId = parseInt(String(categoryId).replace(/\D/g, ''), 10);
         res.data.forEach(s => {
-          const inJunction = s.categories?.some(c => String(c.id) === String(categoryId));
-          const inPrimary = String(s.categoryId) === String(categoryId);
+          const inJunction = s.categories?.some(c => String(c.id) === String(rawCategoryId));
+          const inPrimary = String(s.categoryId) === String(rawCategoryId);
           if (inJunction || inPrimary) preSelected.add(s.id);
         });
         
