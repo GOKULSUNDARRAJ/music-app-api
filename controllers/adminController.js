@@ -89,10 +89,6 @@ exports.createSection = async (req, res, next) => {
       return res.status(400).json({ message: 'sectionTitle is required' });
     }
 
-    if (!['home', 'devotional', 'artist'].includes(contentType)) {
-      return res.status(400).json({ message: 'contentType must be home, devotional, or artist' });
-    }
-
 
     const section = await Section.create({ sectionTitle, layoutType, spanCount, contentType });
     return res.status(201).json(sectionDto(section));
@@ -123,10 +119,6 @@ exports.updateSection = async (req, res, next) => {
     }
 
     const { sectionTitle, layoutType, spanCount, contentType } = req.body;
-
-    if (contentType && !['home', 'devotional', 'artist'].includes(contentType)) {
-      return res.status(400).json({ message: 'contentType must be home, devotional, or artist' });
-    }
 
 
     await section.update({
