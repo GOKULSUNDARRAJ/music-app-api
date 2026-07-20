@@ -26,9 +26,9 @@ const Section = sequelize.define('Section', {
     }
   },
   contentType: {
-    type: DataTypes.ENUM('home', 'devotional', 'artist'),
+    type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'home'
+    defaultValue: 'all'
   }
 }, {
   tableName: 'sections',
