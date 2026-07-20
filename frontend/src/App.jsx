@@ -386,13 +386,6 @@ function CategoryDetailView({ category, onBack, onAddSong }) {
   const songCount = (category.songs || []).length;
   const imgSrc = category.categoryImage || (category.songs?.[0]?.imageUrl) || null;
 
-  const getBadgeLabel = (cat) => {
-    if (cat.adapterType === 2) return { label: 'U1 Drug playlist', icon: '🎧', color: '#f59e0b' };
-    if (cat.adapterType === 3) return { label: 'Artist playlist', icon: '🎤', color: '#8b5cf6' };
-    return { label: 'Trending playlist', icon: '🔥', color: '#6366f1' };
-  };
-  const badge = getBadgeLabel(category);
-
   return (
     <div style={{ background: '#fff', borderRadius: 20, overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
       {/* Header */}
