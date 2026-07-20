@@ -559,9 +559,13 @@ function AssignSongView({ categoryId, contentType, onBack, onAssigned }) {
 
   useEffect(() => {
     api.get(`/admin/songs?contentType=${contentType}`)
-      .then(res => setSongs(res.data.filter(s => !s.categoryId)))
+      .then(res => setSongs(res.data.filter(s => {
+        const inJunction = s.categories?.some(c => String(c.id) === String(categoryId));
+        const inPrimary = String(s.categoryId) === String(categoryId);
+        return !inJunction && !inPrimary;
+      })))
       .catch(err => console.error(err));
-  }, [contentType]);
+  }, [contentType, categoryId]);
 
   const toggleSelect = (id) => {
     const newSet = new Set(selectedIds);
@@ -609,14 +613,14 @@ function AssignSongView({ categoryId, contentType, onBack, onAssigned }) {
 
       <input 
         type="text" 
-        placeholder="🔍 Search unassigned songs by name or ID..." 
+        placeholder="🔍 Search available songs by name or ID..." 
         value={search} 
         onChange={e => setSearch(e.target.value)} 
         style={{ width: '100%', padding: '14px 20px', fontSize: 16, borderRadius: 12, border: '2px solid #e2e8f0', marginBottom: 30, outline: 'none' }}
       />
 
       {songs.length === 0 ? (
-        <p className="muted" style={{ textAlign: 'center', marginTop: 40, fontSize: 18 }}>No unassigned songs available. Create some in the Songs tab first!</p>
+        <p className="muted" style={{ textAlign: 'center', marginTop: 40, fontSize: 18 }}>No available songs available. Create some in the Songs tab first!</p>
       ) : filtered.length === 0 ? (
         <p className="muted" style={{ textAlign: 'center', marginTop: 40, fontSize: 16 }}>No songs match your search.</p>
       ) : (
