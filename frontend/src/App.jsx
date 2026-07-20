@@ -105,7 +105,6 @@ function App() {
       <main className="content">
         {['Dashboard', 'Sections', 'Categories'].includes(activeTab) && (
           <div className="toolbar content-type-toolbar" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-            <span style={{ fontWeight: 'bold', marginRight: '10px', color: 'var(--text-muted)' }}>MANAGE CONTENT:</span>
             <div style={{ display: 'flex', gap: '8px', background: '#000', padding: '12px 16px', borderRadius: '30px' }}>
               {CONTENT_TYPES.map((type) => (
                 <button
@@ -208,7 +207,7 @@ function Dashboard({ refreshKey, contentType, onDataChange }) {
         <CategoryDetailView category={selectedCategory} onBack={() => setSelectedCategory(null)} onAddSong={() => setAssignSongCategoryId(selectedCategory.categoryId)} />
       ) : (
         <>
-          <h2 style={{ fontWeight: 800, fontSize: '2rem', marginBottom: 28, background: 'linear-gradient(135deg,#6366f1,#a855f7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Dashboard</h2>
+          {/* Dashboard title removed per user request */}
 
       {/* Stat Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 20, marginBottom: 40 }}>
@@ -250,9 +249,6 @@ function Dashboard({ refreshKey, contentType, onDataChange }) {
               {/* Section header */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
                 <div style={{ width: 4, height: 28, borderRadius: 4, background: 'linear-gradient(180deg,#6366f1,#a855f7)' }} />
-                <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 700, background: '#f1f5f9', color: '#475569', padding: '3px 8px', borderRadius: 6 }}>
-                  sec_{String(section.sectionId).padStart(3, '0')}
-                </span>
                 <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#1e293b' }}>{section.sectionTitle}</span>
               </div>
 
