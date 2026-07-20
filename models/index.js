@@ -15,6 +15,7 @@ const Blend = require('./Blend');
 const CollaborativePlaylist = require('./CollaborativePlaylist');
 const CollaborativePlaylistUser = require('./CollaborativePlaylistUser');
 const CollaborativePlaylistSong = require('./CollaborativePlaylistSong');
+const SongCategory = require('./SongCategory');
 
 // Define Relationships
 // One section has many categories
@@ -28,12 +29,21 @@ Category.belongsTo(Section, {
   as: 'section'
 });
 
-// One category has many songs
-Category.hasMany(Song, {
+// Many categories have many songs
+Category.belongsToMany(Song, {
+  through: SongCategory,
   foreignKey: 'categoryId',
-  as: 'songs',
-  onDelete: 'CASCADE'
+  otherKey: 'songId',
+  as: 'songs'
 });
+Song.belongsToMany(Category, {
+  through: SongCategory,
+  foreignKey: 'songId',
+  otherKey: 'categoryId',
+  as: 'categories'
+});
+
+// Keep One-to-Many for backward compatibility in controllers that use `as: 'category'`
 Song.belongsTo(Category, {
   foreignKey: 'categoryId',
   as: 'category'
