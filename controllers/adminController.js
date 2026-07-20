@@ -357,7 +357,14 @@ exports.createSong = async (req, res, next) => {
 exports.getSongs = async (req, res, next) => {
   try {
     const where = {};
-    const include = [];
+    const include = [
+      {
+        model: Category,
+        as: 'categories',
+        through: { attributes: [] },
+        attributes: ['id', 'categoryName']
+      }
+    ];
 
     if (req.query.categoryId) {
       where.categoryId = req.query.categoryId;
