@@ -107,24 +107,6 @@ function App() {
           <div className="toolbar content-type-toolbar" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <span style={{ fontWeight: 'bold', marginRight: '10px', color: 'var(--text-muted)' }}>MANAGE CONTENT:</span>
             <div style={{ display: 'flex', gap: '8px', background: '#000', padding: '12px 16px', borderRadius: '30px' }}>
-              <button
-                key="all"
-                onClick={() => setContentType('')}
-                style={{
-                  background: contentType === '' ? '#ef4444' : '#333',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '20px',
-                  padding: '8px 24px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  transition: 'background 0.2s',
-                  boxShadow: 'none',
-                  transform: 'none'
-                }}
-              >
-                All
-              </button>
               {CONTENT_TYPES.map((type) => (
                 <button
                   key={type.value}
@@ -351,9 +333,6 @@ function CategoryCard({ category, onSelect }) {
         <div style={{ paddingTop: 10 }}>
           <div style={{ fontWeight: 700, fontSize: 14, color: '#1e293b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: 4 }}>
             {category.categoryName}
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            {songCount > 0 && <span style={{ fontSize: 13, color: '#f59e0b', fontWeight: 600 }}>⚡ Active</span>}
           </div>
         </div>
       </div>
