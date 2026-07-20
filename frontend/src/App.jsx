@@ -649,49 +649,51 @@ function AssignSongView({ categoryId, contentType, onBack, onAssigned }) {
           <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Actor Name</label>
           <select value={filterActorName} onChange={e => setFilterActorName(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
             <option value="">Select Actor</option>
-            {attributes.filter(a => a.type === 'actor').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            {attributes.filter(a => a.type === 'Actor').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
           </select>
         </div>
         <div>
           <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Heroine Name</label>
           <select value={filterHeroineName} onChange={e => setFilterHeroineName(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
             <option value="">Select Heroine</option>
-            {attributes.filter(a => a.type === 'heroine').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            {attributes.filter(a => a.type === 'Heroine').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
           </select>
         </div>
         <div>
           <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Singer Name</label>
           <select value={filterSingerName} onChange={e => setFilterSingerName(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
             <option value="">Select Singer</option>
-            {attributes.filter(a => a.type === 'singer').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            {attributes.filter(a => a.type === 'Singer').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
           </select>
         </div>
         <div>
           <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Movie Name</label>
           <select value={filterMovieName} onChange={e => setFilterMovieName(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
             <option value="">Select Movie</option>
-            {attributes.filter(a => a.type === 'movie').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            {attributes.filter(a => a.type === 'Movie').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
           </select>
         </div>
         <div>
           <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Music Director</label>
           <select value={filterMusicDirector} onChange={e => setFilterMusicDirector(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
             <option value="">Select Director</option>
-            {attributes.filter(a => a.type === 'director').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            {attributes.filter(a => a.type === 'MusicDirector').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
           </select>
         </div>
         <div>
           <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Release Year</label>
           <select value={filterReleaseYear} onChange={e => setFilterReleaseYear(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
             <option value="">Select Year</option>
-            {attributes.filter(a => a.type === 'year').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            {Array.from({length: 40}, (_, i) => new Date().getFullYear() - i).map(year => (
+              <option key={year} value={year}>{year}</option>
+            ))}
           </select>
         </div>
         <div>
           <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Genre</label>
           <select value={filterGenre} onChange={e => setFilterGenre(e.target.value)} style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#f8fafc' }}>
             <option value="">Select Genre</option>
-            {attributes.filter(a => a.type === 'genre').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
+            {attributes.filter(a => a.type === 'Genre').map(a => <option key={a.id} value={a.name}>{a.name}</option>)}
           </select>
         </div>
       </div>
