@@ -560,13 +560,21 @@ function AssignSongView({ categoryId, contentType, onBack, onAssigned }) {
   useEffect(() => {
     api.get(`/admin/songs`)
       .then(res => {
-        setSongs(res.data);
         const preSelected = new Set();
         res.data.forEach(s => {
           const inJunction = s.categories?.some(c => String(c.id) === String(categoryId));
           const inPrimary = String(s.categoryId) === String(categoryId);
           if (inJunction || inPrimary) preSelected.add(s.id);
         });
+        
+        // Sort only once initially
+        const sortedData = res.data.sort((a, b) => {
+          const aSelected = preSelected.has(a.id) ? 1 : 0;
+          const bSelected = preSelected.has(b.id) ? 1 : 0;
+          return bSelected - aSelected;
+        });
+
+        setSongs(sortedData);
         setSelectedIds(preSelected);
       })
       .catch(err => console.error(err));
@@ -594,13 +602,8 @@ function AssignSongView({ categoryId, contentType, onBack, onAssigned }) {
       setLoading(false);
     }
   };
-  const filtered = songs
-    .filter(s => s.audioName.toLowerCase().includes(search.toLowerCase()) || (s.songId && s.songId.toLowerCase().includes(search.toLowerCase())))
-    .sort((a, b) => {
-      const aSelected = selectedIds.has(a.id) ? 1 : 0;
-      const bSelected = selectedIds.has(b.id) ? 1 : 0;
-      return bSelected - aSelected;
-    });
+
+  const filtered = songs.filter(s => s.audioName.toLowerCase().includes(search.toLowerCase()) || (s.songId && s.songId.toLowerCase().includes(search.toLowerCase())));
   return (
     <div style={{ background: '#fff', borderRadius: 20, padding: 30, boxShadow: '0 4px 24px rgba(0,0,0,0.05)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 30 }}>
