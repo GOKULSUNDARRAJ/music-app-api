@@ -7,7 +7,7 @@ const path = require('path');
 
 // Storage configuration - similar to others
 let storage;
-if (process.env.NODE_ENV === 'production') {
+if (process.env.FIREBASE_PROJECT_ID) {
   const FirebaseStorage = require('multer-firebase-storage');
   storage = FirebaseStorage({
     bucketName: process.env.FIREBASE_STORAGE_BUCKET,
