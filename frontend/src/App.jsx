@@ -50,8 +50,8 @@ function Login({ onSuccess }) {
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(Boolean(localStorage.getItem('adminToken')));
   const [activeTab, setActiveTab] = useState('Dashboard');
-  const [contentTypes, setContentTypes] = useState([{ value: 'home', label: 'Home' }]);
-  const [contentType, setContentType] = useState('home');
+  const [contentTypes, setContentTypes] = useState([]);
+  const [contentType, setContentType] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
   const [songToEdit, setSongToEdit] = useState(null);
   const [initialSectionFilter, setInitialSectionFilter] = useState('');
@@ -68,6 +68,12 @@ function App() {
             label: m.menuName
           }));
           setContentTypes(types);
+          setContentType(prev => {
+            if (!prev || !types.some(t => t.value === prev)) {
+              return types[0].value;
+            }
+            return prev;
+          });
         }
       }).catch(console.error);
     }
@@ -175,6 +181,7 @@ function Dashboard({ refreshKey, contentType, onDataChange }) {
   }, [refreshKey]);
 
   useEffect(() => {
+    if (!contentType) return;
     api.get(`/content/${contentType}`).then((res) => {
       setNestedData(res.data);
       // If a category is currently open, update its reference with the newly fetched data
