@@ -926,7 +926,7 @@ function Categories({ onDataChange, contentType, initialSectionFilter, clearInit
   return (
     <div>
       <h2>Categories</h2>
-      <div className="toolbar">
+      <div className="toolbar" style={{ margin: '20px 0' }}>
         <label>Filter by section:</label>
         <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)}>
           <option value="">All</option>
@@ -1325,7 +1325,7 @@ function Songs({ onDataChange, contentType, initialEditSong, clearEditSong }) {
   return (
     <div>
       <h2>Songs</h2>
-      <div className="toolbar">
+      <div className="toolbar" style={{ margin: '20px 0' }}>
         <label>Filter by category:</label>
         <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
           <option value="">All</option>
@@ -1815,7 +1815,7 @@ function MenuManager({ onDataChange }) {
   return (
     <div>
       <h2>Menu Management</h2>
-      <div className="toolbar">
+      <div className="toolbar" style={{ margin: '20px 0' }}>
         <label>Menu type:</label>
         <select value={menuTypeFilter} onChange={(e) => setMenuTypeFilter(e.target.value)}>
           <option value="top">Top Menu</option>
