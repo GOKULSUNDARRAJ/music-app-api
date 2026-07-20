@@ -104,7 +104,7 @@ function App() {
       </aside>
       <main className="content">
         {['Dashboard', 'Sections', 'Categories'].includes(activeTab) && (
-          <div className="toolbar content-type-toolbar" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div className="toolbar content-type-toolbar" style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '32px' }}>
             <div style={{ display: 'flex', gap: '8px', background: '#000', padding: '12px 16px', borderRadius: '30px' }}>
               {CONTENT_TYPES.map((type) => (
                 <button
