@@ -558,7 +558,7 @@ function AssignSongView({ categoryId, contentType, onBack, onAssigned }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    api.get(`/admin/songs?contentType=${contentType}`)
+    api.get(`/admin/songs`)
       .then(res => {
         setSongs(res.data);
         const preSelected = new Set();
