@@ -115,4 +115,4 @@ CollaborativePlaylistSong.belongsTo(Song, { foreignKey: 'songId', as: 'song' });
 User.hasMany(CollaborativePlaylistSong, { foreignKey: 'addedById', as: 'collaborativeAddedSongs' });
 CollaborativePlaylistSong.belongsTo(User, { foreignKey: 'addedById', as: 'addedBy' });
 
-module.exports = { sequelize, Section, Category, Song, MenuItem, User, RecentlyPlayed, Like, Follow, Playlist, PlaylistItem, Advertisement, SongAttribute, Blend, CollaborativePlaylist, CollaborativePlaylistUser, CollaborativePlaylistSong };
+module.exports = { sequelize, Section, Category, Song, MenuItem, User, RecentlyPlayed, Like, Follow, Playlist, PlaylistItem, Advertisement, SongAttribute, Blend, CollaborativePlaylist, CollaborativePlaylistUser, CollaborativePlaylistSong, SongCategory };
