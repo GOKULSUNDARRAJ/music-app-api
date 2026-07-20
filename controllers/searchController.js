@@ -50,6 +50,15 @@ exports.search = async (req, res, next) => {
       offset: offset
     });
 
+    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const normalizeUrl = (url) => {
+      if (!url) return '';
+      if (url.startsWith('/uploads/')) return `${baseUrl}${url}`;
+      if (url.includes('localhost:')) return url.replace(/http:\/\/localhost:\d+/, baseUrl);
+      if (!url.startsWith('http')) return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+      return url;
+    };
+
     let userLikedSongs = new Set();
     if (req.userId) {
       const likes = await Like.findAll({ where: { userId: req.userId, songId: { [Op.ne]: null } } });
@@ -59,8 +68,8 @@ exports.search = async (req, res, next) => {
     const songResults = songs.map((song) => ({
       songId: formatEntityId('song', song.id),
       audioName: song.audioName,
-      audioUrl: song.audioUrl,
-      imageUrl: song.imageUrl,
+      audioUrl: normalizeUrl(song.audioUrl),
+      imageUrl: normalizeUrl(song.imageUrl),
       categoryName: song.category?.categoryName || 'Single Track',
       categoryId: song.category ? formatEntityId('cat', song.category.id) : 'cat_000',
       sectionTitle: song.category?.section?.sectionTitle || 'Various',
@@ -87,13 +96,13 @@ exports.search = async (req, res, next) => {
     const playlistResults = playlists.map((playlist) => ({
       categoryId: formatEntityId('cat', playlist.id),
       categoryName: playlist.categoryName,
-      categoryImage: playlist.categoryImage,
+      categoryImage: normalizeUrl(playlist.categoryImage),
       songs: (playlist.songs || []).map(song => ({
         songId: formatEntityId('song', song.id),
         audioName: song.audioName,
-        audioUrl: song.audioUrl,
+        audioUrl: normalizeUrl(song.audioUrl),
         category: playlist.categoryName,
-        imageUrl: song.imageUrl,
+        imageUrl: normalizeUrl(song.imageUrl),
         categoryId: formatEntityId('cat', playlist.id),
         isLiked: userLikedSongs.has(song.id)
       }))
