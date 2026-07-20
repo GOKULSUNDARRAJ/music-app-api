@@ -903,7 +903,7 @@ function Categories({ onDataChange, contentType, initialSectionFilter, clearInit
           {items.map((item) => {
             const section = sections.find(s => s.id === item.sectionId);
             return (
-              <div className="media-card" key={item.id} onClick={() => setSelectedCategory(item)}>
+              <div className="media-card" key={item.id}>
                 <div className="media-card-img-wrapper">
                   <img src={item.categoryImage || 'https://via.placeholder.com/300?text=No+Image'} alt={item.categoryName} className="media-card-img" />
                   <div className="media-card-overlay">
